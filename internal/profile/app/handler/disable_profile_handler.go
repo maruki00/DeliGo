@@ -3,9 +3,7 @@ package handler
 import (
 	"context"
 
-	command "github.com/maruki00/deligo/internal/profile/app/commnd"
 	"github.com/maruki00/deligo/internal/profile/domain/contract"
-	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type DisableProfileHandler struct {
@@ -13,14 +11,9 @@ type DisableProfileHandler struct {
 }
 
 func NewDisableProfileHandler(repo contract.IPorofileRepository) *DisableProfileHandler {
-	return &DisableProfileHandler{
-		repo: repo,
-	}
+	return &DisableProfileHandler{repo: repo}
 }
 
-func (_this *DisableProfileHandler) Handle(ctx context.Context, cmd pkgCqrs.Command) error {
-	return _this.repo.Disable(
-		ctx,
-		cmd.(*command.DiscableProfileCommand).ID.String(),
-	)
+func (_this *DisableProfileHandler) Handle(ctx context.Context, id string) error {
+	return _this.repo.Disable(ctx, id)
 }

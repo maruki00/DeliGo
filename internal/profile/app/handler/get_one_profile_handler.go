@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/maruki00/deligo/internal/profile/domain/contract"
-	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
+	"github.com/maruki00/deligo/internal/profile/infra/model"
 )
 
 type GetOneProfileHandler struct {
@@ -12,11 +12,9 @@ type GetOneProfileHandler struct {
 }
 
 func NewGetOneProfileHandler(repo contract.IPorofileRepository) *GetOneProfileHandler {
-	return &GetOneProfileHandler{
-		repo: repo,
-	}
+	return &GetOneProfileHandler{repo: repo}
 }
-func (_this *GetOneProfileHandler) Handle(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
 
-	return nil, nil
+func (_this *GetOneProfileHandler) Handle(ctx context.Context, id string) (*model.Profile, error) {
+	return _this.repo.FindByID(ctx, id)
 }
