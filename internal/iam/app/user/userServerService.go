@@ -95,11 +95,13 @@ func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.Update
 			Details: nil,
 		}, nil
 	}
+
 	var allowedField = map[string]bool{
 		"email":    true,
 		"password": true,
 		"username": true,
 	}
+
 	for key, value := range fields {
 		allowed, ok := allowedField[key]
 		if !allowed || !ok {
@@ -114,6 +116,13 @@ func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.Update
 			fields["password"] = string(pass)
 		}
 	}
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "test",
+		Details: nil,
+	}, nil
+
 	command := &userCommands.UpdateUserCommand{
 		ID:     uuid.MustParse(in.ID),
 		Fields: in.Fields,
