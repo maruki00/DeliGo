@@ -38,14 +38,7 @@ services:
       retries: 3
     networks:
       - DeliGo_network
-  adminer:
-    image: adminer
-    container_name: adminer_DeliGo
-    restart: always
-    ports:
-      - "8080:8080"
-    networks:
-      - DeliGo_network
+
   
 
 
