@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "grpc";
+
+message Product {
+  optional string Id = 1;
+  string Label = 2;
+  float price = 3;
+  float discount = 4;
+  optional string CreateAt = 5;
+  optional string UppdatedAt = 6;
+  //google.protobuf.Timestamp
+}
+
+service PersonService {
+  rpc Insert(InsertRequest) returns (InsertResponse);
+  rpc Search(SearchRequest) returns (SearchResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+  rpc MultipleProducts(MultipleProductsRequest)
+      returns (MultipleProductsResponse);
+}
+
+message InsertRequest {
+  string Label = 1;
+  float price = 2;
+  float discount = 3;
+}
+message SearchRequest { string Query = 1; }
+message UpdateRequest {
+  string Id = 1;
+  optional string Label = 2;
+  optional float price = 3;
+  optional float discount = 4;
+  optional string CreateAt = 5;
+  optional string UppdatedAt = 6;
+}
+message DeleteRequest { string Id = 1; }
+message GetProductRequest { string Id = 1; }
+message MultipleProductsRequest {}
+
+message InsertResponse {
+  string Id = 1;
+  string Label = 2;
+  float price = 3;
+  float discount = 4;
+  string CreateAt = 5;
+  string UppdatedAt = 6;
+}
+message SearchResponse {}
+message UpdateResponse {}
+message DeleteResponse {}
+message GetProductResponse {}
+message MultipleProductsResponse {}

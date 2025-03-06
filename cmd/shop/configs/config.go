@@ -1,4 +1,4 @@
-package shared_configs
+package configs
 
 import (
 	"os"
