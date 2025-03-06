@@ -1,6 +1,9 @@
 package services
 
-import shop_domain_contracts "delivery/internal/shop/domain/contracts"
+import (
+	"delivery/internal/shop/domain/contracts"
+	shop_domain_contracts "delivery/internal/shop/domain/contracts"
+)
 
 type ShopService struct {
 	repo shop_domain_contracts.IShopRepository
