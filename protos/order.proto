@@ -21,9 +21,20 @@ message CreateOrderRequest {
   string CreatedAt = 6 [ json_name = "created_at" ];
   string UpdatedAt = 7 [ json_name = "updated_at" ];
 }
-message CancelOrderRequest {}
-message HistoryOrderRequest {}
-message PickupOrderRequest {}
+message CancelOrderRequest {
+  int64 ID = 1 [ json_name = "id" ];
+}
+message HistoryOrderRequest {
+  int64 ID = 1 [ json_name = "id" ];
+}
+message PickupOrderRequest {
+  int64 ID = 1 [ json_name = "id" ];
+}
+message OrderResponse {
+  int32 Status =1 [json_name = "status"];
+  string Message =2 [json_name = "message"];
+  google.api.any Data =3 [json_name = "data"];
+}
 service OrderService {
   rpc CreateOrder(CreateOrderRequest) returns (OrderResponse) {
     option (google.api.http) = {
