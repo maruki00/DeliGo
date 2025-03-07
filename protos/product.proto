@@ -5,28 +5,34 @@ package product;
 option go_package = "go/grpc";
 
 message Product {
-  optional string Id = 1 [json_name = "id"];
+  string ID = 1 [json_name = "Id"];
+  string Label = 2 [json_name = "Label"];
+  float Price = 3 [json_name = "price"];
+  float Discount = 4 [json_name = "discount"];
+  int32 Qty = 5 [json_name = "qty"];
+  string Status = 6 [json_name = "status"];
+  string CreateAt = 7 [json_name = "create_at"];
+  string UpdatedAt = 8 [json_name = "updated_at"];
+}
+
+message InsertProductRequest {
+  string Label = 1 [json_name = "Label"];
+  float Price = 2 [json_name = "price"];
+  float Discount = 3 [json_name = "discount"];
+  int32 Qty = 4 [json_name = "qty"];
+  string Status = 5 [json_name = "status"];
+}
+
+message SearchProductRequest { string Query = 1; }
+message UpdateProductRequest {
+  string ID = 1 [json_name = "id"];
   string Label = 2 [json_name = "label"];
   float Price = 3 [json_name = "price"];
   float Discount = 4 [json_name = "discount"];
-  optional string CreateAt = 5 [json_name = "create_at"];
-  optional string UpdatedAt = 6 [json_name = "updated_at"];
-}
-
-
-message InsertProductRequest {
-  string Label = 1;
-  float price = 2;
-  float discount = 3;
-}
-message SearchProductRequest { string Query = 1; }
-message UpdateProductRequest {
-  string Id = 1;
-  optional string Label = 2;
-  optional float price = 3;
-  optional float discount = 4;
-  optional string CreateAt = 5;
-  optional string UppdatedAt = 6;
+  int32 Qty = 5 [json_name = "qty"];
+  string Status = 6 [json_name = "status"];
+  string CreateAt = 7 [json_name = "create_at"];
+  string UpdatedAt = 8 [json_name = "updated_at"];
 }
 message DeleteProductRequest { string Id = 1; }
 message GetProductProductRequest { string Id = 1; }
