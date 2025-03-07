@@ -14,7 +14,7 @@ message Product {
 }
 
 
-message InsertRequest {
+message InsertProductRequest {
   string Label = 1;
   float price = 2;
   float discount = 3;
@@ -35,7 +35,7 @@ message MultipleProductsRequest {}
 
 
 
-message ProductResposnse {
+message ProductResponse {
   int32  status = 1 [json_name  = "status"]; 
   string Message = 2 [json_name  = "message"];
   any Data = 3 [json_name = "data"];
@@ -72,7 +72,7 @@ service PersonService {
       body: "*"
     };
   }
-  rpc MultipleProducts(MultipleProductsProductRequest) returns (ProductResponse) {
+  rpc MultipleProducts(MultipleProductsRequest) returns (ProductResponse) {
     option (google.api.http) = {
       post:"/v0/product/multiple",
       body: "*"
