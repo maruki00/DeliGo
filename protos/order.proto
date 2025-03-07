@@ -1,57 +1,51 @@
 syntax = "proto3";
 
-package product;
+package order;
 
-option go_package = "grpc";
+option go_package = "order";
 
-message Product {
-  optional string Id = 1;
-  string Label = 2;
-  float price = 3;
-  float discount = 4;
-  optional string CreateAt = 5;
-  optional string UppdatedAt = 6;
-  //google.protobuf.Timestamp
+message Order {
+  int64 ID = 1 [ json_name = "id" ];
+  string OrderFingerprint = 2 [ json_name = "order_fingerprint" ];
+  int32 CostumerId = 3 [ json_name = "costumer_id" ];
+  float Cost = 4 [ json_name = "cost" ];
+  int32 Status = 5 [ json_name = "status" ];
+  string CreatedAt = 6 [ json_name = "created_at" ];
+  string UpdatedAt = 7 [ json_name = "updated_at" ];
 }
-
-service PersonService {
-  rpc Insert(InsertRequest) returns (InsertResponse);
-  rpc Search(SearchRequest) returns (SearchResponse);
-  rpc Update(UpdateRequest) returns (UpdateResponse);
-  rpc Delete(DeleteRequest) returns (DeleteResponse);
-  rpc GetProduct(GetProductRequest) returns (GetProductResponse);
-  rpc MultipleProducts(MultipleProductsRequest)
-      returns (MultipleProductsResponse);
+message CreateOrderRequest {
+  string OrderFingerprint = 2 [ json_name = "order_fingerprint" ];
+  int32 CostumerId = 3 [ json_name = "costumer_id" ];
+  float Cost = 4 [ json_name = "cost" ];
+  int32 Status = 5 [ json_name = "status" ];
+  string CreatedAt = 6 [ json_name = "created_at" ];
+  string UpdatedAt = 7 [ json_name = "updated_at" ];
 }
-
-message InsertRequest {
-  string Label = 1;
-  float price = 2;
-  float discount = 3;
+message CancelOrderRequest {}
+message HistoryOrderRequest {}
+message PickupOrderRequest {}
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (OrderResponse) {
+    option (google.api.http) = {
+      post : "/v0/order/create",
+      body : "*"
+    };
+  }
+  rpc CancelOrder(CancelOrderRequest) returns (OrderResponse) {
+    option (google.api.http) = {
+      post : "/v0/order/cancel",
+      body : "*"
+    };
+  }
+  rpc OrderHistory(HistoryOrderRequest) returns (OrderResponse) {
+    option (google.api.http) = {
+      get : "/v0/order/history/{id}",
+    };
+  }
+  rpc PickupOrder(PickupOrderRequest) returns (OrderResponse) {
+    option (google.api.http) = {
+      post : "/v0/order/pickup-confirm/{id}",
+      body : "*"
+    };
+  }
 }
-message SearchRequest { string Query = 1; }
-message UpdateRequest {
-  string Id = 1;
-  optional string Label = 2;
-  optional float price = 3;
-  optional float discount = 4;
-  optional string CreateAt = 5;
-  optional string UppdatedAt = 6;
-}
-message DeleteRequest { string Id = 1; }
-message GetProductRequest { string Id = 1; }
-message MultipleProductsRequest {}
-
-message InsertResponse {
-  string Id = 1;
-  string Label = 2;
-  float price = 3;
-  float discount = 4;
-  string CreateAt = 5;
-  string UppdatedAt = 6;
-}
-message SearchResponse {}
-message UpdateResponse {}
-message DeleteResponse {}
-message GetProductResponse {}
-message MultipleProductsResponse {}
