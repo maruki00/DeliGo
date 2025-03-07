@@ -1,7 +1,11 @@
 syntax = "proto3";
 
-import "google/protobuf/any.proto";
 
+option go_package = "grpc.auth";
+
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+// import "google/api/date.proto";
 
 message RegisterRequest  {
 	string UserName   = 1 [ json_name  = "user_name" ];
@@ -33,10 +37,36 @@ message LogoutRequest {
 	string Token = 1 [ json_name = "token"];
 }
 
-
 message Empty{}
 message AuthResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
     google.protobuf.Any Data = 3 [ json_name = "data"];
 }
+
+service AuthService {
+	rpc Login(LoginRequest) returns (AuthResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/login",
+			body: "*"
+		};
+	};
+	rpc Register(RegisterRequest) returns (AuthResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/register",
+			body: "*"
+		};
+	};
+	rpc TwoFactoryConfirm(TwoFactoryConfirmRequest) returns (AuthResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/2f-confirm",
+			body: "*"
+		};
+	};
+	rpc Logout(LogoutRequest) returns (AuthResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/logout",
+			body: "*"
+		};
+	};
+} 
