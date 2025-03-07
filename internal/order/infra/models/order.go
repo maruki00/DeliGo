@@ -8,7 +8,7 @@ import (
 
 type Order struct {
 	gorm.Model
-	Id               int       `json:"id"`
+	ID               int       `json:"id"`
 	OrderFingerprint string    `json:"order_fingerprint"`
 	CostumerId       int       `json:"costumer_id"`
 	Cost             float32   `json: "cost"`
