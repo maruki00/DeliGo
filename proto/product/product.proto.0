@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "go/grpc";
+
+message Product {
+  string ID = 1 [json_name = "Id"];
+  string Label = 2 [json_name = "Label"];
+  float Price = 3 [json_name = "price"];
+  float Discount = 4 [json_name = "discount"];
+  int32 Qty = 5 [json_name = "qty"];
+  string Status = 6 [json_name = "status"];
+  string CreateAt = 7 [json_name = "create_at"];
+  string UpdatedAt = 8 [json_name = "updated_at"];
+}
+
+message InsertProductRequest {
+  string Label = 1 [json_name = "Label"];
+  float Price = 2 [json_name = "price"];
+  float Discount = 3 [json_name = "discount"];
+  int32 Qty = 4 [json_name = "qty"];
+  string Status = 5 [json_name = "status"];
+}
+message SearchProductRequest { 
+  string Query = 1 [json_name = "id"]; 
+}
+message UpdateProductRequest {
+  string ID = 1 [json_name = "id"];
+  string Label = 2 [json_name = "label"];
+  float Price = 3 [json_name = "price"];
+  float Discount = 4 [json_name = "discount"];
+  int32 Qty = 5 [json_name = "qty"];
+  string Status = 6 [json_name = "status"];
+  string CreateAt = 7 [json_name = "create_at"];
+  string UpdatedAt = 8 [json_name = "updated_at"];
+}
+message DeleteProductRequest { 
+  string Id = 1     [json_name = "id"];     
+}
+message GetProductProductRequest { 
+  string Id = 1 [json_name = "id"]; 
+}
+message MultipleProductsRequest {}
+
+
+message ProductResponse {
+  int32  status = 1 [json_name  = "status"]; 
+  string Message = 2 [json_name  = "message"];
+  google.api.any Data = 3 [json_name = "data"];
+}
+
+service PersonService {
+  rpc Insert(InsertProductRequest) returns (ProductResponse) {
+    option (google.api.http) = {
+      post:"/v0/product/insert",
+      body: "*"
+    };
+  }
+  rpc Update(UpdateProductRequest) returns (ProductResponse) {
+    option (google.api.http) = {
+      post:"/v0/product/update",
+      body: "*"
+    };
+  }
+  rpc Delete(DeleteProductRequest) returns (ProductResponse) {
+    option (google.api.http) = {
+      delete:"/v0/product/delete",
+      body: "*"
+    };
+  }
+  rpc Search(SearchProductRequest) returns (ProductResponse) {
+    option (google.api.http) = {
+      get:"/v0/product/search"
+    };
+  }
+  rpc GetProduct(GetProductProductRequest) returns (ProductResponse) {
+    option (google.api.http) = {
+      post:"/v0/product/get",
+      body: "*"
+    };
+  }
+  rpc MultipleProducts(MultipleProductsRequest) returns (ProductResponse) {
+    option (google.api.http) = {
+      post:"/v0/product/multiple",
+      body: "*"
+    };
+  }
+}
