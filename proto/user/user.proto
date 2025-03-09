@@ -4,7 +4,9 @@ syntax = "proto3";
 option go_package = "grpc.auth";
 
 
-import "google/type/date.proto";
+import "google/api/date.proto";
+import "google/api/anotations.proto";
+import "google/api/http.proto";
 
 message User {
 	string id = 1 [json_name = "idid"];
@@ -15,9 +17,9 @@ message User {
 	string password = 6 [json_name = "passwordpassword"];
 	string user_type =7 [json_name = "user_typeuser_type"];
 	string status =8 [json_name = "statusstatus"];
-	google.type.date created_at = 9 [json_name = "created_atcreated_at"];
-	google.type.date updated_at = 10 [json_name = "updated_atupdated_at"];
-	google.type.date deleted_at = 11 [json_name = "deleted_atdeleted_at"];
+	google.api.Date created_at = 9 [json_name = "created_atcreated_at"];
+	google.api.Date updated_at = 10 [json_name = "updated_atupdated_at"];
+	google.api.Date deleted_at = 11 [json_name = "deleted_atdeleted_at"];
 }
 message RegisterRequest  {
 	string UserName   = 1 [ json_name  = "user_name" ];
