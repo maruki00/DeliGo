@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+
+option go_package = "grpc.auth";
+
+
+import "google/type/date.proto";
+
+message User {
+	string id = 1 [json_name = "idid"];
+	string user_name = 2 [json_name = "user_nameuser_name"];
+	string full_name = 3 [json_name = "full_namefull_name"];
+	string email = 4 [json_name = "emailemail"];
+	string address = 5 [json_name = "addressaddress"];
+	string password = 6 [json_name = "passwordpassword"];
+	string user_type =7 [json_name = "user_typeuser_type"];
+	string status =8 [json_name = "statusstatus"];
+	google.type.date created_at = 9 [json_name = "created_atcreated_at"];
+	google.type.date updated_at = 10 [json_name = "updated_atupdated_at"];
+	google.type.date deleted_at = 11 [json_name = "deleted_atdeleted_at"];
+}
+message RegisterRequest  {
+	string UserName   = 1 [ json_name  = "user_name" ];
+	string FullName   = 2 [ json_name  = "full_name" ];
+	string Address    = 3 [ json_name  = "address" ];
+	string Email      = 4 [ json_name  = "email" ];
+	string Password   = 5 [ json_name  = "password" ];
+}
+
+message LoginRequest {
+	string Login    = 1 [ json_name = "login" ];
+	string Password = 2 [ json_name = "password" ];
+}
+
+message TwoFactoryConfirmRequest {
+	int32     Pin = 1   [json_name = "pin" ];
+	string  Email = 2 [json_name = "email" ];
+}
+
+message ResetPasswordRequest {
+    string Password = 1 [ json_name = "passoword"];
+}
+
+message ForgetPasswordRequest  {
+    string Email = 1 [json_name = "email"];
+}
+
+message LogoutRequest {
+	string Token = 1 [ json_name = "token"];
+}
+
+message Empty{}
+message AuthResponse {
+    int32 Code = 1 [ json_name = "code"];
+    string Message = 2 [ json_name = "message"];
+    google.type.date Data = 3 [ json_name = "data"];
+}
+
+service AuthService {
+	rpc Login(LoginRequest) returns (AuthResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/login",
+			body: "*"
+		};
+	};
+	rpc Register(RegisterRequest) returns (AuthResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/register",
+			body: "*"
+		};
+	};
+	rpc TwoFactoryConfirm(TwoFactoryConfirmRequest) returns (AuthResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/2f-confirm",
+			body: "*"
+		};
+	};
+	rpc Logout(LogoutRequest) returns (AuthResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/logout",
+			body: "*"
+		};
+	};
+} 

@@ -2,22 +2,20 @@ package app
 
 import (
 	"context"
-	"delivery/cmd/auth/configs"
-	"delivery/internal/auth/app/services"
-	"delivery/internal/auth/domain/contracts"
-	"delivery/internal/auth/domain/ports"
-	"delivery/internal/auth/infra/repositories"
-	"delivery/internal/auth/userGateWay/adapters/presenters"
+	"delivery/cmd/user/configs"
+	"delivery/internal/user/app/services"
+	"delivery/internal/user/domain/contracts"
+	"delivery/internal/user/infra/repositories"
+	"delivery/internal/user/userGateWay/adapters/presenters"
 
 	"github.com/go-playground/validator"
 	"github.com/rabbitmq/amqp091-go"
 )
 
 type App struct {
-	Repo       contracts.IAuthRepository
-	Validate   *validator.Validate
-	InputPort  ports.AuthInputPort
-	OutputPort ports.AuthOutputPort
+	cgf  configs.Config
+	db   pkgPostgres.PGHandler
+	Repo contracts.IAuthRepository
 }
 
 func InitApp(cfg *configs.Config) (*App, error) {
