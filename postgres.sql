@@ -1,4 +1,4 @@
-create database delivery;
+
 
 
 drop table if exists usertypes;
@@ -15,8 +15,8 @@ create table users(
     user_name varchar(100) not null unique,
     full_name varchar(255) not null,
     email varchar(255) not null unique,
-    address text not null,
-    password text not null,
+    address varchar(255) not null,
+    password varchar(255) not null,
     user_type int not null default 2,
     status int not null default 2,
     created_at timestamp default now(),
@@ -30,16 +30,30 @@ create table roles (
     label varchar(100) not null,
     created_at timestamp default now(),
     updated_at timestamp default now(),
-    delete_at  timestamp default null, 
+    delete_at  timestamp default null
 );
 
 drop table if exists permissions;
 create table permissions (
-    id 
-)
+    id uuid primary key,
+    label varchar(100) not null,
+    created_at timestamp default now(),
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
+);
 
-drop table if exists auth;
-create table auth(
+drop table if exists menus;
+create table menus (
+    id uuid primary key,
+    label varchar(100) not null,
+    route varchar(255) not null,
+    created_at timestamp default now(),
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
+);
+
+drop table if exists auths;
+create table auths(
     id uuid primary key ,
     email varchar(255) not null unique,
     token text not null unique,
@@ -47,7 +61,8 @@ create table auth(
     user_type int not null,
     user_level int not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 
@@ -64,7 +79,8 @@ create table orders(
     -- to_long   float not null, 
     -- to_lat    float not null, 
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 
@@ -74,7 +90,8 @@ create table products(
     label varchar(255) not null,
     price varchar(10) not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 
@@ -84,7 +101,8 @@ create table product_images (
     image_path varchar(100) not null,
     product_id int not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 drop table if exists couriers_orders;
@@ -93,7 +111,8 @@ create table couriers_orders(
     order_fingerprint varchar(20) not null,
     courier_id int not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 drop table if exists feedbacks;
@@ -103,7 +122,8 @@ create table feedbacks(
     comment text not null,
     service_type varchar(100) not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 drop table if exists analytics_order;
@@ -115,7 +135,8 @@ create table analytics_order(
     rate int not null,
     comment text not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 
@@ -125,7 +146,8 @@ create table orders_couriers(
     user_id int not null,
     order_id int not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 drop table if exists orders_tracking;
@@ -135,7 +157,8 @@ create table orders_tracking(
     langt float not null,
     longt float not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
 
 drop table if exists notifications; 
@@ -143,5 +166,6 @@ create table notifications(
     id uuid primary key ,
     body text not null,
     created_at timestamp default now(),
-    updated_at timestamp default now()
+    updated_at timestamp default now(),
+    delete_at  timestamp default null
 );
