@@ -55,8 +55,9 @@ message Empty{}
 message AuthResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-    google.type.date Data = 3 [ json_name = "data"];
+    google.api.Date Data = 3 [ json_name = "data"];
 }
+
 
 service AuthService {
 	rpc Login(LoginRequest) returns (AuthResponse) {
@@ -65,18 +66,21 @@ service AuthService {
 			body: "*"
 		};
 	};
+	
 	rpc Register(RegisterRequest) returns (AuthResponse) {
 		option (google.api.http) = {
 			post: "/v1/auth/register",
 			body: "*"
 		};
 	};
+	
 	rpc TwoFactoryConfirm(TwoFactoryConfirmRequest) returns (AuthResponse) {
 		option (google.api.http) = {
 			post: "/v1/auth/2f-confirm",
 			body: "*"
 		};
 	};
+
 	rpc Logout(LogoutRequest) returns (AuthResponse) {
 		option (google.api.http) = {
 			post: "/v1/auth/logout",
