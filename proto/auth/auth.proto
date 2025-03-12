@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 
-option go_package = "grpc.auth";
+option go_package = "auth.grpc";
 
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
-// import "google/api/date.proto";
+
 
 message RegisterRequest  {
 	string UserName   = 1 [ json_name  = "user_name" ];

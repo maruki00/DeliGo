@@ -1,27 +1,28 @@
 syntax = "proto3";
 
 
-option go_package = "grpc.auth";
+option go_package = "user.grpc";
 
-
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
 import "google/api/date.proto";
-import "google/api/anotations.proto";
-import "google/api/http.proto";
+
+
 
 message User {
-	string id = 1 [json_name = "idid"];
-	string user_name = 2 [json_name = "user_nameuser_name"];
-	string full_name = 3 [json_name = "full_namefull_name"];
-	string email = 4 [json_name = "emailemail"];
-	string address = 5 [json_name = "addressaddress"];
-	string password = 6 [json_name = "passwordpassword"];
-	string user_type =7 [json_name = "user_typeuser_type"];
-	string status =8 [json_name = "statusstatus"];
-	google.api.Date created_at = 9 [json_name = "created_atcreated_at"];
-	google.api.Date updated_at = 10 [json_name = "updated_atupdated_at"];
-	google.api.Date deleted_at = 11 [json_name = "deleted_atdeleted_at"];
+	string id = 1 [json_name = "id"];
+	string user_name = 2 [json_name = "user_name"];
+	string full_name = 3 [json_name = "full_name"];
+	string email = 4 [json_name = "email"];
+	string address = 5 [json_name = "address"];
+	string password = 6 [json_name = "password"];
+	string user_type =7 [json_name = "user_type"];
+	string status =8 [json_name = "status"];
+	google.api.Date created_at = 9 [json_name = "created_at"];
+	google.api.Date updated_at = 10 [json_name = "updated_at"];
+	google.api.Date deleted_at = 11 [json_name = "deleted_at"];
 }
-message RegisterRequest  {
+message CreateUserRequest  {
 	string UserName   = 1 [ json_name  = "user_name" ];
 	string FullName   = 2 [ json_name  = "full_name" ];
 	string Address    = 3 [ json_name  = "address" ];
@@ -29,61 +30,65 @@ message RegisterRequest  {
 	string Password   = 5 [ json_name  = "password" ];
 }
 
-message LoginRequest {
+message DeleteUserRequest {
 	string Login    = 1 [ json_name = "login" ];
 	string Password = 2 [ json_name = "password" ];
 }
 
-message TwoFactoryConfirmRequest {
+message UpdateUserRequest {
 	int32     Pin = 1   [json_name = "pin" ];
 	string  Email = 2 [json_name = "email" ];
 }
 
-message ResetPasswordRequest {
-    string Password = 1 [ json_name = "passoword"];
-}
-
-message ForgetPasswordRequest  {
-    string Email = 1 [json_name = "email"];
-}
-
-message LogoutRequest {
-	string Token = 1 [ json_name = "token"];
-}
-
-message Empty{}
-message AuthResponse {
+message EmptyUserResponse{}
+message UserResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
     google.api.Date Data = 3 [ json_name = "data"];
 }
 
 
-service AuthService {
-	rpc Login(LoginRequest) returns (AuthResponse) {
+service UserService {
+	rpc Create(CreateUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
-			post: "/v1/auth/login",
+			post: "/v1/user/create",
 			body: "*"
 		};
 	};
 	
-	rpc Register(RegisterRequest) returns (AuthResponse) {
+	rpc Delete(DeleteUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
-			post: "/v1/auth/register",
-			body: "*"
-		};
-	};
-	
-	rpc TwoFactoryConfirm(TwoFactoryConfirmRequest) returns (AuthResponse) {
-		option (google.api.http) = {
-			post: "/v1/auth/2f-confirm",
+			delete: "/v1/user/delete",
 			body: "*"
 		};
 	};
 
-	rpc Logout(LogoutRequest) returns (AuthResponse) {
+	rpc Update(UpdateUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
-			post: "/v1/auth/logout",
+			put: "/v1/user/update",
+			body: "*"
+		};
+	};
+
+	rpc GetOne(EmptyUserResponse) returns (UserResponse) {
+		option (google.api.http) = {
+			get: "/v1/user",
+			body: "*"
+		};
+	};
+
+	rpc GetMany(EmptyUserResponse) returns (UserResponse) {
+		option (google.api.http) = {
+			get: "/v1/users",
+			body: "*"
+		};
+	};
+	
+
+
+	rpc Search(EmptyUserResponse) returns (UserResponse) {
+		option (google.api.http) = {
+			post: "/v1/users/search",
 			body: "*"
 		};
 	};
