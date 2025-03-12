@@ -132,10 +132,3 @@ func (obj *AuthService) TwoFactoryConfirm(dto dtos.TwoFactoryConfirmDTO) shared_
 func (obj *AuthService) Logout(dto dtos.LogoutDTO) {
 	obj.repo.Logout(dto.Token)
 }
-
-///////
-
-// Login(dto dtos.LoginDTO) shared_contracts.ViewModel
-// Register(dto dtos.RegisterDTO) shared_contracts.ViewModel
-// TwoFactoryConfirm(dto dtos.TwoFactoryConfirmDTO) shared_contracts.ViewModel
-// Logout(dto dtos.LogoutDTO)
