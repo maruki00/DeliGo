@@ -18,9 +18,9 @@ message User {
 	string password = 6 [json_name = "password"];
 	string user_type =7 [json_name = "user_type"];
 	string status =8 [json_name = "status"];
-	google.api.Date created_at = 9 [json_name = "created_at"];
-	google.api.Date updated_at = 10 [json_name = "updated_at"];
-	google.api.Date deleted_at = 11 [json_name = "deleted_at"];
+	string created_at = 9 [json_name = "created_at"]; // google.api.Date
+	string updated_at = 10 [json_name = "updated_at"]; // google.api.Date
+	string deleted_at = 11 [json_name = "deleted_at"]; // google.api.Date
 }
 message CreateUserRequest  {
 	string UserName   = 1 [ json_name  = "user_name" ];
@@ -44,7 +44,7 @@ message EmptyUserResponse{}
 message UserResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-    google.api.Date Data = 3 [ json_name = "data"];
+    string Data = 3 [ json_name = "data"]; //  google.api.Date
 }
 
 
