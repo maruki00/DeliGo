@@ -3,9 +3,9 @@ syntax = "proto3";
 
 option go_package = "user.grpc";
 
-import "google/protobuf/any.proto";
+// import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
-import "google/api/date.proto";
+// import "google/api/date.proto";
 
 
 
@@ -58,7 +58,7 @@ service UserService {
 	
 	rpc Delete(DeleteUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
-			delete: "/v1/user/delete",
+			post: "/v1/user/delete",
 			body: "*"
 		};
 	};
@@ -72,15 +72,13 @@ service UserService {
 
 	rpc GetOne(EmptyUserResponse) returns (UserResponse) {
 		option (google.api.http) = {
-			get: "/v1/user",
-			body: "*"
+			get: "/v1/user"
 		};
 	};
 
 	rpc GetMany(EmptyUserResponse) returns (UserResponse) {
 		option (google.api.http) = {
-			get: "/v1/users",
-			body: "*"
+			get: "/v1/users"
 		};
 	};
 	
