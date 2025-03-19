@@ -61,10 +61,11 @@ shop:
 
 
 show:
-	echo "make [target]"
-	echo "targets:"
-	echo " user"
-	echo " profile"
-	echo " product"
-	echo " shop"
-	echo " role"
+help:
+	@echo "make [target]"
+	@echo "targets:"
+	@echo " user"
+	@echo " profile"
+	@echo " product"
+	@echo " shop"
+	@echo " role"
