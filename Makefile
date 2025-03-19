@@ -62,5 +62,9 @@ shop:
 
 show:
 	echo "make [target]"
-	echo " -user"
-	echo " -profile"
+	echo "targets:"
+	echo " user"
+	echo " profile"
+	echo " product"
+	echo " shop"
+	echo " role"
