@@ -1,11 +1,4 @@
-CREATE TABLE tenants (
-    id uuid primary key,
-    name varchat(100) not null,
-    logo varchar(255) not null,
-    deleted_at timestamp default now(),
-    updated_at timestamp not null default now(),
-    created_at timestamp not null default now()
-);
+
 CREATE TABLE users (
     id uuid primary key,
     username varchar(32) not null,
