@@ -47,21 +47,6 @@ services:
     networks:
       - DeliGo_network
   
-  # pgadmin:
-  #   container_name: pgadmin_DeliGo
-  #   image: dpage/pgadmin4
-  #   restart: 'no'
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
-  #   volumes:
-  #      - ./.data/pgadmin:/var/lib/pgadmin
-
-  #   ports:
-  #     - "5050:80"
-  #   networks:
-  #     - DeliGo_network
 
 
 networks:
