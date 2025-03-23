@@ -1,7 +1,7 @@
 package shared_models
 
 type User struct {
-	Id        int    `json: "id"`
+	ID        int    `json: "id"`
 	UserName  string `json: "user_name"`
 	FullName  string `json: "full_name"`
 	Email     string `json: "email"`
@@ -16,8 +16,8 @@ type User struct {
 	UpdatedAt string `json: "updated_at"`
 }
 
-func (obj *User) GetId() int {
-	return obj.Id
+func (obj *User) GetID() int {
+	return obj.ID
 }
 func (obj *User) GetUsername() string {
 	return obj.UserName

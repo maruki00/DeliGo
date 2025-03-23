@@ -39,7 +39,7 @@ func (obj *AuthService) Login(dto dtos.LoginDTO) shared_contracts.ViewModel {
 		})
 	}
 
-	token, err := pkgJwt.JwtToken(user.Email, user.Id)
+	token, err := pkgJwt.GenerateToken(user)
 	if err != nil {
 		return obj.outport.Error(shared_models.ResponseModel{
 			Status:  400,
@@ -49,7 +49,7 @@ func (obj *AuthService) Login(dto dtos.LoginDTO) shared_contracts.ViewModel {
 		})
 	}
 
-	obj.repo.ClearToken(user.Id)
+	obj.repo.ClearToken(user.GetID())
 	auth := obj.repo.CreateAuth(token, user)
 	obj.repo.LockUser(auth.Email, "1")
 	obj.repo.CleanPins(auth.Email)

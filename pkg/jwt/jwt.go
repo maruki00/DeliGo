@@ -1,25 +1,24 @@
 package jwt
 
 import (
+	shared_entities "delivery/internal/shared/domain/entities"
 	"errors"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-
-	shared_models "ems-backend-app/internal/v1/shared/models"
 )
 
 var SecretKey = "e0a380a6-bf9f-418c-af79-088aecc2102a"
 
-func GenerateToken(user shared_models.UserModel) (string, error) {
+func GenerateToken(user shared_entities.UserEntity) (string, error) {
 
 	claims := jwt.MapClaims{
-		"id": user.ID,
+		"id": user.GetID(),
 		// "t_id": user.TenantId,
 		//"role":   user.Role,
-		"f_name": user.FullName,
+		"f_name": user.GetFullname(),
 		"exp":    time.Now().Add(time.Hour * 86024).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

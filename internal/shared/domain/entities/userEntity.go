@@ -1,7 +1,7 @@
 package shared_entities
 
 type UserEntity interface {
-	GetId() int
+	GetID() int
 	GetUsername() string
 	GetFullname() string
 	GetEmail() string
