@@ -2,49 +2,42 @@ package pkgRabbitmq
 
 import (
 	"errors"
+	"fmt"
 	"log/slog"
 	"time"
 
-	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/rabbitmq/amqp091-go"
 )
+
+type RabbitMQDSN string
 
 const (
-	MAX_TRIES      = 3
-	BACKOFFSECONDS = 3
+	_MAXTRIES = 3
+	_SLEEP    = 1
 )
 
-type RabbitMQConnStr string
-
-var ErrCannotConnectRabbitMQ = errors.New("cannot connect to rabbit")
-
-func NewRabbitMQConn(rabbitMqURL RabbitMQConnStr) (*amqp.Connection, error) {
-	var (
-		amqpConn *amqp.Connection
-		counts   int64
-	)
-
-	for {
-		connection, err := amqp.Dial(string(rabbitMqURL))
+func NewRabbitMQ(dsn RabbitMQDSN) (*amqp091.Connection, error) {
+	var cnx *amqp091.Connection
+	var tries int = 0
+	for tries < _MAXTRIES {
+		slog.Info("trying to connect to RabbitMQ.")
+		fmt.Println("dsn : ", string(dsn))
+		conn, err := amqp091.Dial(string(dsn))
 		if err != nil {
-			slog.Error("failed to connect to RabbitMq...", err.Error(), rabbitMqURL)
-			counts++
-		} else {
-			amqpConn = connection
-			break
+			slog.Error("could not reach the rabbitmq server " + err.Error())
+			tries++
+			time.Sleep(_SLEEP * time.Second)
+			continue
 		}
-
-		if counts > MAX_TRIES {
-			slog.Error("failed to retry", err)
-			return nil, ErrCannotConnectRabbitMQ
-		}
-
-		slog.Info("Backing off for 2 seconds...")
-		time.Sleep(BACKOFFSECONDS * time.Second)
-
-		continue
+		cnx = conn
+		break
+	}
+	if cnx == nil {
+		slog.Error("could not connect the rabbitmq server")
+		return nil, errors.New("could not connect to rabbitmq server")
 	}
 
-	slog.Info("📫 connected to rabbitmq 🎉")
+	slog.Info("connected to rabbitmq")
+	return cnx, nil
 
-	return amqpConn, nil
 }

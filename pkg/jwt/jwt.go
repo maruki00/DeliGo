@@ -1,43 +1,65 @@
-package pkgJwt
+package jwt
 
-func verifyToken(tokenString string) error {
-	// conf, err := shared_configs.GetConfig("")
-	// if err != nil {
-	// 	return err
-	// }
+import (
+	"errors"
+	"net/http"
+	"time"
 
-	// token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-	// 	return []byte(conf.Jwt.Secret), nil
-	// })
-	// if err != nil {
-	// 	return err
-	// }
-	// if !token.Valid {
-	// 	return fmt.Errorf("invalid token")
-	// }
-	return nil
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
+
+	shared_models "ems-backend-app/internal/v1/shared/models"
+)
+
+var SecretKey = "e0a380a6-bf9f-418c-af79-088aecc2102a"
+
+func GenerateToken(user shared_models.UserModel) (string, error) {
+
+	claims := jwt.MapClaims{
+		"id": user.ID,
+		// "t_id": user.TenantId,
+		//"role":   user.Role,
+		"f_name": user.FullName,
+		"exp":    time.Now().Add(time.Hour * 86024).Unix(),
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(SecretKey))
 }
 
-func JwtToken(email string, user_id int) (string, error) {
+func ValidateToken(tokenString string) (*jwt.Token, jwt.MapClaims, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("invalid token signing method")
+		}
+		return []byte(SecretKey), nil
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return nil, nil, errors.New("invalid token")
+	}
+	return token, claims, nil
+}
 
-	// conf, err := shared_configs.GetConfig()
-	// if err != nil {
-	// 	return "", errors.New("config error")
-	// }
+func AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "missing token"})
+			c.Abort()
+			return
+		}
 
-	// token := jwt.NewWithClaims(jwt.SigningMethodHS256,
-	// 	jwt.MapClaims{
-	// 		"email":   email,
-	// 		"user_id": user_id,
-	// 		"exp":     time.Now().Add(time.Hour * 24).Unix(),
-	// 	})
-
-	// tokenString, err := token.SignedString([]byte(conf.Jwt.Secret))
-	// if err != nil {
-
-	// 	return "", err
-	// }
-
-	// return tokenString, nil
-	return "", nil
+		tokenString := authHeader[len("Bearer "):]
+		_, claims, err := ValidateToken(tokenString)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid token", "details": err.Error()})
+			c.Abort()
+			return
+		}
+		c.Set("user", claims)
+		c.Next()
+	}
 }
