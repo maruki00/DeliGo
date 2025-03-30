@@ -14,9 +14,9 @@ message Profile {
 	string FullName = 3 [json_name = "full_name"];
 	string Avatar = 4 [json_name = "avatar"];
 	string Bio = 5 [json_name = "bio"];
-	google.type.Date created_at 	= 5 [json_name = "created_at"]; 
-	google.type.Date updated_at 	= 6 [json_name = "updated_at"]; 
-	google.type.Date deleted_at 	= 7 [json_name = "deleted_at"]; 	
+	google.type.Date created_at 	= 6 [json_name = "created_at"]; 
+	google.type.Date updated_at 	= 7 [json_name = "updated_at"]; 
+	google.type.Date deleted_at 	= 8 [json_name = "deleted_at"]; 	
 }
 
 message CreateProfileRequest  {
