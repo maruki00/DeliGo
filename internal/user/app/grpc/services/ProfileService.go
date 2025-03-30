@@ -1,4 +1,4 @@
-package services
+package grpc_services
 
 type ProfileService struct {
 }

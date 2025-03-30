@@ -4,7 +4,6 @@ import (
 	"context"
 	"delivery/cmd/user/configs"
 	"delivery/internal/user/domain/contracts"
-	"delivery/internal/user/infra/repositories"
 	pkgPostgres "delivery/pkg/postgres"
 	"log/slog"
 
@@ -19,18 +18,7 @@ type App struct {
 
 func InitApp(cfg *configs.Config) (*App, error) {
 
-	repo, err := repositories.NewAuthRepository(cfg.Postgres.Dsn)
-	if err != nil {
-		return nil, err
-	}
-	// outPort := &presenters.JsonAuthPresenter{}
-	// inPort := &services.AuthService{}
-	return &App{
-		Repo: repo,
-		// InputPort:  inPort,
-		// OutputPort: outPort,
-		// Validate:   validator.New(),
-	}, nil
+	return nil, nil
 }
 
 func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
@@ -44,6 +32,6 @@ func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
 			slog.Info("default interception ....")
 		}
 	}
-	forever := struct{}{}
-	<-forever
+	// forever := struct{}{}
+	// <-forever
 }
