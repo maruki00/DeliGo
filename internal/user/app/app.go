@@ -3,17 +3,12 @@ package app
 import (
 	"context"
 	"delivery/cmd/user/configs"
-	"delivery/internal/user/domain/contracts"
-	pkgPostgres "delivery/pkg/postgres"
 	"log/slog"
 
 	"github.com/rabbitmq/amqp091-go"
 )
 
 type App struct {
-	cgf       configs.Config
-	DBHandler pkgPostgres.PGHandler
-	Repo      contracts.IAuthRepository
 }
 
 func InitApp(cfg *configs.Config) (*App, error) {
