@@ -2,10 +2,9 @@ package pkgRabbitmq
 
 import (
 	"context"
+	"delivery/cmd/auth/configs"
 
 	"github.com/rabbitmq/amqp091-go"
-
-	"ems-backend-app/cmd/configs"
 )
 
 // import (

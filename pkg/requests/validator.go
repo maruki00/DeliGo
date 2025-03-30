@@ -1,7 +1,6 @@
 package pkgValidator
 
 import (
-	"ems-backend-app/internal/v1/shared/validations"
 	"encoding/json"
 	"errors"
 	"fmt"

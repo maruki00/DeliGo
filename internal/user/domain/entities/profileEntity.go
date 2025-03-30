@@ -1,6 +1,6 @@
 package entities
 
-type AuthEntity interface {
+type ProfileEntity interface {
 	SetId(int)
 	SetEmail(string)
 	SetToken(string)

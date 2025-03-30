@@ -12,8 +12,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	pkgPostgres "ems-backend-app/pkg/postgres"
 )
 
 const CACHE_LIFE = time.Minute * 10
