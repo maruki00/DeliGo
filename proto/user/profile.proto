@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+
+option go_package = "user.grpc";
+
+import "google/api/any.proto";
+import "google/api/annotations.proto";
+import "google/api/date.proto";
+
+
+
+message User {
+	string ID 						= 1 [json_name = "id"];       
+	string Email 					= 2 [json_name = "email"];    
+	string Password 				= 3 [json_name = "password"]; 
+	string Role 					= 4 [json_name = "role"];     
+	google.type.Date created_at 	= 5 [json_name = "created_at"]; 
+	google.type.Date updated_at 	= 6 [json_name = "updated_at"]; 
+	google.type.Date deleted_at 	= 7 [json_name = "deleted_at"]; 	
+}
+
+message CreateUserRequest  {
+	string ID 			= 1 [json_name = "id"];       
+	string Email 		= 2 [json_name = "email"];    
+	string Password 	= 3 [json_name = "password"]; 
+	string Role 		= 4 [json_name = "role"];     
+}
+
+message DeleteUserRequest {
+	string ID 			= 1 [json_name = "id"]; 
+}
+
+message UpdateUserRequest {
+	string ID 			= 1 [json_name = "id"];       
+	string Email 		= 2 [json_name = "email"];    
+	string Password 	= 3 [json_name = "password"]; 
+	string Role 		= 4 [json_name = "role"];     
+}
+
+message EmptyUserResponse{}
+message UserResponse {
+    int32 Code = 1 [ json_name = "code"];
+    string Message = 2 [ json_name = "message"];
+    google.protobuf.Any Result = 3 [ json_name = "result"]; 
+}
+
+
+service UserService {
+	rpc Create(CreateUserRequest) returns (UserResponse) {
+		option (google.api.http) = {
+			post: "/v1/user/create",
+			body: "*"
+		};
+	};
+	
+	rpc Delete(DeleteUserRequest) returns (UserResponse) {
+		option (google.api.http) = {
+			post: "/v1/user/delete",
+			body: "*"
+		};
+	};
+
+	rpc Update(UpdateUserRequest) returns (UserResponse) {
+		option (google.api.http) = {
+			put: "/v1/user/update",
+			body: "*"
+		};
+	};
+
+	rpc GetOne(EmptyUserResponse) returns (UserResponse) {
+		option (google.api.http) = {
+			get: "/v1/user"
+		};
+	};
+
+	rpc GetMany(EmptyUserResponse) returns (UserResponse) {
+		option (google.api.http) = {
+			get: "/v1/users"
+		};
+	};
+	
+
+
+	rpc Search(EmptyUserResponse) returns (UserResponse) {
+		option (google.api.http) = {
+			post: "/v1/users/search",
+			body: "*"
+		};
+	};
+} 
