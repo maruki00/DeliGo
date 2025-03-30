@@ -1,14 +1,14 @@
 syntax = "proto3";
 
 
-option go_package = "user.grpc";
+option go_package = "profile.grpc";
 
 
 import "google/api/any.proto";
 import "google/api/annotations.proto";
 import "google/api/date.proto";
 
-message User {
+message Profile {
 	string ID = 1 [json_name = "id"];
 	string UserID = 2 [json_name = "user_id"];
 	string FullName = 3 [json_name = "full_name"];
@@ -20,10 +20,11 @@ message User {
 }
 
 message CreateProfileRequest  {
-	string ID 			= 1 [json_name = "id"];       
-	string Email 		= 2 [json_name = "email"];    
-	string Password 	= 3 [json_name = "password"]; 
-	string Role 		= 4 [json_name = "role"];     
+	string ID = 1 [json_name = "id"];
+	string UserID = 2 [json_name = "user_id"];
+	string FullName = 3 [json_name = "full_name"];
+	string Avatar = 4 [json_name = "avatar"];
+	string Bio = 5 [json_name = "bio"];     
 }
 
 message DeleteProfileRequest {
@@ -31,59 +32,60 @@ message DeleteProfileRequest {
 }
 
 message UpdateProfileRequest {
-	string ID 			= 1 [json_name = "id"];       
-	string Email 		= 2 [json_name = "email"];    
-	string Password 	= 3 [json_name = "password"]; 
-	string Role 		= 4 [json_name = "role"];     
+	string ID = 1 [json_name = "id"];
+	string UserID = 2 [json_name = "user_id"];
+	string FullName = 3 [json_name = "full_name"];
+	string Avatar = 4 [json_name = "avatar"];
+	string Bio = 5 [json_name = "bio"];  
 }
 
 message EmptyProfileResponse{}
-message UserResponse {
+message ProfileResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
     google.protobuf.Any Result = 3 [ json_name = "result"]; 
 }
 
 
-service UserService {
-	rpc Create(CreateProfileRequest) returns (UserResponse) {
+service ProfileService {
+	rpc Create(CreateProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
-			post: "/v1/user/create",
+			post: "/v1/profile/create",
 			body: "*"
 		};
 	};
 	
-	rpc Delete(DeleteProfileRequest) returns (UserResponse) {
+	rpc Delete(DeleteProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
-			post: "/v1/user/delete",
+			post: "/v1/profile/delete",
 			body: "*"
 		};
 	};
 
-	rpc Update(UpdateProfileRequest) returns (UserResponse) {
+	rpc Update(UpdateProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
-			put: "/v1/user/update",
+			put: "/v1/profile/update",
 			body: "*"
 		};
 	};
 
-	rpc GetOne(EmptyProfileResponse) returns (UserResponse) {
+	rpc GetOne(EmptyProfileResponse) returns (ProfileResponse) {
 		option (google.api.http) = {
-			get: "/v1/user"
+			get: "/v1/profile"
 		};
 	};
 
-	rpc GetMany(EmptyProfileResponse) returns (UserResponse) {
+	rpc GetMany(EmptyProfileResponse) returns (ProfileResponse) {
 		option (google.api.http) = {
-			get: "/v1/users"
+			get: "/v1/profiles"
 		};
 	};
 	
 
 
-	rpc Search(EmptyProfileResponse) returns (UserResponse) {
+	rpc Search(EmptyProfileResponse) returns (ProfileResponse) {
 		option (google.api.http) = {
-			post: "/v1/users/search",
+			post: "/v1/profiles/search",
 			body: "*"
 		};
 	};
