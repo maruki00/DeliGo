@@ -4,9 +4,9 @@ syntax = "proto3";
 option go_package = "profile.grpc";
 
 
-import "google/api/any.proto";
-import "google/api/annotations.proto";
-import "google/api/date.proto";
+import "../google/api/any.proto";
+import "../google/api/annotations.proto";
+import "../google/type/date.proto";
 
 message Profile {
 	string ID = 1 [json_name = "id"];

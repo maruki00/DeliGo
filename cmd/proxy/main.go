@@ -26,6 +26,13 @@ func GateWay(ctx context.Context, cfg *configs.Config, opts []gruntime.ServeMuxO
 	return mux, nil
 }
 
+func withLogger(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		slog.Info("Run request", "http_method", r.Method, "http_url", r.URL)
+		h.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -44,7 +51,8 @@ func main() {
 	mux.Handle("/", gw)
 
 	s := http.Server{
-		Addr: fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port),
+		Addr:    fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port),
+		Handler: withLogger(mux),
 	}
 	go func() {
 		<-ctx.Done()
@@ -56,8 +64,8 @@ func main() {
 	}()
 
 	fmt.Printf("Starting Server on %s:%s\n", cfg.HTTPServer.Host, cfg.HTTPServer.Port)
-	if err := s.ListenAndServe(); err != nil {
-		slog.Error("error ", err)
+	if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		slog.Error("Server failed to start: ", err)
 	}
 
 }

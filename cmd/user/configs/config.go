@@ -13,11 +13,6 @@ type Config struct {
 		Debug   string `yaml:"debug"`
 	} `yaml:"app"`
 
-	// RestServer struct {
-	// 	Port string `yaml:"port"`
-	// 	Host string `yaml:"host"`
-	// } `yaml:"rest_server"`
-
 	GRPCServer struct {
 		Port string `yaml:"port"`
 		Host string `yaml:"host"`
@@ -47,7 +42,7 @@ func GetConfig() (*Config, error) {
 	}
 
 	cfg = new(Config)
-	conf, err := os.Open("./config/config.yaml")
+	conf, err := os.Open("./config.yaml")
 	if err != nil {
 		return nil, err
 	}
