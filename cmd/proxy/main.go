@@ -54,6 +54,8 @@ func main() {
 			slog.Error("could not shutdown the server")
 		}
 	}()
+
+	fmt.Printf("Starting Server on %s:%s\n", cfg.HTTPServer.Host, cfg.HTTPServer.Port)
 	if err := s.ListenAndServe(); err != nil {
 		slog.Error("error ", err)
 	}
