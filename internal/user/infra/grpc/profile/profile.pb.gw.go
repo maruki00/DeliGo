@@ -39,8 +39,8 @@ func request_ProfileService_Create_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.Create(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	msg, err:= client.Create(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -52,8 +52,8 @@ func local_request_ProfileService_Create_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.Create(ctx, &protoReq)
-	return msg, metadata, err
+	msg, err:= server.Create(ctx, &protoReq)
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -65,8 +65,8 @@ func request_ProfileService_Delete_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	msg, err:= client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -78,8 +78,8 @@ func local_request_ProfileService_Delete_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.Delete(ctx, &protoReq)
-	return msg, metadata, err
+	msg, err:= server.Delete(ctx, &protoReq)
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -91,8 +91,8 @@ func request_ProfileService_Update_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.Update(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	msg, err:= client.Update(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -104,8 +104,8 @@ func local_request_ProfileService_Update_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.Update(ctx, &protoReq)
-	return msg, metadata, err
+	msg, err:= server.Update(ctx, &protoReq)
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -113,8 +113,8 @@ func request_ProfileService_GetOne_0(ctx context.Context, marshaler runtime.Mars
 	var protoReq EmptyProfileResponse
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.GetOne(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	msg, err:= client.GetOne(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -122,8 +122,8 @@ func local_request_ProfileService_GetOne_0(ctx context.Context, marshaler runtim
 	var protoReq EmptyProfileResponse
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.GetOne(ctx, &protoReq)
-	return msg, metadata, err
+	msg, err:= server.GetOne(ctx, &protoReq)
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -131,8 +131,8 @@ func request_ProfileService_GetMany_0(ctx context.Context, marshaler runtime.Mar
 	var protoReq EmptyProfileResponse
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.GetMany(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	msg, err:= client.GetMany(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -140,8 +140,8 @@ func local_request_ProfileService_GetMany_0(ctx context.Context, marshaler runti
 	var protoReq EmptyProfileResponse
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.GetMany(ctx, &protoReq)
-	return msg, metadata, err
+	msg, err:= server.GetMany(ctx, &protoReq)
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -153,8 +153,8 @@ func request_ProfileService_Search_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.Search(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	msg, err:= client.Search(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg.GetResult(),  metadata, err
 
 }
 
@@ -166,8 +166,8 @@ func local_request_ProfileService_Search_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.Search(ctx, &protoReq)
-	return msg, metadata, err
+	msg, err:= server.Search(ctx, &protoReq)
+	return msg.GetResult(),  metadata, err
 
 }
 

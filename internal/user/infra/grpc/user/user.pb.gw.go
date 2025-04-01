@@ -40,7 +40,7 @@ func request_UserService_Create_0(ctx context.Context, marshaler runtime.Marshal
 	}
 
 	msg, err := client.Create(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -53,7 +53,7 @@ func local_request_UserService_Create_0(ctx context.Context, marshaler runtime.M
 	}
 
 	msg, err := server.Create(ctx, &protoReq)
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -66,7 +66,7 @@ func request_UserService_Delete_0(ctx context.Context, marshaler runtime.Marshal
 	}
 
 	msg, err := client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -79,7 +79,7 @@ func local_request_UserService_Delete_0(ctx context.Context, marshaler runtime.M
 	}
 
 	msg, err := server.Delete(ctx, &protoReq)
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -92,7 +92,7 @@ func request_UserService_Update_0(ctx context.Context, marshaler runtime.Marshal
 	}
 
 	msg, err := client.Update(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -105,7 +105,7 @@ func local_request_UserService_Update_0(ctx context.Context, marshaler runtime.M
 	}
 
 	msg, err := server.Update(ctx, &protoReq)
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -114,7 +114,7 @@ func request_UserService_GetOne_0(ctx context.Context, marshaler runtime.Marshal
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.GetOne(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -123,7 +123,7 @@ func local_request_UserService_GetOne_0(ctx context.Context, marshaler runtime.M
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.GetOne(ctx, &protoReq)
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -132,7 +132,7 @@ func request_UserService_GetMany_0(ctx context.Context, marshaler runtime.Marsha
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.GetMany(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -141,7 +141,7 @@ func local_request_UserService_GetMany_0(ctx context.Context, marshaler runtime.
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.GetMany(ctx, &protoReq)
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -154,7 +154,7 @@ func request_UserService_Search_0(ctx context.Context, marshaler runtime.Marshal
 	}
 
 	msg, err := client.Search(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
@@ -167,7 +167,7 @@ func local_request_UserService_Search_0(ctx context.Context, marshaler runtime.M
 	}
 
 	msg, err := server.Search(ctx, &protoReq)
-	return msg, metadata, err
+	return msg.GetResult(), metadata, err
 
 }
 
