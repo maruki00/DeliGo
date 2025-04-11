@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: user/user.proto
 
-package userpb
+package user_grpc
 
 import (
 	context "context"
