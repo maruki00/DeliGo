@@ -6,7 +6,6 @@ option go_package = "delivery/internal/user/proto;userpb";
 
 
 
-import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
 import "google/type/date.proto";
 
@@ -42,7 +41,7 @@ message EmptyUserResponse{}
 message UserResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-    google.protobuf.Any Result = 3 [ json_name = "result"]; 
+    bytes Result = 3 [ json_name = "result"]; 
 }
 
 

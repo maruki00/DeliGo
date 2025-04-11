@@ -1,12 +1,9 @@
 syntax = "proto3";
 
-
 option go_package = "profile.grpc";
 
-
-import "../google/api/any.proto";
-import "../google/api/annotations.proto";
-import "../google/type/date.proto";
+import "google/api/annotations.proto";
+import "google/type/date.proto";
 
 message Profile {
 	string ID = 1 [json_name = "id"];
@@ -43,7 +40,7 @@ message EmptyProfileResponse{}
 message ProfileResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-    google.protobuf.Any Result = 3 [ json_name = "result"]; 
+    bytes Result = 3 [ json_name = "result"]; 
 }
 
 
