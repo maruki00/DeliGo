@@ -1,4 +1,4 @@
-package utils
+package pkgUtils
 
 import (
 	"math/rand"

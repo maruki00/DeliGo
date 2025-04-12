@@ -44,7 +44,17 @@ func main() {
 		panic("error getting config: " + err.Error())
 	}
 
-	gw, err := GateWay(ctx, cfg, nil)
+	// customMarshaler := &runtime.JSONPb{
+	// 	MarshalOptions: protojson.MarshalOptions{
+	// 		UseProtoNames:   true,
+	// 		EmitUnpopulated: true,
+	// 		UseEnumNumbers: true,
+	// 	},
+	// }
+
+	gw, err := GateWay(ctx, cfg, []gruntime.ServeMuxOption{
+		///runtime.WithMarshalerOption(runtime.MIMEWildcard, customMarshaler)
+	})
 	if err != nil {
 		panic(err)
 	}
