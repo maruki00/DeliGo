@@ -20,8 +20,6 @@ func NewUserRepository(db pkgPostgres.PGHandler) *UserRepository {
 	}
 }
 
-var _ entities.UserEntity = (*models.User)(nil)
-
 func (ur *UserRepository) Create(ctx context.Context, entity entities.UserEntity) (entities.UserEntity, error) {
 
 	sql := `INSERT INTO users(id, email, password, role) VALUES($1, $2, $3, $4) RETURNING id`

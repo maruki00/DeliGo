@@ -8,8 +8,9 @@ message Profile {
 	string ID = 1 [json_name = "id"];
 	string UserID = 2 [json_name = "user_id"];
 	string FullName = 3 [json_name = "full_name"];
-	string Avatar = 4 [json_name = "avatar"];
-	string Bio = 5 [json_name = "bio"];	
+	string Password = 4 [json_name = "full_name"];
+	string Avatar = 5 [json_name = "avatar"];
+	string Bio = 6 [json_name = "bio"];	
 }
 
 message CreateProfileRequest  {
