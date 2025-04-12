@@ -25,7 +25,7 @@ func NewUserService(userRepo *repositories.UserRepository) *UserService {
 
 var _ entities.UserEntity = (*models.User)(nil)
 
-func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	res, err := us.userRepo.Create(ctx, &models.User{
 		Email:    in.Email,
 		Password: pkgUtils.Sha512(in.Password),
@@ -33,7 +33,7 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 	})
 
 	if err != nil {
-		return &user_grpc.UserResponse{
+		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
 			Result:  nil,
@@ -50,29 +50,29 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			result:  nil,
+			Result:  nil,
 		}, err
 	}
 
 	fmt.Println(data)
-	return &user_grpc.UserResponse{
+	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
 		Result:  data,
 	}, nil
 }
-func (us *UserService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) GetMany(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) GetMany(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) GetOne(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) GetOne(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) Search(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) Search(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) Update(context.Context, *user_grpc.UpdateUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) Update(context.Context, *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
