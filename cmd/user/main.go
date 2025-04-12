@@ -5,7 +5,6 @@ import (
 	"delivery/cmd/user/configs"
 	"delivery/internal/user/app"
 	grpc_user "delivery/internal/user/infra/grpc/user"
-	"delivery/internal/user/infra/models"
 	"fmt"
 	"log/slog"
 	"net"
@@ -46,19 +45,19 @@ func main() {
 		panic(err)
 
 	}
-	res, err := app.UserRepo.Create(ctx, &models.User{
-		ID:       "123sdfg",
-		Email:    "1234qsdfwd",
-		Password: "12344qwe",
-		Role:     "fsgsdfg",
-	})
+	// res, err := app.UserRepo.Create(ctx, &models.User{
+	// 	ID:       "123sdfg",
+	// 	Email:    "1234qsdfwd",
+	// 	Password: "12344qwe",
+	// 	Role:     "fsgsdfg",
+	// })
 
-	return
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	fmt.Printf("Done: %v\n", res)
+	// return
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// 	return
+	// }
+	// fmt.Printf("Done: %v\n", res)
 
 	server := grpc.NewServer()
 
