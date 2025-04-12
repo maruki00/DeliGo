@@ -4,6 +4,7 @@ syntax = "proto3";
 option go_package = "grpc.user";
 
 import "google/api/annotations.proto";
+import "google/protobuf/any.proto";
 
 message User {
 	string ID 						= 1 [json_name = "id"];       
@@ -30,15 +31,13 @@ message UpdateUserRequest {
 	string Role 		= 4 [json_name = "role"];     
 }
 
-
 message EmptyUserRequest{}
 
 message UserResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-    bytes Result = 3 [ json_name = "result"]; 
+    google.protobuf.Any Result = 3 [ json_name = "result"]; 
 }
-
 
 service UserService {
 	rpc Create(CreateUserRequest) returns (UserResponse) {
@@ -74,7 +73,6 @@ service UserService {
 		};
 	};
 	
-
 	rpc Search(EmptyUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
 			get: "/v1/users/search"

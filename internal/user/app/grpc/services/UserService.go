@@ -49,6 +49,7 @@ func (us *UserService) Create(ctx context.Context, createUserRequest *user_grpc.
 			Result:  nil,
 		}, err
 	}
+	fmt.Println(string(data))
 	return &user_grpc.UserResponse{
 		Code:    200,
 		Message: "success",
