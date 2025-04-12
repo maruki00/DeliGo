@@ -2,21 +2,16 @@ syntax = "proto3";
 
 package user;
 
-option go_package = "delivery/internal/user/proto;userpb";
-
-
+option go_package = "proto/user;user_grpc";
 
 import "google/api/annotations.proto";
-import "google/type/date.proto";
+
 
 message User {
 	string ID 						= 1 [json_name = "id"];       
 	string Email 					= 2 [json_name = "email"];    
 	string Password 				= 3 [json_name = "password"]; 
-	string Role 					= 4 [json_name = "role"];     
-	google.type.Date created_at 	= 5 [json_name = "created_at"]; 
-	google.type.Date updated_at 	= 6 [json_name = "updated_at"]; 
-	google.type.Date deleted_at 	= 7 [json_name = "deleted_at"]; 	
+	string Role 					= 4 [json_name = "role"];     	
 }
 
 message CreateUserRequest  {
@@ -37,7 +32,9 @@ message UpdateUserRequest {
 	string Role 		= 4 [json_name = "role"];     
 }
 
-message EmptyUserResponse{}
+
+message EmptyUserRequest{}
+
 message UserResponse {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
@@ -52,7 +49,7 @@ service UserService {
 			body: "*"
 		};
 	};
-	
+
 	rpc Delete(DeleteUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
 			post: "/v1/user/delete",
@@ -67,24 +64,23 @@ service UserService {
 		};
 	};
 
-	rpc GetOne(EmptyUserResponse) returns (UserResponse) {
+	rpc GetOne(EmptyUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
 			get: "/v1/user"
 		};
 	};
 
-	rpc GetMany(EmptyUserResponse) returns (UserResponse) {
+	rpc GetMany(EmptyUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
 			get: "/v1/users"
 		};
 	};
 	
 
-
-	rpc Search(EmptyUserResponse) returns (UserResponse) {
+	rpc Search(EmptyUserRequest) returns (UserResponse) {
 		option (google.api.http) = {
-			post: "/v1/users/search",
-			body: "*"
+			get: "/v1/users/search"
 		};
 	};
+
 } 
