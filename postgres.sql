@@ -9,16 +9,19 @@ create table usertypes (
     updated_at timestamp default now()
 );
 
-drop table if exists users;
+DROP TABLE IF EXISTS users;
 create table users(
     id uuid primary key ,
-    user_name varchar(100) not null unique,
-    full_name varchar(255) not null,
-    email varchar(255) not null unique,
-    address varchar(255) not null,
+    email varchar(255) not null,
     password varchar(255) not null,
-    user_type int not null default 2,
-    status int not null default 2,
+    role varchar(255) not null,
+    -- user_name varchar(100) not null,
+    -- full_name varchar(255) not null,
+    -- email varchar(255) not null ,
+    -- address varchar(255) not null,
+    -- password varchar(255) not null,
+    -- user_type int not null default 2,
+    -- status int not null default 2,
     created_at timestamp default now(),
     updated_at timestamp default now(),
     deleted_at timestamp default null

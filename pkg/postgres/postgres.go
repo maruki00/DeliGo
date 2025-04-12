@@ -2,6 +2,7 @@ package pkgPostgres
 
 import (
 	"database/sql"
+	"errors"
 
 	_ "github.com/lib/pq"
 	"golang.org/x/exp/slog"
@@ -32,14 +33,16 @@ func NewDB(dsn string) (*sql.DB, error) {
 }
 func NewPG(dsn string) (*PGHandler, error) {
 
+	if dsn == "" {
+		return nil, errors.New("dsn is not valid")
+	}
+
 	pg := &PGHandler{
 		MaxTries: MAX_TRIES,
 		Timeout:  TIMEOUT,
 		DB:       nil,
 	}
-	if dsn == "" {
-		return pg, nil
-	}
+
 	db, err := NewDB(dsn)
 	if err != nil {
 		return nil, err
