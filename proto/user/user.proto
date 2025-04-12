@@ -33,47 +33,47 @@ message UpdateUserRequest {
 
 message EmptyUserRequest{}
 
-message UserResponse {
+message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-    map<string,any> Result = 3 [ json_name = "result"]; 
+	google.protobuf.Any data = 3 [ json_name = "result"]; 
 }
 
 service UserService {
-	rpc Create(CreateUserRequest) returns (UserResponse) {
+	rpc Create(CreateUserRequest) returns (Response) {
 		option (google.api.http) = {
 			post: "/v1/user/create",
 			body: "*"
 		};
 	};
 
-	rpc Delete(DeleteUserRequest) returns (UserResponse) {
+	rpc Delete(DeleteUserRequest) returns (Response) {
 		option (google.api.http) = {
 			post: "/v1/user/delete",
 			body: "*"
 		};
 	};
 
-	rpc Update(UpdateUserRequest) returns (UserResponse) {
+	rpc Update(UpdateUserRequest) returns (Response) {
 		option (google.api.http) = {
 			put: "/v1/user/update",
 			body: "*"
 		};
 	};
 
-	rpc GetOne(EmptyUserRequest) returns (UserResponse) {
+	rpc GetOne(EmptyUserRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/user"
 		};
 	};
 
-	rpc GetMany(EmptyUserRequest) returns (UserResponse) {
+	rpc GetMany(EmptyUserRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/users"
 		};
 	};
 	
-	rpc Search(EmptyUserRequest) returns (UserResponse) {
+	rpc Search(EmptyUserRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/users/search"
 		};

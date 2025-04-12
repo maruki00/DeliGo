@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+
+option go_package = "grpc.common";
+
+
+
+message Response {}
+
+
+message EmptyRequest{}
