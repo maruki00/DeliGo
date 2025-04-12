@@ -8,7 +8,7 @@ import (
 	"delivery/internal/user/infra/repositories"
 	pkgUtils "delivery/pkg/utils"
 
-	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 type UserService struct {
@@ -39,11 +39,18 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 		}, err
 	}
 
-	data, err := anypb.New(&user_grpc.User{
-		ID:    res.GetID(),
-		Email: res.GetEmail(),
-		Role:  res.GetRole(),
+	stuctRes, err := structpb.NewStruct(map[string]any{
+		"id":    res.GetID(),
+		"email": res.GetEmail(),
+		"role":  res.GetRole(),
+		"hello": map[string]interface{}{
+			"name1": "helloworld",
+			"name2": map[string]interface{}{
+				"name1": "helloworld",
+			},
+		},
 	})
+
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    400,
@@ -55,7 +62,7 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  data,
+		Result:  stuctRes,
 	}, nil
 }
 func (us *UserService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
