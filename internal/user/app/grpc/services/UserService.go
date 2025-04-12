@@ -47,10 +47,10 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 		Role:     res.GetRole(),
 	})
 	if err != nil {
-		return &user_grpc.UserResponse{
+		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  nil,
+			result:  nil,
 		}, err
 	}
 

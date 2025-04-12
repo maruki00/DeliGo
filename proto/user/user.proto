@@ -36,7 +36,7 @@ message EmptyUserRequest{}
 message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-	google.protobuf.Any data = 3 [ json_name = "result"]; 
+	google.protobuf.Any Result = 3 [ json_name = "result"]; 
 }
 
 service UserService {
