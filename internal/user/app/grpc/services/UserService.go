@@ -43,12 +43,6 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 		"id":    res.GetID(),
 		"email": res.GetEmail(),
 		"role":  res.GetRole(),
-		"hello": map[string]interface{}{
-			"name1": "helloworld",
-			"name2": map[string]interface{}{
-				"name1": "helloworld",
-			},
-		},
 	})
 
 	if err != nil {
@@ -65,18 +59,43 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 		Result:  stuctRes,
 	}, nil
 }
-func (us *UserService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+	if ok, err := us.userRepo.Delete(ctx, in.ID); !ok || err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+
+	stuctRes, err := structpb.NewStruct(map[string]any{
+		"id": in.ID,
+	})
+
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  stuctRes,
+	}, nil
+
+}
+func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) GetMany(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
+func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) GetOne(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
+func (us *UserService) Search(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) Search(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
-}
-func (us *UserService) Update(context.Context, *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
+func (us *UserService) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
