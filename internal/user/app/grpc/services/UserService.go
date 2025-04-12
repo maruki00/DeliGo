@@ -2,9 +2,7 @@ package grpc_services
 
 import (
 	"context"
-	"delivery/internal/user/domain/entities"
 	user_grpc "delivery/internal/user/infra/grpc/user"
-	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
 	"encoding/json"
 )
@@ -14,7 +12,11 @@ type UserService struct {
 	userRepo *repositories.UserRepository
 }
 
-var _ entities.UserEntity = (*models.User)(nil)
+func NewUserService(userRepo *repositories.UserRepository) *UserService {
+	return &UserService{
+		userRepo: userRepo,
+	}
+}
 
 func (us *UserService) Create(ctx context.Context, createUserRequest *user_grpc.CreateUserRequest) (*user_grpc.UserResponse, error) {
 	res, err := us.userRepo.Create(ctx, nil)
@@ -26,13 +28,6 @@ func (us *UserService) Create(ctx context.Context, createUserRequest *user_grpc.
 		}, err
 	}
 
-	if err != nil {
-		return &user_grpc.UserResponse{
-			Code:    400,
-			Message: err.Error(),
-			Result:  nil,
-		}, err
-	}
 	data, err := json.Marshal(res)
 	if err != nil {
 		return &user_grpc.UserResponse{

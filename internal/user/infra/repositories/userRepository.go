@@ -5,11 +5,12 @@ import (
 	"delivery/internal/user/domain/entities"
 	"delivery/internal/user/infra/models"
 	pkgPostgres "delivery/pkg/postgres"
-	"sync"
+	"fmt"
+
+	"github.com/google/uuid"
 )
 
 type UserRepository struct {
-	sync.RWMutex
 	db pkgPostgres.PGHandler
 }
 
@@ -20,13 +21,15 @@ func NewUserRepository(db pkgPostgres.PGHandler) *UserRepository {
 }
 
 func (ur *UserRepository) Create(ctx context.Context, entity entities.UserEntity) (entities.UserEntity, error) {
-	sql := `INSERT INTO users(email, password, role) VALUES($1, $2, $3) RETURNING id`
+
+	sql := `INSERT INTO users(id, email, password, role) VALUES($1, $2, $3, $4) RETURNING id`
 	tx, err := ur.db.GetDB().Begin()
 	if err != nil {
 		return nil, err
 	}
 	var lastInsertID string
-	err = tx.QueryRow(sql, entity.GetEmail(), entity.GetPassword(), entity.GetRole()).Scan(&lastInsertID)
+	fmt.Println("UUID: ", uuid.New().String())
+	err = tx.QueryRow(sql, uuid.New().String(), entity.GetEmail(), entity.GetPassword(), entity.GetRole()).Scan(&lastInsertID)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +42,6 @@ func (ur *UserRepository) Create(ctx context.Context, entity entities.UserEntity
 }
 
 func (ur *UserRepository) Delete(ctx context.Context, id string) (bool, error) {
-	//sql := `DELETE FROM users WHERE id = $1`
 	sql := `UPDATE users SET deleted_at = now(), updated_at = now() WHERE id = $1 `
 	tx, err := ur.db.GetDB().Begin()
 	if err != nil {
@@ -57,7 +59,6 @@ func (ur *UserRepository) Delete(ctx context.Context, id string) (bool, error) {
 }
 
 func (ur *UserRepository) Update(ctx context.Context, entity entities.UserEntity) (entities.UserEntity, error) {
-
 	sql := `
 			UPDATE users 
 			SET email=$1, role=$2, updated_at = now() 
@@ -68,14 +69,11 @@ func (ur *UserRepository) Update(ctx context.Context, entity entities.UserEntity
 	if err != nil {
 		return nil, err
 	}
-
 	_ = tx.QueryRow(sql, entity.GetEmail(), entity.GetRole(), entity.GetID())
-
 	if err := tx.Commit(); err != nil {
 		tx.Rollback()
 		return nil, err
 	}
-
 	return entity, nil
 }
 

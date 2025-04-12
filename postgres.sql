@@ -12,9 +12,9 @@ create table usertypes (
 drop table if exists users;
 create table users(
     id uuid primary key ,
-    user_name varchar(100) not null unique,
+    user_name varchar(100) not null,
     full_name varchar(255) not null,
-    email varchar(255) not null unique,
+    email varchar(255) not null ,
     address varchar(255) not null,
     password varchar(255) not null,
     user_type int not null default 2,

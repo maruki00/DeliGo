@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"delivery/cmd/user/configs"
-	grpc_services "delivery/internal/user/app/grpc/services"
+	"delivery/internal/user/app"
 	grpc_user "delivery/internal/user/infra/grpc/user"
+	"delivery/internal/user/infra/models"
 	"fmt"
 	"log/slog"
 	"net"
@@ -39,6 +40,26 @@ func main() {
 		panic(err)
 	}
 
+	app, clean, err := app.InitApp(cfg)
+	if err != nil {
+		clean()
+		panic(err)
+
+	}
+	res, err := app.UserRepo.Create(ctx, &models.User{
+		ID:       "123sdfg",
+		Email:    "1234qsdfwd",
+		Password: "12344qwe",
+		Role:     "fsgsdfg",
+	})
+
+	return
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Printf("Done: %v\n", res)
+
 	server := grpc.NewServer()
 
 	go func() {
@@ -58,8 +79,7 @@ func main() {
 
 	slog.Info("🌏 start server...", "address", address)
 
-	uservice := grpc_services.UserService{}
-	grpc_user.RegisterUserServiceServer(server, &uservice)
+	grpc_user.RegisterUserServiceServer(server, app.UserSVC)
 
 	defer func() {
 		if err := l.Close(); err != nil {

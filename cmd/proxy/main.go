@@ -34,6 +34,7 @@ func withLogger(h http.Handler) http.Handler {
 }
 
 func main() {
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 

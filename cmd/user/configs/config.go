@@ -19,7 +19,7 @@ type Config struct {
 	} `yaml:"grpc_server"`
 
 	Postgres struct {
-		Dsn string `yaml:"ddsn"`
+		Dsn string `yaml:"dsn"`
 	} `yaml:"postgres"`
 
 	Jwt struct {
