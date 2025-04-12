@@ -4,10 +4,12 @@
 // - protoc             v3.21.12
 // source: user/user.proto
 
-package user_grpc
+package grpc_user
 
 import (
 	context "context"
+	"fmt"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -40,7 +42,7 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 
 func (c *userServiceClient) Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/user.UserService/Create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +51,7 @@ func (c *userServiceClient) Create(ctx context.Context, in *CreateUserRequest, o
 
 func (c *userServiceClient) Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/user.UserService/Delete", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/Delete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +60,7 @@ func (c *userServiceClient) Delete(ctx context.Context, in *DeleteUserRequest, o
 
 func (c *userServiceClient) Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/user.UserService/Update", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/Update", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +69,7 @@ func (c *userServiceClient) Update(ctx context.Context, in *UpdateUserRequest, o
 
 func (c *userServiceClient) GetOne(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/user.UserService/GetOne", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/GetOne", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +78,7 @@ func (c *userServiceClient) GetOne(ctx context.Context, in *EmptyUserRequest, op
 
 func (c *userServiceClient) GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/user.UserService/GetMany", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/GetMany", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +87,7 @@ func (c *userServiceClient) GetMany(ctx context.Context, in *EmptyUserRequest, o
 
 func (c *userServiceClient) Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/user.UserService/Search", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/Search", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -150,7 +152,7 @@ func _UserService_Create_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.UserService/Create",
+		FullMethod: "/UserService/Create",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Create(ctx, req.(*CreateUserRequest))
@@ -168,7 +170,7 @@ func _UserService_Delete_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.UserService/Delete",
+		FullMethod: "/UserService/Delete",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Delete(ctx, req.(*DeleteUserRequest))
@@ -186,7 +188,7 @@ func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.UserService/Update",
+		FullMethod: "/UserService/Update",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Update(ctx, req.(*UpdateUserRequest))
@@ -204,7 +206,7 @@ func _UserService_GetOne_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.UserService/GetOne",
+		FullMethod: "/UserService/GetOne",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).GetOne(ctx, req.(*EmptyUserRequest))
@@ -222,7 +224,7 @@ func _UserService_GetMany_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.UserService/GetMany",
+		FullMethod: "/UserService/GetMany",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).GetMany(ctx, req.(*EmptyUserRequest))
@@ -240,7 +242,7 @@ func _UserService_Search_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.UserService/Search",
+		FullMethod: "/UserService/Search",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Search(ctx, req.(*EmptyUserRequest))
@@ -252,7 +254,7 @@ func _UserService_Search_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user.UserService",
+	ServiceName: "UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

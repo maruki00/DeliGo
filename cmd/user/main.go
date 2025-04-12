@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"delivery/cmd/user/configs"
+	grpc_services "delivery/internal/user/app/grpc/services"
+	grpc_user "delivery/internal/user/infra/grpc/user"
 	"fmt"
 	"log/slog"
 	"net"
@@ -56,9 +58,12 @@ func main() {
 
 	slog.Info("🌏 start server...", "address", address)
 
+	uservice := grpc_services.UserService{}
+	grpc_user.RegisterUserServiceServer(server, &uservice)
+
 	defer func() {
-		if err1 := l.Close(); err != nil {
-			slog.Error("failed to close", err1, "network", network, "address", address)
+		if err := l.Close(); err != nil {
+			slog.Error("failed to close", err, "network", network, "address", address)
 		}
 	}()
 

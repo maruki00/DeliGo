@@ -1,11 +1,9 @@
 syntax = "proto3";
 
-package user;
 
-option go_package = "proto/user;user_grpc";
+option go_package = "grpc.user";
 
 import "google/api/annotations.proto";
-
 
 message User {
 	string ID 						= 1 [json_name = "id"];       

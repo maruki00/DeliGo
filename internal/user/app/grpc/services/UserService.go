@@ -6,6 +6,7 @@ import (
 	user_grpc "delivery/internal/user/infra/grpc/user"
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
+	"encoding/json"
 )
 
 type UserService struct {
@@ -32,23 +33,30 @@ func (us *UserService) Create(ctx context.Context, createUserRequest *user_grpc.
 			Result:  nil,
 		}, err
 	}
-	// anypb.UnmarshalTo(res, anyRes)
+	data, err := json.Marshal(res)
+	if err != nil {
+		return &user_grpc.UserResponse{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
 	return &user_grpc.UserResponse{
 		Code:    200,
 		Message: "success",
-		Result:  []byte(res),
+		Result:  data,
 	}, nil
 }
 func (us *UserService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.UserResponse, error) {
 	return nil, nil
 }
-func (us *UserService) GetMany(context.Context, *user_grpc.EmptyUserResponse) (*user_grpc.UserResponse, error) {
+func (us *UserService) GetMany(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
 	return nil, nil
 }
-func (us *UserService) GetOne(context.Context, *user_grpc.EmptyUserResponse) (*user_grpc.UserResponse, error) {
+func (us *UserService) GetOne(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
 	return nil, nil
 }
-func (us *UserService) Search(context.Context, *user_grpc.EmptyUserResponse) (*user_grpc.UserResponse, error) {
+func (us *UserService) Search(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
 	return nil, nil
 }
 func (us *UserService) Update(context.Context, *user_grpc.UpdateUserRequest) (*user_grpc.UserResponse, error) {
