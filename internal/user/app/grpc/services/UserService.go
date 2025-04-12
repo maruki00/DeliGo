@@ -7,7 +7,6 @@ import (
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
 	pkgUtils "delivery/pkg/utils"
-	"fmt"
 
 	"google.golang.org/protobuf/types/known/anypb"
 )
@@ -41,10 +40,9 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 	}
 
 	data, err := anypb.New(&user_grpc.User{
-		ID:       res.GetID(),
-		Email:    res.GetEmail(),
-		Password: res.GetPassword(),
-		Role:     res.GetRole(),
+		ID:    res.GetID(),
+		Email: res.GetEmail(),
+		Role:  res.GetRole(),
 	})
 	if err != nil {
 		return &user_grpc.Response{
@@ -54,7 +52,6 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 		}, err
 	}
 
-	fmt.Println(data)
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",

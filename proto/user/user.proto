@@ -4,7 +4,7 @@ syntax = "proto3";
 option go_package = "grpc.user";
 
 import "google/api/annotations.proto";
-import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
 
 message User {
 	string ID 						= 1 [json_name = "id"];       
@@ -36,7 +36,7 @@ message EmptyUserRequest{}
 message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-	google.protobuf.Any Result = 3 [ json_name = "result"]; 
+	google.protobuf.Struct Result = 3 [ json_name = "result"]; 
 }
 
 service UserService {
