@@ -6,8 +6,9 @@ import (
 	user_grpc "delivery/internal/user/infra/grpc/user"
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
-	"encoding/json"
 	"fmt"
+
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 type UserService struct {
@@ -40,16 +41,32 @@ func (us *UserService) Create(ctx context.Context, createUserRequest *user_grpc.
 		}, err
 	}
 
-	data, err := json.Marshal(res)
+	data, err := anypb.New(&user_grpc.User{
+		// state:    "",
+		ID:       res.GetID(),
+		Email:    res.GetEmail(),
+		Password: res.GetPassword(),
+		Role:     res.GetRole(),
+	})
 	if err != nil {
-		fmt.Println("35: ", err.Error())
 		return &user_grpc.UserResponse{
 			Code:    400,
 			Message: err.Error(),
 			Result:  nil,
 		}, err
 	}
-	fmt.Println(string(data))
+
+	// data, err := json.Marshal(res)
+	// if err != nil {
+	// 	fmt.Println("35: ", err.Error())
+	// 	return &user_grpc.UserResponse{
+	// 		Code:    400,
+	// 		Message: err.Error(),
+	// 		Result:  nil,
+	// 	}, err
+	// }
+
+	fmt.Println(data)
 	return &user_grpc.UserResponse{
 		Code:    200,
 		Message: "success",
