@@ -78,7 +78,7 @@ func (ur *UserRepository) Update(ctx context.Context, entity entities.UserEntity
 }
 
 func (ur *UserRepository) GetOne(ctx context.Context, userId string) (entities.UserEntity, error) {
-
+	fmt.Println("result : ", userId)
 	sql := `
 			SELECT id,email,role
 			FROM users 
@@ -86,6 +86,7 @@ func (ur *UserRepository) GetOne(ctx context.Context, userId string) (entities.U
 			-- AND deleted_at = NULL 
 			LIMIT 1
 		`
+
 	var id, email, role = "", "", ""
 	err := ur.db.GetDB().QueryRow(sql, userId).Scan(&id, &email, &role)
 	if err != nil {
@@ -139,6 +140,7 @@ func (ur *UserRepository) Search(ctx context.Context, query string, offset, limi
 		`
 
 	entities := make([]*models.User, limit)
+
 	offset = (offset - 1) * offset
 
 	rows, err := ur.db.GetDB().Query(sql, query, offset, limit)

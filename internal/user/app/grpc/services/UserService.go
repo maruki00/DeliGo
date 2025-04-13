@@ -123,6 +123,7 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 
 func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 
+	fmt.Println("result : ", in.Filter)
 	res, err := us.userRepo.GetOne(ctx, in.Filter)
 	if err != nil {
 		return &user_grpc.Response{
