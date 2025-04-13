@@ -6,7 +6,6 @@ import (
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
 	pkgUtils "delivery/pkg/utils"
-	"fmt"
 
 	"google.golang.org/protobuf/types/known/structpb"
 )
@@ -89,42 +88,9 @@ func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserReque
 
 }
 
-func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
-
-	res, err := us.userRepo.GetOne(ctx, in.Filter)
-	if err != nil {
-		return &user_grpc.Response{
-			Code:    200,
-			Message: "success",
-			Result:  []*structpb.Value{},
-		}, nil
-	}
-
-	stuctRes, err := structpb.NewValue(map[string]any{
-		"id":    res.GetID(),
-		"email": res.GetEmail(),
-		"role":  res.GetRole(),
-	})
-
-	if err != nil {
-		return &user_grpc.Response{
-			Code:    400,
-			Message: err.Error(),
-			Result:  nil,
-		}, err
-	}
-
-	return &user_grpc.Response{
-		Code:    200,
-		Message: "success",
-		Result:  []*structpb.Value{stuctRes},
-	}, nil
-}
-
 func (us *UserService) GetOne(ctx context.Context, in *user_grpc.GetUserRequest) (*user_grpc.Response, error) {
 
-	fmt.Println("result : ", in.Id)
-	res, err := us.userRepo.GetOne(ctx, in.Id)
+	res, err := us.userRepo.GetOne(ctx, in.GetId())
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    200,
@@ -139,6 +105,40 @@ func (us *UserService) GetOne(ctx context.Context, in *user_grpc.GetUserRequest)
 		"email": res.GetEmail(),
 		"role":  res.GetRole(),
 	})
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  resultMap,
+	}, nil
+}
+
+func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
+	if in.Offset <= 0 {
+		in.Offset = 10
+	}
+	if in.Page <= 0 {
+		in.Page = 1
+	}
+
+	res, err := us.userRepo.GetMany(ctx, in.Page, in.Offset)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    200,
+			Message: "success",
+			Result:  []*structpb.Value{},
+		}, nil
+	}
+
+	resultMap := make([]*structpb.Value, len(res))
+
+	for i, r := range res {
+		resultMap[i], _ = structpb.NewValue(map[string]any{
+			"id":    r.GetID(),
+			"email": r.GetEmail(),
+			"role":  r.GetRole(),
+		})
+	}
 
 	return &user_grpc.Response{
 		Code:    200,
@@ -167,7 +167,6 @@ func (us *UserService) Search(ctx context.Context, in *user_grpc.EmptyUserReques
 	resultMap := make([]*structpb.Value, len(res))
 
 	for i, r := range res {
-		fmt.Println(i, r.ID)
 		resultMap[i], _ = structpb.NewValue(map[string]any{
 			"id":    r.GetID(),
 			"email": r.GetEmail(),

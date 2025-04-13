@@ -5,7 +5,6 @@ import (
 	"delivery/internal/user/domain/entities"
 	"delivery/internal/user/infra/models"
 	pkgPostgres "delivery/pkg/postgres"
-	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -28,7 +27,6 @@ func (ur *UserRepository) Create(ctx context.Context, entity entities.UserEntity
 		return nil, err
 	}
 	var lastInsertID string
-	fmt.Println("UUID: ", uuid.New().String())
 	err = tx.QueryRow(sql, uuid.New().String(), entity.GetEmail(), entity.GetPassword(), entity.GetRole()).Scan(&lastInsertID)
 	if err != nil {
 		return nil, err
@@ -78,15 +76,12 @@ func (ur *UserRepository) Update(ctx context.Context, entity entities.UserEntity
 }
 
 func (ur *UserRepository) GetOne(ctx context.Context, userId string) (entities.UserEntity, error) {
-	fmt.Println("result : ", userId)
 	sql := `
 			SELECT id,email,role
 			FROM users 
 			WHERE id = $1 
-			-- AND deleted_at = NULL 
 			LIMIT 1
 		`
-
 	var id, email, role = "", "", ""
 	err := ur.db.GetDB().QueryRow(sql, userId).Scan(&id, &email, &role)
 	if err != nil {
@@ -131,14 +126,13 @@ func (ur *UserRepository) GetMany(ctx context.Context, offset, limit int32) ([]*
 
 func (ur *UserRepository) Search(ctx context.Context, query string, offset, limit int32) ([]*models.User, error) {
 	sql := `
-			SELECT id,email,role,created_at,updated_at
+			SELECT id,email,role
 			FROM users 
-			WHERE deleted_at = NULL 
-			AND (email like '%$1' OR role like '%$1' or id like '%$1')
-			LIMIT $2 
-			OFFSET $3
+			WHERE (email = $1 OR role = $1)
+			OFFSET $2
+			LIMIT $3
+			
 		`
-
 	entities := make([]*models.User, limit)
 
 	offset = (offset - 1) * offset
