@@ -7,6 +7,7 @@ import (
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
 	pkgUtils "delivery/pkg/utils"
+	"fmt"
 
 	"google.golang.org/protobuf/types/known/structpb"
 )
@@ -87,8 +88,15 @@ func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserReque
 	}, nil
 
 }
-func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
+func (us *UserService) GetMany(ctx context.Context, in *user_grpc.DynamicGETQueryRequest) (*user_grpc.Response, error) {
+	fmt.Println(in.Params)
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  nil,
+	}, nil
+
 }
 func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
