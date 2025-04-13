@@ -122,14 +122,8 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 }
 
 func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
-	if in.Offset <= 0 {
-		in.Offset = 10
-	}
-	if in.Page <= 0 {
-		in.Page = 1
-	}
 
-	res, err := us.userRepo.Search(ctx, in.Filter, in.Page, in.Offset)
+	res, err := us.userRepo.GetOne(ctx, in.Filter)
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    200,
@@ -138,16 +132,12 @@ func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserReques
 		}, nil
 	}
 
-	resultMap := make([]*structpb.Value, len(res))
-
-	for i, r := range res {
-		fmt.Println(i, r.ID)
-		resultMap[i], _ = structpb.NewValue(map[string]any{
-			"id":    r.GetID(),
-			"email": r.GetEmail(),
-			"role":  r.GetRole(),
-		})
-	}
+	resultMap := make([]*structpb.Value, 1)
+	resultMap[0], _ = structpb.NewValue(map[string]any{
+		"id":    res.GetID(),
+		"email": res.GetEmail(),
+		"role":  res.GetRole(),
+	})
 
 	return &user_grpc.Response{
 		Code:    200,
