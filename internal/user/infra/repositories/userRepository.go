@@ -92,26 +92,30 @@ func (ur *UserRepository) GetOne(ctx context.Context, id string) (entities.UserE
 	return &entity, nil
 }
 
-func (ur *UserRepository) GetMany(ctx context.Context, page, offset int32) ([]*models.User, error) {
-	entities := make([]*models.User, offset)
+func (ur *UserRepository) GetMany(ctx context.Context, offset, limit int32) ([]*models.User, error) {
+	entities := make([]*models.User, limit)
+	offset = (offset - 1) * offset
 	sql := `
-			SELECT id,email,role,created_at,updated_at
+			SELECT id,email,role
 			FROM users 
-			WHERE deleted_at = NULL 
-			LIMIT $1 
-			OFFSET $2
+			-- WHERE deleted_at = NULL 
+			OFFSET $1
+			LIMIT $2
+			
 		`
-	rows, err := ur.db.GetDB().Query(sql, page, offset)
+	rows, err := ur.db.GetDB().Query(sql, offset, limit)
 	if err != nil {
 		return nil, err
 	}
-	for index := 0; rows.Next(); index++ {
+
+	index := 0
+	for rows.Next() && index < int(limit) {
 		entity := models.User{}
 		rows.Scan(&entity.ID, &entity.Email, &entity.Role, &entity.CreatedAt, &entity.UpdatedAt)
 		entities[index] = &entity
 		index++
 	}
-	return entities, nil
+	return entities[:index], nil
 }
 
 func (ur *UserRepository) Search(ctx context.Context, query string, limit, offset int) ([]*models.User, error) {

@@ -35,17 +35,25 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 			Result:  nil,
 		}, err
 	}
-	resData := make([]*structpb.Value, 1)
-	resData[0], _ = structpb.NewValue(struct{ id, email, role string }{
-		id:    res.GetID(),
-		email: res.GetEmail(),
-		role:  res.GetRole(),
+
+	stuctRes, err := structpb.NewValue(map[string]any{
+		"id":    res.GetID(),
+		"email": res.GetEmail(),
+		"role":  res.GetRole(),
 	})
+
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
 
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  resData,
+		Result:  []*structpb.Value{stuctRes},
 	}, nil
 }
 
@@ -58,20 +66,28 @@ func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserReque
 		}, err
 	}
 
-	resData := make([]*structpb.Value, 1)
-	resData[0], _ = structpb.NewValue(struct {
+	stuctRes, err := structpb.NewValue(struct {
 		id string
 	}{
 		id: in.ID,
 	})
 
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  resData,
+		Result:  []*structpb.Value{stuctRes},
 	}, nil
 
 }
+
 func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 
 	if in.Offset <= 0 {
@@ -90,21 +106,20 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 		}, nil
 	}
 
-	resultMap := make([]*structpb.Value, in.Offset)
-	i := 0
-	for _, r := range res {
-		resultMap[i], _ = structpb.NewValue(struct{ id, email, role string }{
-			id:    r.GetID(),
-			email: r.GetEmail(),
-			role:  r.GetRole(),
+	resultMap := make([]*structpb.Value, len(res))
+
+	for i, r := range res {
+		resultMap[i], _ = structpb.NewValue(map[string]any{
+			"id":    r.GetID(),
+			"email": r.GetEmail(),
+			"role":  r.GetRole(),
 		})
-		i++
 	}
 
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  resultMap[:i],
+		Result:  resultMap,
 	}, nil
 
 }
