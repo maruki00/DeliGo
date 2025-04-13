@@ -2,13 +2,13 @@ package grpc_services
 
 import (
 	"context"
-	"delivery/internal/user/domain/entities"
 	user_grpc "delivery/internal/user/infra/grpc/user"
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
+	pkgUtils "delivery/pkg/utils"
 	"fmt"
 
-	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 type UserService struct {
@@ -22,69 +22,115 @@ func NewUserService(userRepo *repositories.UserRepository) *UserService {
 	}
 }
 
-var _ entities.UserEntity = (*models.User)(nil)
-
-func (us *UserService) Create(ctx context.Context, createUserRequest *user_grpc.CreateUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	res, err := us.userRepo.Create(ctx, &models.User{
-		ID:       "12345",
-		Email:    "12345",
-		Password: "12345",
-		Role:     "12345",
+		Email:    in.Email,
+		Password: pkgUtils.Sha512(in.Password),
+		Role:     in.Role,
 	})
 
 	if err != nil {
-		fmt.Println("25: ", err.Error())
-		return &user_grpc.UserResponse{
+		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
 			Result:  nil,
 		}, err
 	}
 
-	data, err := anypb.New(&user_grpc.User{
-		// state:    "",
-		ID:       res.GetID(),
-		Email:    res.GetEmail(),
-		Password: res.GetPassword(),
-		Role:     res.GetRole(),
+	stuctRes, err := structpb.NewValue(map[string]any{
+		"id":    res.GetID(),
+		"email": res.GetEmail(),
+		"role":  res.GetRole(),
 	})
+
 	if err != nil {
-		return &user_grpc.UserResponse{
+		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
 			Result:  nil,
 		}, err
 	}
 
-	// data, err := json.Marshal(res)
-	// if err != nil {
-	// 	fmt.Println("35: ", err.Error())
-	// 	return &user_grpc.UserResponse{
-	// 		Code:    400,
-	// 		Message: err.Error(),
-	// 		Result:  nil,
-	// 	}, err
-	// }
-
-	fmt.Println(data)
-	return &user_grpc.UserResponse{
+	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  data,
+		Result:  []*structpb.Value{stuctRes},
 	}, nil
 }
-func (us *UserService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.UserResponse, error) {
+
+func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+	if ok, err := us.userRepo.Delete(ctx, in.ID); !ok || err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+
+	stuctRes, err := structpb.NewValue(struct {
+		id string
+	}{
+		id: in.ID,
+	})
+
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  []*structpb.Value{stuctRes},
+	}, nil
+
+}
+
+func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
+
+	if in.Offset <= 0 {
+		in.Offset = 10
+	}
+	if in.Page <= 0 {
+		in.Page = 1
+	}
+
+	res, err := us.userRepo.GetMany(ctx, in.Page, in.Offset)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    200,
+			Message: "success",
+			Result:  []*structpb.Value{},
+		}, nil
+	}
+
+	resultMap := make([]*structpb.Value, len(res))
+
+	for i, r := range res {
+		fmt.Println(i, r.ID)
+		resultMap[i], _ = structpb.NewValue(map[string]any{
+			"id":    r.GetID(),
+			"email": r.GetEmail(),
+			"role":  r.GetRole(),
+		})
+	}
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  resultMap,
+	}, nil
+
+}
+func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) GetMany(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) Search(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (us *UserService) GetOne(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
-	return nil, nil
-}
-func (us *UserService) Search(context.Context, *user_grpc.EmptyUserRequest) (*user_grpc.UserResponse, error) {
-	return nil, nil
-}
-func (us *UserService) Update(context.Context, *user_grpc.UpdateUserRequest) (*user_grpc.UserResponse, error) {
+func (us *UserService) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }

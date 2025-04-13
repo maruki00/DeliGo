@@ -20,8 +20,6 @@ func NewUserRepository(db pkgPostgres.PGHandler) *UserRepository {
 	}
 }
 
-var _ entities.UserEntity = (*models.User)(nil)
-
 func (ur *UserRepository) Create(ctx context.Context, entity entities.UserEntity) (entities.UserEntity, error) {
 
 	sql := `INSERT INTO users(id, email, password, role) VALUES($1, $2, $3, $4) RETURNING id`
@@ -79,45 +77,58 @@ func (ur *UserRepository) Update(ctx context.Context, entity entities.UserEntity
 	return entity, nil
 }
 
-func (ur *UserRepository) GetOne(ctx context.Context, id string) (entities.UserEntity, error) {
-	var entity models.User
+func (ur *UserRepository) GetOne(ctx context.Context, userId string) (entities.UserEntity, error) {
+
 	sql := `
-			SELECT id,email,role,created_at,updated_at
+			SELECT id,email,role
 			FROM users 
-			WHERE id = $1 AND deleted_at = NULL 
-			LIMIT 1 
+			WHERE id = $1 
+			-- AND deleted_at = NULL 
+			LIMIT 1
 		`
-	err := ur.db.GetDB().QueryRow(sql, id).Scan(&entity.ID, &entity.Email, &entity.Role, &entity.CreatedAt, &entity.UpdatedAt)
+	var id, email, role = "", "", ""
+	err := ur.db.GetDB().QueryRow(sql, userId).Scan(&id, &email, &role)
 	if err != nil {
 		return nil, err
 	}
-	return &entity, nil
+	return &models.User{
+		ID:    id,
+		Email: email,
+		Role:  role,
+	}, nil
 }
 
-func (ur *UserRepository) GetMany(ctx context.Context, limit, offset int) ([]*models.User, error) {
-	entities := make([]*models.User, offset)
+func (ur *UserRepository) GetMany(ctx context.Context, offset, limit int32) ([]*models.User, error) {
+	entities := make([]*models.User, limit)
+	offset = (offset - 1) * offset
 	sql := `
-			SELECT id,email,role,created_at,updated_at
+			SELECT id,email,role
 			FROM users 
-			WHERE deleted_at = NULL 
-			LIMIT $1 
-			OFFSET $2
+			-- WHERE deleted_at = NULL 
+			OFFSET $1
+			LIMIT $2
+			
 		`
-	rows, err := ur.db.GetDB().Query(sql, limit, offset)
+	rows, err := ur.db.GetDB().Query(sql, offset, limit)
 	if err != nil {
 		return nil, err
 	}
-	for index := 0; rows.Next(); index++ {
-		entity := models.User{}
-		rows.Scan(&entity.ID, &entity.Email, &entity.Role, &entity.CreatedAt, &entity.UpdatedAt)
-		entities[index] = &entity
+
+	index := 0
+	for rows.Next() && index < int(limit) {
+		var id, email, role = "", "", ""
+		rows.Scan(&id, &email, &role)
+		entities[index] = &models.User{
+			ID:    id,
+			Email: email,
+			Role:  role,
+		}
 		index++
 	}
-	return entities, nil
+	return entities[:index], nil
 }
 
-func (ur *UserRepository) Search(ctx context.Context, query string, limit, offset int) ([]*models.User, error) {
-	entities := make([]*models.User, offset)
+func (ur *UserRepository) Search(ctx context.Context, query string, offset, limit int32) ([]*models.User, error) {
 	sql := `
 			SELECT id,email,role,created_at,updated_at
 			FROM users 
@@ -126,15 +137,25 @@ func (ur *UserRepository) Search(ctx context.Context, query string, limit, offse
 			LIMIT $2 
 			OFFSET $3
 		`
-	rows, err := ur.db.GetDB().Query(sql, limit, offset)
+
+	entities := make([]*models.User, limit)
+	offset = (offset - 1) * offset
+
+	rows, err := ur.db.GetDB().Query(sql, query, offset, limit)
 	if err != nil {
 		return nil, err
 	}
-	for index := 0; rows.Next(); index++ {
-		entity := models.User{}
-		rows.Scan(&entity.ID, &entity.Email, &entity.Role, &entity.CreatedAt, &entity.UpdatedAt)
-		entities[index] = &entity
+
+	index := 0
+	for rows.Next() && index < int(limit) {
+		var id, email, role = "", "", ""
+		rows.Scan(&id, &email, &role)
+		entities[index] = &models.User{
+			ID:    id,
+			Email: email,
+			Role:  role,
+		}
 		index++
 	}
-	return entities, nil
+	return entities[:index], nil
 }

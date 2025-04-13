@@ -22,12 +22,12 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
-	Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
-	Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
-	Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
-	GetOne(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
-	GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
-	Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*Response, error)
+	Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error)
+	Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error)
+	GetOne(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
+	GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
+	Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type userServiceClient struct {
@@ -38,8 +38,8 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userServiceClient) Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
 	err := c.cc.Invoke(ctx, "/UserService/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -47,8 +47,8 @@ func (c *userServiceClient) Create(ctx context.Context, in *CreateUserRequest, o
 	return out, nil
 }
 
-func (c *userServiceClient) Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userServiceClient) Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
 	err := c.cc.Invoke(ctx, "/UserService/Delete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -56,8 +56,8 @@ func (c *userServiceClient) Delete(ctx context.Context, in *DeleteUserRequest, o
 	return out, nil
 }
 
-func (c *userServiceClient) Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userServiceClient) Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
 	err := c.cc.Invoke(ctx, "/UserService/Update", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -65,8 +65,8 @@ func (c *userServiceClient) Update(ctx context.Context, in *UpdateUserRequest, o
 	return out, nil
 }
 
-func (c *userServiceClient) GetOne(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userServiceClient) GetOne(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
 	err := c.cc.Invoke(ctx, "/UserService/GetOne", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,8 +74,8 @@ func (c *userServiceClient) GetOne(ctx context.Context, in *EmptyUserRequest, op
 	return out, nil
 }
 
-func (c *userServiceClient) GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userServiceClient) GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
 	err := c.cc.Invoke(ctx, "/UserService/GetMany", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,8 +83,8 @@ func (c *userServiceClient) GetMany(ctx context.Context, in *EmptyUserRequest, o
 	return out, nil
 }
 
-func (c *userServiceClient) Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userServiceClient) Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
 	err := c.cc.Invoke(ctx, "/UserService/Search", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -96,12 +96,12 @@ func (c *userServiceClient) Search(ctx context.Context, in *EmptyUserRequest, op
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
-	Create(context.Context, *CreateUserRequest) (*UserResponse, error)
-	Delete(context.Context, *DeleteUserRequest) (*UserResponse, error)
-	Update(context.Context, *UpdateUserRequest) (*UserResponse, error)
-	GetOne(context.Context, *EmptyUserRequest) (*UserResponse, error)
-	GetMany(context.Context, *EmptyUserRequest) (*UserResponse, error)
-	Search(context.Context, *EmptyUserRequest) (*UserResponse, error)
+	Create(context.Context, *CreateUserRequest) (*Response, error)
+	Delete(context.Context, *DeleteUserRequest) (*Response, error)
+	Update(context.Context, *UpdateUserRequest) (*Response, error)
+	GetOne(context.Context, *EmptyUserRequest) (*Response, error)
+	GetMany(context.Context, *EmptyUserRequest) (*Response, error)
+	Search(context.Context, *EmptyUserRequest) (*Response, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -109,22 +109,22 @@ type UserServiceServer interface {
 type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedUserServiceServer) Create(context.Context, *CreateUserRequest) (*UserResponse, error) {
+func (UnimplementedUserServiceServer) Create(context.Context, *CreateUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedUserServiceServer) Delete(context.Context, *DeleteUserRequest) (*UserResponse, error) {
+func (UnimplementedUserServiceServer) Delete(context.Context, *DeleteUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedUserServiceServer) Update(context.Context, *UpdateUserRequest) (*UserResponse, error) {
+func (UnimplementedUserServiceServer) Update(context.Context, *UpdateUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedUserServiceServer) GetOne(context.Context, *EmptyUserRequest) (*UserResponse, error) {
+func (UnimplementedUserServiceServer) GetOne(context.Context, *EmptyUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
 }
-func (UnimplementedUserServiceServer) GetMany(context.Context, *EmptyUserRequest) (*UserResponse, error) {
+func (UnimplementedUserServiceServer) GetMany(context.Context, *EmptyUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMany not implemented")
 }
-func (UnimplementedUserServiceServer) Search(context.Context, *EmptyUserRequest) (*UserResponse, error) {
+func (UnimplementedUserServiceServer) Search(context.Context, *EmptyUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
