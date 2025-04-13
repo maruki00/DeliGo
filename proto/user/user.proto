@@ -31,12 +31,9 @@ message UpdateUserRequest {
 	string Role 		= 4 [json_name = "role"];     
 }
 
-message DynamicGETQueryRequest {
-	map<string, string> params = 1;
-}
 
 message EmptyUserRequest{
-	string id = 1;     
+	int32 offset = 1;     
 	int32 page = 2;     
 	string filter = 3;  
 }
@@ -44,8 +41,9 @@ message EmptyUserRequest{
 message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-	google.protobuf.Struct Result = 3 [ json_name = "result"]; 
+	google.protobuf.ListValue Result = 3 [ json_name = "result"]; 
 }
+
 
 service UserService {
 	rpc Create(CreateUserRequest) returns (Response) {
@@ -75,7 +73,7 @@ service UserService {
 		};
 	};
 
-	rpc GetMany(DynamicGETQueryRequest) returns (Response) {
+	rpc GetMany(EmptyUserRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/users"
 		};

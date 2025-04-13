@@ -2,12 +2,10 @@ package grpc_services
 
 import (
 	"context"
-	"delivery/internal/user/domain/entities"
 	user_grpc "delivery/internal/user/infra/grpc/user"
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
 	pkgUtils "delivery/pkg/utils"
-	"fmt"
 
 	"google.golang.org/protobuf/types/known/structpb"
 )
@@ -22,8 +20,6 @@ func NewUserService(userRepo *repositories.UserRepository) *UserService {
 		userRepo: userRepo,
 	}
 }
-
-var _ entities.UserEntity = (*models.User)(nil)
 
 func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	res, err := us.userRepo.Create(ctx, &models.User{
@@ -57,9 +53,10 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  stuctRes,
+		Result:  []*structpb.Struct{stuctRes},
 	}, nil
 }
+
 func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
 	if ok, err := us.userRepo.Delete(ctx, in.ID); !ok || err != nil {
 		return &user_grpc.Response{
@@ -69,8 +66,10 @@ func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserReque
 		}, err
 	}
 
-	stuctRes, err := structpb.NewStruct(map[string]any{
-		"id": in.ID,
+	stuctRes, err := structpb.NewValue(struct {
+		id string
+	}{
+		id: in.ID,
 	})
 
 	if err != nil {
@@ -88,13 +87,53 @@ func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserReque
 	}, nil
 
 }
-func (us *UserService) GetMany(ctx context.Context, in *user_grpc.DynamicGETQueryRequest) (*user_grpc.Response, error) {
-	fmt.Println(in.Params)
+func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
+
+	if in.Offset <= 0 {
+		in.Offset = 10
+	}
+	if in.Page <= 0 {
+		in.Page = 1
+	}
+
+	res, err := us.userRepo.GetMany(ctx, in.Page, in.Offset)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    200,
+			Message: "success",
+			Result:  []*structpb.Struct{},
+		}, nil
+	}
+
+	resultMap := make([]any, in.Offset)
+	i := 0
+	for _, r := range res {
+		resultMap[i] = struct {
+			id, email, role string
+		}{
+			id:    r.GetID(),
+			email: r.GetEmail(),
+			role:  r.GetRole(),
+		}
+		i++
+	}
+
+	structpb.NewList()
+
+	data, err := structpb.NewList(resultMap[:i])
+
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
 
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  nil,
+		Result:  resultMap,
 	}, nil
 
 }

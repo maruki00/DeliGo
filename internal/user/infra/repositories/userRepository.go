@@ -92,7 +92,7 @@ func (ur *UserRepository) GetOne(ctx context.Context, id string) (entities.UserE
 	return &entity, nil
 }
 
-func (ur *UserRepository) GetMany(ctx context.Context, limit, offset int) ([]*models.User, error) {
+func (ur *UserRepository) GetMany(ctx context.Context, page, offset int32) ([]*models.User, error) {
 	entities := make([]*models.User, offset)
 	sql := `
 			SELECT id,email,role,created_at,updated_at

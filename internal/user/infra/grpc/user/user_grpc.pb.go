@@ -26,7 +26,7 @@ type UserServiceClient interface {
 	Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error)
 	GetOne(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
-	GetMany(ctx context.Context, in *DynamicGETQueryRequest, opts ...grpc.CallOption) (*Response, error)
+	GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
 	Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
@@ -74,7 +74,7 @@ func (c *userServiceClient) GetOne(ctx context.Context, in *EmptyUserRequest, op
 	return out, nil
 }
 
-func (c *userServiceClient) GetMany(ctx context.Context, in *DynamicGETQueryRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *userServiceClient) GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, "/UserService/GetMany", in, out, opts...)
 	if err != nil {
@@ -100,7 +100,7 @@ type UserServiceServer interface {
 	Delete(context.Context, *DeleteUserRequest) (*Response, error)
 	Update(context.Context, *UpdateUserRequest) (*Response, error)
 	GetOne(context.Context, *EmptyUserRequest) (*Response, error)
-	GetMany(context.Context, *DynamicGETQueryRequest) (*Response, error)
+	GetMany(context.Context, *EmptyUserRequest) (*Response, error)
 	Search(context.Context, *EmptyUserRequest) (*Response, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
@@ -121,7 +121,7 @@ func (UnimplementedUserServiceServer) Update(context.Context, *UpdateUserRequest
 func (UnimplementedUserServiceServer) GetOne(context.Context, *EmptyUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
 }
-func (UnimplementedUserServiceServer) GetMany(context.Context, *DynamicGETQueryRequest) (*Response, error) {
+func (UnimplementedUserServiceServer) GetMany(context.Context, *EmptyUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMany not implemented")
 }
 func (UnimplementedUserServiceServer) Search(context.Context, *EmptyUserRequest) (*Response, error) {
@@ -213,7 +213,7 @@ func _UserService_GetOne_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _UserService_GetMany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DynamicGETQueryRequest)
+	in := new(EmptyUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -225,7 +225,7 @@ func _UserService_GetMany_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/UserService/GetMany",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetMany(ctx, req.(*DynamicGETQueryRequest))
+		return srv.(UserServiceServer).GetMany(ctx, req.(*EmptyUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
