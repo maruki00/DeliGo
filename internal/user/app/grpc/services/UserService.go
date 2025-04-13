@@ -121,10 +121,10 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 	}, nil
 }
 
-func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
+func (us *UserService) GetOne(ctx context.Context, in *user_grpc.GetUserRequest) (*user_grpc.Response, error) {
 
-	fmt.Println("result : ", in.Filter)
-	res, err := us.userRepo.GetOne(ctx, in.Filter)
+	fmt.Println("result : ", in.Id)
+	res, err := us.userRepo.GetOne(ctx, in.Id)
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    200,
