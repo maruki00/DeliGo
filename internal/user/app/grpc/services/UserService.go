@@ -91,6 +91,37 @@ func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserReque
 
 func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 
+	res, err := us.userRepo.GetOne(ctx, in.Filter)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    200,
+			Message: "success",
+			Result:  []*structpb.Value{},
+		}, nil
+	}
+
+	stuctRes, err := structpb.NewValue(map[string]any{
+		"id":    res.GetID(),
+		"email": res.GetEmail(),
+		"role":  res.GetRole(),
+	})
+
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  []*structpb.Value{stuctRes},
+	}, nil
+}
+
+func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 	if in.Offset <= 0 {
 		in.Offset = 10
 	}
@@ -98,7 +129,7 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 		in.Page = 1
 	}
 
-	res, err := us.userRepo.GetMany(ctx, in.Page, in.Offset)
+	res, err := us.userRepo.Search(ctx, in.Filter, in.Page, in.Offset)
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    200,
@@ -123,14 +154,80 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 		Message: "success",
 		Result:  resultMap,
 	}, nil
+}
 
-}
-func (us *UserService) GetOne(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
-}
 func (us *UserService) Search(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
+	if in.Offset <= 0 {
+		in.Offset = 10
+	}
+	if in.Page <= 0 {
+		in.Page = 1
+	}
+
+	res, err := us.userRepo.Search(ctx, in.Filter, in.Page, in.Offset)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    200,
+			Message: "success",
+			Result:  []*structpb.Value{},
+		}, nil
+	}
+
+	resultMap := make([]*structpb.Value, len(res))
+
+	for i, r := range res {
+		fmt.Println(i, r.ID)
+		resultMap[i], _ = structpb.NewValue(map[string]any{
+			"id":    r.GetID(),
+			"email": r.GetEmail(),
+			"role":  r.GetRole(),
+		})
+	}
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  resultMap,
+	}, nil
 }
+
 func (us *UserService) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
+	u := &models.User{
+		Email: in.Email,
+		Role:  in.Role,
+	}
+
+	if in.Password != "" {
+		u.Password = pkgUtils.Sha512(in.Password)
+	}
+
+	res, err := us.userRepo.Update(ctx, u)
+
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+
+	stuctRes, err := structpb.NewValue(map[string]any{
+		"id":    res.GetID(),
+		"email": res.GetEmail(),
+		"role":  res.GetRole(),
+	})
+
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  []*structpb.Value{stuctRes},
+	}, nil
 }
