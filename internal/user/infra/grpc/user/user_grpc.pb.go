@@ -25,7 +25,7 @@ type UserServiceClient interface {
 	Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*Response, error)
 	Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error)
-	GetOne(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
+	GetOne(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*Response, error)
 	GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
 	Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
 }
@@ -65,7 +65,7 @@ func (c *userServiceClient) Update(ctx context.Context, in *UpdateUserRequest, o
 	return out, nil
 }
 
-func (c *userServiceClient) GetOne(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *userServiceClient) GetOne(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, "/UserService/GetOne", in, out, opts...)
 	if err != nil {
@@ -99,7 +99,7 @@ type UserServiceServer interface {
 	Create(context.Context, *CreateUserRequest) (*Response, error)
 	Delete(context.Context, *DeleteUserRequest) (*Response, error)
 	Update(context.Context, *UpdateUserRequest) (*Response, error)
-	GetOne(context.Context, *EmptyUserRequest) (*Response, error)
+	GetOne(context.Context, *GetUserRequest) (*Response, error)
 	GetMany(context.Context, *EmptyUserRequest) (*Response, error)
 	Search(context.Context, *EmptyUserRequest) (*Response, error)
 	mustEmbedUnimplementedUserServiceServer()
@@ -118,7 +118,7 @@ func (UnimplementedUserServiceServer) Delete(context.Context, *DeleteUserRequest
 func (UnimplementedUserServiceServer) Update(context.Context, *UpdateUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedUserServiceServer) GetOne(context.Context, *EmptyUserRequest) (*Response, error) {
+func (UnimplementedUserServiceServer) GetOne(context.Context, *GetUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
 }
 func (UnimplementedUserServiceServer) GetMany(context.Context, *EmptyUserRequest) (*Response, error) {
@@ -195,7 +195,7 @@ func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _UserService_GetOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyUserRequest)
+	in := new(GetUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -207,7 +207,7 @@ func _UserService_GetOne_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/UserService/GetOne",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetOne(ctx, req.(*EmptyUserRequest))
+		return srv.(UserServiceServer).GetOne(ctx, req.(*GetUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

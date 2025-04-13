@@ -44,6 +44,9 @@ message Response {
 	repeated google.protobuf.Value  Result = 3 [ json_name = "result"]; 
 }
 
+message GetUserRequest {
+	string id  = 1;
+}
 
 service UserService {
 	rpc Create(CreateUserRequest) returns (Response) {
@@ -66,8 +69,8 @@ service UserService {
 			body: "*"
 		};
 	};
-
-	rpc GetOne(EmptyUserRequest) returns (Response) {
+	
+	rpc GetOne(GetUserRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/user"
 		};
