@@ -101,7 +101,7 @@ func (ur *UserRepository) GetMany(ctx context.Context, page, offset int32) ([]*m
 			LIMIT $1 
 			OFFSET $2
 		`
-	rows, err := ur.db.GetDB().Query(sql, limit, offset)
+	rows, err := ur.db.GetDB().Query(sql, page, offset)
 	if err != nil {
 		return nil, err
 	}
