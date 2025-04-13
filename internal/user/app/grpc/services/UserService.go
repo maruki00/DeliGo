@@ -6,6 +6,7 @@ import (
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
 	pkgUtils "delivery/pkg/utils"
+	"fmt"
 
 	"google.golang.org/protobuf/types/known/structpb"
 )
@@ -109,6 +110,7 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 	resultMap := make([]*structpb.Value, len(res))
 
 	for i, r := range res {
+		fmt.Println(i, r)
 		resultMap[i], _ = structpb.NewValue(map[string]any{
 			"id":    r.GetID(),
 			"email": r.GetEmail(),
