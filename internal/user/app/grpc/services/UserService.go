@@ -110,7 +110,7 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 	resultMap := make([]*structpb.Value, len(res))
 
 	for i, r := range res {
-		fmt.Println(i, r)
+		fmt.Println(i, r.ID)
 		resultMap[i], _ = structpb.NewValue(map[string]any{
 			"id":    r.GetID(),
 			"email": r.GetEmail(),
