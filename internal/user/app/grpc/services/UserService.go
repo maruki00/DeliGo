@@ -35,25 +35,17 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 			Result:  nil,
 		}, err
 	}
-
-	stuctRes, err := structpb.NewStruct(map[string]any{
-		"id":    res.GetID(),
-		"email": res.GetEmail(),
-		"role":  res.GetRole(),
+	resData := make([]*structpb.Value, 1)
+	resData[0], _ = structpb.NewValue(struct{ id, email, role string }{
+		id:    res.GetID(),
+		email: res.GetEmail(),
+		role:  res.GetRole(),
 	})
-
-	if err != nil {
-		return &user_grpc.Response{
-			Code:    400,
-			Message: err.Error(),
-			Result:  nil,
-		}, err
-	}
 
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  []*structpb.Struct{stuctRes},
+		Result:  resData,
 	}, nil
 }
 
@@ -66,24 +58,17 @@ func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserReque
 		}, err
 	}
 
-	stuctRes, err := structpb.NewValue(struct {
+	resData := make([]*structpb.Value, 1)
+	resData[0], _ = structpb.NewValue(struct {
 		id string
 	}{
 		id: in.ID,
 	})
 
-	if err != nil {
-		return &user_grpc.Response{
-			Code:    400,
-			Message: err.Error(),
-			Result:  nil,
-		}, err
-	}
-
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  stuctRes,
+		Result:  resData,
 	}, nil
 
 }
@@ -101,39 +86,25 @@ func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserReque
 		return &user_grpc.Response{
 			Code:    200,
 			Message: "success",
-			Result:  []*structpb.Struct{},
+			Result:  []*structpb.Value{},
 		}, nil
 	}
 
-	resultMap := make([]any, in.Offset)
+	resultMap := make([]*structpb.Value, in.Offset)
 	i := 0
 	for _, r := range res {
-		resultMap[i] = struct {
-			id, email, role string
-		}{
+		resultMap[i], _ = structpb.NewValue(struct{ id, email, role string }{
 			id:    r.GetID(),
 			email: r.GetEmail(),
 			role:  r.GetRole(),
-		}
+		})
 		i++
-	}
-
-	structpb.NewList()
-
-	data, err := structpb.NewList(resultMap[:i])
-
-	if err != nil {
-		return &user_grpc.Response{
-			Code:    400,
-			Message: err.Error(),
-			Result:  nil,
-		}, err
 	}
 
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  resultMap,
+		Result:  resultMap[:i],
 	}, nil
 
 }

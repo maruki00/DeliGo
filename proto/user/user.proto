@@ -41,7 +41,7 @@ message EmptyUserRequest{
 message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-	google.protobuf.ListValue Result = 3 [ json_name = "result"]; 
+	repeated google.protobuf.Value  Result = 3 [ json_name = "result"]; 
 }
 
 
