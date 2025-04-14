@@ -16,12 +16,12 @@ message Profile {
 }
 
 message CreateProfileRequest  {
-	string UserID 	= 1 [json_name = "user_id"];
-	string UserName = 2 [json_name = "user_name"];
-	string FullName = 3 [json_name = "full_name"];
-	string Password = 4 [json_name = "password"];
-	string Avatar 	= 5 [json_name = "avatar"];
-	string Bio 		= 6 [json_name = "bio"];	 
+	string UserID 	= 2 [json_name = "user_id"];
+	string UserName = 3 [json_name = "user_name"];
+	string FullName = 4 [json_name = "full_name"];
+	string Password = 5 [json_name = "password"];
+	string Avatar 	= 6 [json_name = "avatar"];
+	string Bio 		= 7 [json_name = "bio"]; 
 }
 
 message DeleteProfileRequest {
@@ -29,25 +29,15 @@ message DeleteProfileRequest {
 }
 
 message UpdateProfileRequest {
-	string ID = 1 [json_name = "id"];
-	string UserID = 2 [json_name = "user_id"];
-	string FullName = 3 [json_name = "full_name"];
-	string Avatar = 4 [json_name = "avatar"];
-	string Bio = 5 [json_name = "bio"];  
+	string ID 			= 1 [json_name = "id"];
+	map<string, string> fields = 2 [json_name = "fields"];
 }
 
-message ProfileResponse{
-	string ID 		= 1 [json_name = "id"];
-	string UserName = 3 [json_name = "user_name"];
-	string FullName = 4 [json_name = "full_name"];
-	string Avatar 	= 6 [json_name = "avatar"];
-	string Bio 		= 7 [json_name = "bio"];
-}
-message Response {
-    int32 Code = 1 [ json_name = "code"];
+
+message ProfileResponse {
+	int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-	google.protobuf.Any data = 3 [ json_name = "result"]; 
-    ///repeated Profile Result = 3 [ json_name = "result"]; 
+	repeated google.protobuf.Value  Result = 3 [ json_name = "result"]; 
 }
 
 
