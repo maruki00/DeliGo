@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "profile.grpc";
+option go_package = "grpc.grpc";
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
@@ -40,8 +40,8 @@ message ProfileResponse {
 }
 
 message EmptyProfileResponse {
-	int32 Page = 1 [json_name="page"];
-	int32 Offset = 2 [json_name="offset"];
+	int32 Page 		= 1 [json_name="page"];
+	int32 Offset 	= 2 [json_name="offset"];
 }
 
 service ProfileService {
