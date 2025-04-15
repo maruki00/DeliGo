@@ -29,17 +29,20 @@ message DeleteProfileRequest {
 }
 
 message UpdateProfileRequest {
-	string ID 			= 1 [json_name = "id"];
-	map<string, string> fields = 2 [json_name = "fields"];
+	string ID 					= 1 [json_name = "id"];
+	map<string, string> fields  = 2 [json_name = "fields"];
 }
-
 
 message ProfileResponse {
-	int32 Code = 1 [ json_name = "code"];
-    string Message = 2 [ json_name = "message"];
-	repeated google.protobuf.Value  Result = 3 [ json_name = "result"]; 
+	int32 Code 								= 1 [ json_name = "code"];
+    string Message 							= 2 [ json_name = "message"];
+	repeated google.protobuf.Value  Result 	= 3 [ json_name = "result"]; 
 }
 
+message EmptyProfileResponse {
+	int32 Page = 1 [json_name="page"];
+	int32 Offset = 2 [json_name="offset"];
+}
 
 service ProfileService {
 	rpc Create(CreateProfileRequest) returns (ProfileResponse) {
@@ -55,7 +58,7 @@ service ProfileService {
 			body: "*"
 		};
 	};
-
+	
 	rpc Update(UpdateProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
 			put: "/v1/profile/update",
@@ -65,18 +68,16 @@ service ProfileService {
 
 	rpc GetOne(EmptyProfileResponse) returns (ProfileResponse) {
 		option (google.api.http) = {
-			get: "/v1/profile"
+			get: "/v1/profile/"
 		};
 	};
-
+	
 	rpc GetMany(EmptyProfileResponse) returns (ProfileResponse) {
 		option (google.api.http) = {
 			get: "/v1/profiles"
 		};
 	};
 	
-
-
 	rpc Search(EmptyProfileResponse) returns (ProfileResponse) {
 		option (google.api.http) = {
 			post: "/v1/profiles/search",
@@ -84,3 +85,5 @@ service ProfileService {
 		};
 	};
 } 
+
+
