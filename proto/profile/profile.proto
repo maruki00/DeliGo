@@ -3,7 +3,7 @@ syntax = "proto3";
 option go_package = "profile.grpc";
 
 import "google/api/annotations.proto";
-import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
 
 message Profile {
 	string ID 		= 1 [json_name = "id"];
