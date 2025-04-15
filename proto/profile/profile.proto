@@ -68,7 +68,7 @@ service ProfileService {
 
 	rpc GetOne(EmptyProfileResponse) returns (ProfileResponse) {
 		option (google.api.http) = {
-			get: "/v1/profile/"
+			get: "/v1/profile",
 		};
 	};
 	
