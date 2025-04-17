@@ -21,6 +21,7 @@ func NewProfileService(repository *repositories.ProfileRepository) *ProfileServi
 }
 
 func (ps *ProfileService) Create(context.Context, *profile_grpc.CreateProfileRequest) (*profile_grpc.ProfileResponse, error) {
+
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (ps *ProfileService) Delete(context.Context, *profile_grpc.DeleteProfileRequest) (*profile_grpc.ProfileResponse, error) {
