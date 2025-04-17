@@ -97,8 +97,8 @@ func (ur *ProfileRepository) GetOne(ctx context.Context, id string) (entities.Pr
 	return &entity, nil
 }
 
-func (ur *ProfileRepository) GetMany(ctx context.Context, limit, offset int) ([]*models.Profile, error) {
-	entities := make([]*models.Profile, offset)
+func (ur *ProfileRepository) GetMany(ctx context.Context, limit, offset int) ([]entities.ProfileEntity, error) {
+	entities := make([]entities.ProfileEntity, offset)
 	sql := `
 			SELECT id, user_id, full_name, avatar, bio, created_at, updated_at
 			FROM users 
@@ -120,8 +120,8 @@ func (ur *ProfileRepository) GetMany(ctx context.Context, limit, offset int) ([]
 	return entities[:index], nil
 }
 
-func (ur *ProfileRepository) Search(ctx context.Context, query string, limit, offset int) ([]*models.Profile, error) {
-	entities := make([]*models.Profile, offset)
+func (ur *ProfileRepository) Search(ctx context.Context, query string, limit, offset int) ([]entities.ProfileEntity, error) {
+	entities := make([]entities.ProfileEntity, offset)
 	sql := `
 			SELECT id, user_id, full_name, avatar, bio, created_at, updated_at
 			FROM users 
