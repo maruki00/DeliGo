@@ -2,14 +2,11 @@ package repositories
 
 import (
 	"context"
-	"delivery/internal/user/domain/contracts"
 	"delivery/internal/user/domain/entities"
 	"delivery/internal/user/infra/models"
 	pkgPostgres "delivery/pkg/postgres"
 	"sync"
 )
-
-var _ contracts.IProfileRepository = (*ProfileRepository)(nil)
 
 type ProfileRepository struct {
 	sync.RWMutex
@@ -42,7 +39,6 @@ func (ur *ProfileRepository) Create(ctx context.Context, entity entities.Profile
 }
 
 func (ur *ProfileRepository) Delete(ctx context.Context, id string) (bool, error) {
-	//sql := `DELETE FROM users WHERE id = $1`
 	sql := `UPDATE profiles SET deleted_at = now(), updated_at = now() WHERE id = $1 `
 	tx, err := ur.db.GetDB().Begin()
 	if err != nil {
