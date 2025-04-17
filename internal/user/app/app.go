@@ -15,8 +15,8 @@ import (
 
 type App struct {
 	db          *pkgPostgres.PGHandler
-	UserRepo    *contracts.IUserRepository
-	ProfileRepo *contracts.IProfileRepository
+	UserRepo    contracts.IUserRepository
+	ProfileRepo contracts.IProfileRepository
 	UserSVC     *grpc_services.UserService
 }
 

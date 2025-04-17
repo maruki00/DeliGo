@@ -16,7 +16,7 @@ type UserRepository struct {
 	db pkgPostgres.PGHandler
 }
 
-func NewUserRepository(db pkgPostgres.PGHandler) *UserRepository {
+func NewUserRepository(db pkgPostgres.PGHandler) contracts.IUserRepository {
 	return &UserRepository{
 		db: db,
 	}
