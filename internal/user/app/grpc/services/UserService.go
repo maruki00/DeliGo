@@ -2,9 +2,9 @@ package grpc_services
 
 import (
 	"context"
+	"delivery/internal/user/domain/contracts"
 	user_grpc "delivery/internal/user/infra/grpc/user"
 	"delivery/internal/user/infra/models"
-	"delivery/internal/user/infra/repositories"
 	pkgUtils "delivery/pkg/utils"
 
 	"google.golang.org/protobuf/types/known/structpb"
@@ -12,10 +12,10 @@ import (
 
 type UserService struct {
 	user_grpc.UnimplementedUserServiceServer
-	userRepo *repositories.UserRepository
+	userRepo contracts.IUserRepository
 }
 
-func NewUserService(userRepo *repositories.UserRepository) *UserService {
+func NewUserService(userRepo contracts.IUserRepository) *UserService {
 	return &UserService{
 		userRepo: userRepo,
 	}

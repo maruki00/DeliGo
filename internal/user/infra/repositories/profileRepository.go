@@ -39,7 +39,6 @@ func (ur *ProfileRepository) Create(ctx context.Context, entity entities.Profile
 }
 
 func (ur *ProfileRepository) Delete(ctx context.Context, id string) (bool, error) {
-	//sql := `DELETE FROM users WHERE id = $1`
 	sql := `UPDATE profiles SET deleted_at = now(), updated_at = now() WHERE id = $1 `
 	tx, err := ur.db.GetDB().Begin()
 	if err != nil {
@@ -94,8 +93,8 @@ func (ur *ProfileRepository) GetOne(ctx context.Context, id string) (entities.Pr
 	return &entity, nil
 }
 
-func (ur *ProfileRepository) GetMany(ctx context.Context, limit, offset int) ([]*models.Profile, error) {
-	entities := make([]*models.Profile, offset)
+func (ur *ProfileRepository) GetMany(ctx context.Context, limit, offset int) ([]entities.ProfileEntity, error) {
+	entities := make([]entities.ProfileEntity, offset)
 	sql := `
 			SELECT id, user_id, full_name, avatar, bio, created_at, updated_at
 			FROM users 
@@ -117,8 +116,8 @@ func (ur *ProfileRepository) GetMany(ctx context.Context, limit, offset int) ([]
 	return entities[:index], nil
 }
 
-func (ur *ProfileRepository) Search(ctx context.Context, query string, limit, offset int) ([]*models.Profile, error) {
-	entities := make([]*models.Profile, offset)
+func (ur *ProfileRepository) Search(ctx context.Context, query string, limit, offset int) ([]entities.ProfileEntity, error) {
+	entities := make([]entities.ProfileEntity, offset)
 	sql := `
 			SELECT id, user_id, full_name, avatar, bio, created_at, updated_at
 			FROM users 
