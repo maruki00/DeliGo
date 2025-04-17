@@ -4,6 +4,7 @@ import (
 	"context"
 	"delivery/cmd/user/configs"
 	grpc_services "delivery/internal/user/app/grpc/services"
+	"delivery/internal/user/domain/contracts"
 	"delivery/internal/user/infra/repositories"
 	pkgPostgres "delivery/pkg/postgres"
 	"fmt"
@@ -14,8 +15,8 @@ import (
 
 type App struct {
 	db          *pkgPostgres.PGHandler
-	UserRepo    *repositories.UserRepository
-	ProfileRepo *repositories.ProfileRepository
+	UserRepo    *contracts.IUserRepository
+	ProfileRepo *contracts.IProfileRepository
 	UserSVC     *grpc_services.UserService
 }
 

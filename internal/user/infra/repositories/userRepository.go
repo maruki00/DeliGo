@@ -2,12 +2,15 @@ package repositories
 
 import (
 	"context"
+	"delivery/internal/user/domain/contracts"
 	"delivery/internal/user/domain/entities"
 	"delivery/internal/user/infra/models"
 	pkgPostgres "delivery/pkg/postgres"
 
 	"github.com/google/uuid"
 )
+
+var _ contracts.IUserRepository = (*UserRepository)(nil)
 
 type UserRepository struct {
 	db pkgPostgres.PGHandler

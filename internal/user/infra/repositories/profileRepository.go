@@ -2,11 +2,14 @@ package repositories
 
 import (
 	"context"
+	"delivery/internal/user/domain/contracts"
 	"delivery/internal/user/domain/entities"
 	"delivery/internal/user/infra/models"
 	pkgPostgres "delivery/pkg/postgres"
 	"sync"
 )
+
+var _ contracts.IProfileRepository = (*ProfileRepository)(nil)
 
 type ProfileRepository struct {
 	sync.RWMutex
