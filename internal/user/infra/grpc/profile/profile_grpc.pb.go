@@ -25,7 +25,7 @@ type ProfileServiceClient interface {
 	Create(ctx context.Context, in *CreateProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	Delete(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	Update(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
-	GetOne(ctx context.Context, in *EmptyProfileResponse, opts ...grpc.CallOption) (*ProfileResponse, error)
+	GetOne(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	GetMany(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	Search(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 }
@@ -65,7 +65,7 @@ func (c *profileServiceClient) Update(ctx context.Context, in *UpdateProfileRequ
 	return out, nil
 }
 
-func (c *profileServiceClient) GetOne(ctx context.Context, in *EmptyProfileResponse, opts ...grpc.CallOption) (*ProfileResponse, error) {
+func (c *profileServiceClient) GetOne(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
 	out := new(ProfileResponse)
 	err := c.cc.Invoke(ctx, "/ProfileService/GetOne", in, out, opts...)
 	if err != nil {
@@ -99,7 +99,7 @@ type ProfileServiceServer interface {
 	Create(context.Context, *CreateProfileRequest) (*ProfileResponse, error)
 	Delete(context.Context, *DeleteProfileRequest) (*ProfileResponse, error)
 	Update(context.Context, *UpdateProfileRequest) (*ProfileResponse, error)
-	GetOne(context.Context, *EmptyProfileResponse) (*ProfileResponse, error)
+	GetOne(context.Context, *GetRequest) (*ProfileResponse, error)
 	GetMany(context.Context, *GetRequest) (*ProfileResponse, error)
 	Search(context.Context, *GetRequest) (*ProfileResponse, error)
 	mustEmbedUnimplementedProfileServiceServer()
@@ -118,7 +118,7 @@ func (UnimplementedProfileServiceServer) Delete(context.Context, *DeleteProfileR
 func (UnimplementedProfileServiceServer) Update(context.Context, *UpdateProfileRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedProfileServiceServer) GetOne(context.Context, *EmptyProfileResponse) (*ProfileResponse, error) {
+func (UnimplementedProfileServiceServer) GetOne(context.Context, *GetRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
 }
 func (UnimplementedProfileServiceServer) GetMany(context.Context, *GetRequest) (*ProfileResponse, error) {
@@ -195,7 +195,7 @@ func _ProfileService_Update_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _ProfileService_GetOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyProfileResponse)
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -207,7 +207,7 @@ func _ProfileService_GetOne_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/ProfileService/GetOne",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProfileServiceServer).GetOne(ctx, req.(*EmptyProfileResponse))
+		return srv.(ProfileServiceServer).GetOne(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
