@@ -149,14 +149,20 @@ func (_this *ProfileService) GetMany(ctx context.Context, in *profile_grpc.GetRe
 
 	params := in.GetQueryParams().GetFields()
 
-	page := params["page"].GetStringValue()
-	offset := params["offset"].GetStringValue()
-	id := params["id"].GetStringValue()
+	p := params["page"].GetStringValue()
+	ofst := params["offset"].GetStringValue()
 
-	// Convert string values to other types if needed
-	idInt, _ := strconv.Atoi(id)
+	page, err := strconv.Atoi(p)
+	if err != nil {
+		page = 1
+	}
 
-	res, err := _this.repository.GetMany(ctx, int(in.Offset), int(in.Page))
+	offset, err := strconv.Atoi(ofst)
+	if err != nil {
+		offset = 10
+	}
+
+	res, err := _this.repository.GetMany(ctx, offset, page)
 	if err != nil {
 		return &profile_grpc.ProfileResponse{
 			Code:    400,
@@ -190,7 +196,24 @@ func (_this *ProfileService) GetMany(ctx context.Context, in *profile_grpc.GetRe
 }
 
 func (_this *ProfileService) Search(ctx context.Context, in *profile_grpc.GetRequest) (*profile_grpc.ProfileResponse, error) {
-	res, err := _this.repository.Search(ctx, "in.GetPage()", int(in.Offset), int(in.Page))
+
+	params := in.GetQueryParams().GetFields()
+
+	p := params["page"].GetStringValue()
+	ofst := params["offset"].GetStringValue()
+	query := params["query"].GetStringValue()
+
+	page, err := strconv.Atoi(p)
+	if err != nil {
+		page = 1
+	}
+
+	offset, err := strconv.Atoi(ofst)
+	if err != nil {
+		offset = 1
+	}
+
+	res, err := _this.repository.Search(ctx, query, offset, page)
 	if err != nil {
 		return &profile_grpc.ProfileResponse{
 			Code:    400,
