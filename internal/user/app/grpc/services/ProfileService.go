@@ -113,8 +113,13 @@ func (_this *ProfileService) Update(ctx context.Context, in *profile_grpc.Update
 	}, nil
 }
 
-func (_this *ProfileService) GetOne(ctx context.Context, in *profile_grpc.EmptyProfileResponse) (*profile_grpc.ProfileResponse, error) {
-	res, err := _this.repository.GetOne(ctx, "in.Page")
+func (_this *ProfileService) GetOne(ctx context.Context, in *profile_grpc.GetRequest) (*profile_grpc.ProfileResponse, error) {
+
+	params := in.GetQueryParams().GetFields()
+
+	id := params["id"].GetStringValue()
+
+	res, err := _this.repository.GetOne(ctx, id)
 	if err != nil {
 		return &profile_grpc.ProfileResponse{
 			Code:    400,
