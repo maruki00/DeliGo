@@ -114,7 +114,7 @@ var (
 )
 
 func request_ProfileService_GetOne_0(ctx context.Context, marshaler runtime.Marshaler, client ProfileServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmptyProfileResponse
+	var protoReq GetRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -130,7 +130,7 @@ func request_ProfileService_GetOne_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func local_request_ProfileService_GetOne_0(ctx context.Context, marshaler runtime.Marshaler, server ProfileServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmptyProfileResponse
+	var protoReq GetRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
