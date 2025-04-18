@@ -28,6 +28,10 @@ message DeleteProfileRequest {
 	string ID 			= 1 [json_name = "id"]; 
 }
 
+message GetProfileRequest {
+	string ID 			= 1 [json_name = "id"]; 
+}
+
 message UpdateProfileRequest {
 	string ID 					= 1 [json_name = "id"];
 	map<string, string> fields  = 2 [json_name = "fields"];
