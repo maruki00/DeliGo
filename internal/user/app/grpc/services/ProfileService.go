@@ -113,6 +113,7 @@ func (_this *ProfileService) Update(ctx context.Context, in *profile_grpc.Update
 	}, nil
 }
 
+
 func (_this *ProfileService) GetOne(ctx context.Context, in *profile_grpc.GetRequest) (*profile_grpc.ProfileResponse, error) {
 
 	params := in.GetQueryParams().GetFields()
@@ -120,6 +121,7 @@ func (_this *ProfileService) GetOne(ctx context.Context, in *profile_grpc.GetReq
 	id := params["id"].GetStringValue()
 
 	res, err := _this.repository.GetOne(ctx, id)
+
 	if err != nil {
 		return &profile_grpc.ProfileResponse{
 			Code:    400,
@@ -168,6 +170,7 @@ func (_this *ProfileService) GetMany(ctx context.Context, in *profile_grpc.GetRe
 	}
 
 	res, err := _this.repository.GetMany(ctx, offset, page)
+
 	if err != nil {
 		return &profile_grpc.ProfileResponse{
 			Code:    400,
@@ -200,6 +203,7 @@ func (_this *ProfileService) GetMany(ctx context.Context, in *profile_grpc.GetRe
 	}, nil
 }
 
+
 func (_this *ProfileService) Search(ctx context.Context, in *profile_grpc.GetRequest) (*profile_grpc.ProfileResponse, error) {
 
 	params := in.GetQueryParams().GetFields()
@@ -219,6 +223,7 @@ func (_this *ProfileService) Search(ctx context.Context, in *profile_grpc.GetReq
 	}
 
 	res, err := _this.repository.Search(ctx, query, offset, page)
+
 	if err != nil {
 		return &profile_grpc.ProfileResponse{
 			Code:    400,
