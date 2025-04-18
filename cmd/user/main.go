@@ -4,6 +4,7 @@ import (
 	"context"
 	"delivery/cmd/user/configs"
 	"delivery/internal/user/app"
+	grpc_profile "delivery/internal/user/infra/grpc/profile"
 	grpc_user "delivery/internal/user/infra/grpc/user"
 	"fmt"
 	"log/slog"
@@ -45,19 +46,6 @@ func main() {
 		panic(err)
 
 	}
-	// res, err := app.UserRepo.Create(ctx, &models.User{
-	// 	ID:       "123sdfg",
-	// 	Email:    "1234qsdfwd",
-	// 	Password: "12344qwe",
-	// 	Role:     "fsgsdfg",
-	// })
-
-	// return
-	// if err != nil {
-	// 	fmt.Println(err.Error())
-	// 	return
-	// }
-	// fmt.Printf("Done: %v\n", res)
 
 	server := grpc.NewServer()
 
@@ -79,6 +67,7 @@ func main() {
 	slog.Info("🌏 start server...", "address", address)
 
 	grpc_user.RegisterUserServiceServer(server, app.UserSVC)
+	grpc_profile.RegisterProfileServiceServer(server, app.ProfileSVC)
 
 	defer func() {
 		if err := l.Close(); err != nil {

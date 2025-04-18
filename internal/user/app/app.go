@@ -46,6 +46,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		UserSVC:     userSVC,
 		ProfileSVC:  profileSVC,
 	}
+
 	return app, func() { _ = db.DB.Close() }, nil
 }
 
