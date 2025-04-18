@@ -18,6 +18,7 @@ type App struct {
 	UserRepo    contracts.IUserRepository
 	ProfileRepo contracts.IProfileRepository
 	UserSVC     *grpc_services.UserService
+	ProfileSVC  *grpc_services.ProfileService
 }
 
 func (app *App) GetDB() any {
@@ -31,13 +32,19 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	if err != nil {
 		return nil, func() {}, err
 	}
+
 	userRepo := repositories.NewUserRepository(*db)
 	userSVC := grpc_services.NewUserService(userRepo)
+
+	profileRepo := repositories.NewProfileRepository(*db)
+	profileSVC := grpc_services.NewProfileService(profileRepo)
+
 	app := &App{
 		db:          db,
 		UserRepo:    userRepo,
-		ProfileRepo: nil,
+		ProfileRepo: profileRepo,
 		UserSVC:     userSVC,
+		ProfileSVC:  profileSVC,
 	}
 	return app, func() { _ = db.DB.Close() }, nil
 }
