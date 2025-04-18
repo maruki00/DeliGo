@@ -28,8 +28,8 @@ message DeleteProfileRequest {
 	string ID 			= 1 [json_name = "id"]; 
 }
 
-message GetProfileRequest {
-	string ID 			= 1 [json_name = "id"]; 
+message GetRequest {
+	google.protobuf.Struct query_params = 1;
 }
 
 message UpdateProfileRequest {
@@ -49,6 +49,7 @@ message EmptyProfileResponse {
 }
 
 service ProfileService {
+	
 	rpc Create(CreateProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
 			post: "/v1/profile/create",
@@ -76,13 +77,13 @@ service ProfileService {
 		};
 	};
 	
-	rpc GetMany(EmptyProfileResponse) returns (ProfileResponse) {
+	rpc GetMany(GetRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
 			get: "/v1/profiles"
 		};
 	};
 	
-	rpc Search(EmptyProfileResponse) returns (ProfileResponse) {
+	rpc Search(GetRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
 			post: "/v1/profiles/search",
 			body: "*"
