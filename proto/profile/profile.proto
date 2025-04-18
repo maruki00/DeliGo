@@ -85,8 +85,7 @@ service ProfileService {
 	
 	rpc Search(GetRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
-			post: "/v1/profiles/search",
-			body: "*"
+			get: "/v1/profiles/search"
 		};
 	};
 } 

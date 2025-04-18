@@ -4,7 +4,7 @@
 // 	protoc        v3.21.12
 // source: profile/profile.proto
 
-package profile_grpc
+package grpc_grpc
 
 import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"

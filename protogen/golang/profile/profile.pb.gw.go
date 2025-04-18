@@ -6,7 +6,7 @@ Package grpc_grpc is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package profile_grpc
+package grpc_grpc
 
 import (
 	"context"
