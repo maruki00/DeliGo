@@ -5,6 +5,7 @@ import (
 	profile_grpc "delivery/internal/user/infra/grpc/profile"
 	"delivery/internal/user/infra/models"
 	"delivery/internal/user/infra/repositories"
+	"strconv"
 
 	"google.golang.org/protobuf/types/known/structpb"
 )
@@ -74,6 +75,7 @@ func (_this *ProfileService) Delete(ctx context.Context, in *profile_grpc.Delete
 		Result:  nil,
 	}, nil
 }
+
 func (_this *ProfileService) Update(ctx context.Context, in *profile_grpc.UpdateProfileRequest) (*profile_grpc.ProfileResponse, error) {
 	res, err := _this.repository.Update(ctx, &models.Profile{
 		ID:       in.ID,
@@ -110,6 +112,7 @@ func (_this *ProfileService) Update(ctx context.Context, in *profile_grpc.Update
 		Result:  []*structpb.Value{stuctRes},
 	}, nil
 }
+
 func (_this *ProfileService) GetOne(ctx context.Context, in *profile_grpc.EmptyProfileResponse) (*profile_grpc.ProfileResponse, error) {
 	res, err := _this.repository.GetOne(ctx, "in.Page")
 	if err != nil {
@@ -141,7 +144,18 @@ func (_this *ProfileService) GetOne(ctx context.Context, in *profile_grpc.EmptyP
 		Result:  []*structpb.Value{stuctRes},
 	}, nil
 }
-func (_this *ProfileService) GetMany(ctx context.Context, in *profile_grpc.EmptyProfileResponse) (*profile_grpc.ProfileResponse, error) {
+
+func (_this *ProfileService) GetMany(ctx context.Context, in *profile_grpc.GetRequest) (*profile_grpc.ProfileResponse, error) {
+
+	params := in.GetQueryParams().GetFields()
+
+	page := params["page"].GetStringValue()
+	offset := params["offset"].GetStringValue()
+	id := params["id"].GetStringValue()
+
+	// Convert string values to other types if needed
+	idInt, _ := strconv.Atoi(id)
+
 	res, err := _this.repository.GetMany(ctx, int(in.Offset), int(in.Page))
 	if err != nil {
 		return &profile_grpc.ProfileResponse{
@@ -174,7 +188,8 @@ func (_this *ProfileService) GetMany(ctx context.Context, in *profile_grpc.Empty
 		Result:  items[:i],
 	}, nil
 }
-func (_this *ProfileService) Search(ctx context.Context, in *profile_grpc.EmptyProfileResponse) (*profile_grpc.ProfileResponse, error) {
+
+func (_this *ProfileService) Search(ctx context.Context, in *profile_grpc.GetRequest) (*profile_grpc.ProfileResponse, error) {
 	res, err := _this.repository.Search(ctx, "in.GetPage()", int(in.Offset), int(in.Page))
 	if err != nil {
 		return &profile_grpc.ProfileResponse{

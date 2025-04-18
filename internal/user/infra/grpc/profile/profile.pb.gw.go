@@ -150,7 +150,7 @@ var (
 )
 
 func request_ProfileService_GetMany_0(ctx context.Context, marshaler runtime.Marshaler, client ProfileServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmptyProfileResponse
+	var protoReq GetRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -166,7 +166,7 @@ func request_ProfileService_GetMany_0(ctx context.Context, marshaler runtime.Mar
 }
 
 func local_request_ProfileService_GetMany_0(ctx context.Context, marshaler runtime.Marshaler, server ProfileServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmptyProfileResponse
+	var protoReq GetRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -182,7 +182,7 @@ func local_request_ProfileService_GetMany_0(ctx context.Context, marshaler runti
 }
 
 func request_ProfileService_Search_0(ctx context.Context, marshaler runtime.Marshaler, client ProfileServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmptyProfileResponse
+	var protoReq GetRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
@@ -195,7 +195,7 @@ func request_ProfileService_Search_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func local_request_ProfileService_Search_0(ctx context.Context, marshaler runtime.Marshaler, server ProfileServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmptyProfileResponse
+	var protoReq GetRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {

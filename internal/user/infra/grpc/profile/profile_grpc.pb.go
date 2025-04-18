@@ -26,8 +26,8 @@ type ProfileServiceClient interface {
 	Delete(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	Update(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	GetOne(ctx context.Context, in *EmptyProfileResponse, opts ...grpc.CallOption) (*ProfileResponse, error)
-	GetMany(ctx context.Context, in *EmptyProfileResponse, opts ...grpc.CallOption) (*ProfileResponse, error)
-	Search(ctx context.Context, in *EmptyProfileResponse, opts ...grpc.CallOption) (*ProfileResponse, error)
+	GetMany(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+	Search(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 }
 
 type profileServiceClient struct {
@@ -74,7 +74,7 @@ func (c *profileServiceClient) GetOne(ctx context.Context, in *EmptyProfileRespo
 	return out, nil
 }
 
-func (c *profileServiceClient) GetMany(ctx context.Context, in *EmptyProfileResponse, opts ...grpc.CallOption) (*ProfileResponse, error) {
+func (c *profileServiceClient) GetMany(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
 	out := new(ProfileResponse)
 	err := c.cc.Invoke(ctx, "/ProfileService/GetMany", in, out, opts...)
 	if err != nil {
@@ -83,7 +83,7 @@ func (c *profileServiceClient) GetMany(ctx context.Context, in *EmptyProfileResp
 	return out, nil
 }
 
-func (c *profileServiceClient) Search(ctx context.Context, in *EmptyProfileResponse, opts ...grpc.CallOption) (*ProfileResponse, error) {
+func (c *profileServiceClient) Search(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
 	out := new(ProfileResponse)
 	err := c.cc.Invoke(ctx, "/ProfileService/Search", in, out, opts...)
 	if err != nil {
@@ -100,8 +100,8 @@ type ProfileServiceServer interface {
 	Delete(context.Context, *DeleteProfileRequest) (*ProfileResponse, error)
 	Update(context.Context, *UpdateProfileRequest) (*ProfileResponse, error)
 	GetOne(context.Context, *EmptyProfileResponse) (*ProfileResponse, error)
-	GetMany(context.Context, *EmptyProfileResponse) (*ProfileResponse, error)
-	Search(context.Context, *EmptyProfileResponse) (*ProfileResponse, error)
+	GetMany(context.Context, *GetRequest) (*ProfileResponse, error)
+	Search(context.Context, *GetRequest) (*ProfileResponse, error)
 	mustEmbedUnimplementedProfileServiceServer()
 }
 
@@ -121,10 +121,10 @@ func (UnimplementedProfileServiceServer) Update(context.Context, *UpdateProfileR
 func (UnimplementedProfileServiceServer) GetOne(context.Context, *EmptyProfileResponse) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
 }
-func (UnimplementedProfileServiceServer) GetMany(context.Context, *EmptyProfileResponse) (*ProfileResponse, error) {
+func (UnimplementedProfileServiceServer) GetMany(context.Context, *GetRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMany not implemented")
 }
-func (UnimplementedProfileServiceServer) Search(context.Context, *EmptyProfileResponse) (*ProfileResponse, error) {
+func (UnimplementedProfileServiceServer) Search(context.Context, *GetRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
 }
 func (UnimplementedProfileServiceServer) mustEmbedUnimplementedProfileServiceServer() {}
@@ -213,7 +213,7 @@ func _ProfileService_GetOne_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _ProfileService_GetMany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyProfileResponse)
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -225,13 +225,13 @@ func _ProfileService_GetMany_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/ProfileService/GetMany",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProfileServiceServer).GetMany(ctx, req.(*EmptyProfileResponse))
+		return srv.(ProfileServiceServer).GetMany(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ProfileService_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyProfileResponse)
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func _ProfileService_Search_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/ProfileService/Search",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProfileServiceServer).Search(ctx, req.(*EmptyProfileResponse))
+		return srv.(ProfileServiceServer).Search(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
