@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: profile/profile.proto
 
-package grpc_grpc
+package profile_grpc
 
 import (
 	context "context"

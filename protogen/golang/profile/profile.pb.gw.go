@@ -2,11 +2,11 @@
 // source: profile/profile.proto
 
 /*
-Package grpc_grpc is a reverse proxy.
+Package profile_grpc is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package grpc_grpc
+package profile_grpc
 
 import (
 	"context"
