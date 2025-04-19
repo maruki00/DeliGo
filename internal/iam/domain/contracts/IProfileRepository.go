@@ -2,7 +2,7 @@ package contracts
 
 import (
 	"context"
-	"delivery/internal/user/domain/entities"
+	"delivery/internal/iam/domain/entities"
 )
 
 type IProfileRepository interface {

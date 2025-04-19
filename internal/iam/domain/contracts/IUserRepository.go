@@ -2,8 +2,8 @@ package contracts
 
 import (
 	"context"
-	"delivery/internal/user/domain/entities"
-	"delivery/internal/user/infra/models"
+	"delivery/internal/iam/domain/entities"
+	"delivery/internal/iam/infra/models"
 )
 
 type IUserRepository interface {
