@@ -7,7 +7,7 @@ import (
 
 type Pagination struct{}
 
-type UserRepository interface {
+type IUserRepository interface {
 	FindByID(ctx context.Context, id string) (*models.User, error)
 	FindByEmail(ctx context.Context, email string) (*models.User, error)
 	FindByUsername(ctx context.Context, username string) (*models.User, error)
@@ -17,7 +17,7 @@ type UserRepository interface {
 	ListByTenant(ctx context.Context, tenantID string, pagination Pagination) ([]*models.User, error)
 }
 
-type PolicyRepository interface {
+type IPolicyRepository interface {
 	FindByID(ctx context.Context, id string) (*models.Policy, error)
 	FindByName(ctx context.Context, name string) (*models.Policy, error)
 	Save(ctx context.Context, policy *models.Policy) error
@@ -25,15 +25,15 @@ type PolicyRepository interface {
 	ListForTenant(ctx context.Context, tenantID string) ([]*models.Policy, error)
 }
 
-type PermissionRepository interface {
+type IPermissionRepository interface {
 	FindByID(ctx context.Context, id string) (*models.Permission, error)
 	FindByPolicyID(ctx context.Context, policyID string) ([]*models.Permission, error)
 	Save(ctx context.Context, permission *models.Permission) error
 	Delete(ctx context.Context, id string) error
 }
 
-type RoleRepository interface {
-	AssignUserToRole(ctx context.Context, userID, roleID string) error
-	RemoveUserFromRole(ctx context.Context, userID, roleID string) error
-	GetUserRoles(ctx context.Context, userID string) ([]*models.Role, error)
+type IGroupRepository interface {
+	AssignUserToGroup(ctx context.Context, userID, groupID string) error
+	RemoveUserFromGroup(ctx context.Context, userID, groupID string) error
+	GetUserGroups(ctx context.Context, userID string) ([]*models.Group, error)
 }

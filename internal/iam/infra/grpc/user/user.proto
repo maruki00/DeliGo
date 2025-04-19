@@ -81,5 +81,4 @@ service UserService {
 			get: "/v1/users/tenanat"
 		};
 	};
-
 } 

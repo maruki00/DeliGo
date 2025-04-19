@@ -22,8 +22,6 @@ type UserEntity interface {
 	SetDeletedAt(DeletedAt gorm.DeletedAt)
 	SetCreatedAt(CreatedAt time.Time)
 	SetUpdatedAt(UpdatedAt time.Time)
-	SetProfile(Profile *models.Profile)
-	SetGroups(Groups []*models.Group)
 
 	GetID() uuid.UUID
 	GetUsername() string
@@ -40,4 +38,5 @@ type UserEntity interface {
 	GetUpdatedAt() time.Time
 	GetProfile() models.Profile
 	GetGroups() []*models.Group
+	GetPolicies() []*models.Policy
 }
