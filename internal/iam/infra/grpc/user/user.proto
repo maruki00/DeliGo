@@ -6,8 +6,19 @@ option go_package = "grpc.user";
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
+
+ID
+Username
+Email
+Password
+
+
+
+
+
 message User {
 	string ID 						= 1 [json_name = "id"];       
+	string UserName 					= 2 [json_name = "username"];    
 	string Email 					= 2 [json_name = "email"];    
 	string Password 				= 3 [json_name = "password"]; 
 	string Role 					= 4 [json_name = "role"];     	
