@@ -2,11 +2,14 @@
 
 
 user:
-	protoc -I. -I./internal/iam/infra/grpc/user --go_out=./internal/iam/infra/grpc/user --go_opt=paths=source_relative \
-	--go-grpc_out=./internal/iam/infra/grpc/user --go-grpc_opt=paths=source_relative \
-	--grpc-gateway_out=./internal/iam/infra/grpc/user --grpc-gateway_opt paths=source_relative \
-	--grpc-gateway_opt generate_unbound_methods=true \
-	./internal/iam/infra/grpc/user/user.proto
+	protoc -I. \
+		-I./internal/shared/infra/proto \
+		./internal/iam/infra/grpc/user/user.proto \
+		--go_out=./internal/iam/infra/grpc/user --go_opt=paths=source_relative \
+		--go-grpc_out=./internal/iam/infra/grpc/user --go-grpc_opt=paths=source_relative \
+		--grpc-gateway_out=./internal/iam/infra/grpc/user --grpc-gateway_opt=paths=source_relative \
+		--grpc-gateway_opt generate_unbound_methods=true
+
 
 profile:
 	cd proto && protoc -I. -I./profile --go_out=../protogen/golang --go_opt=paths=source_relative \

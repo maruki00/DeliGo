@@ -58,21 +58,9 @@ service UserService {
 			body: "*"
 		};
 	};
-	rpc FindByID(GETRequest) returns (Response) {
+	rpc Find(GETRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/user"
-		};
-	};
-
-	rpc FindByEmail(GETRequest) returns (Response) {
-		option (google.api.http) = {
-			get: "/v1/users"
-		};
-	};
-
-	rpc FindByUsername(GETRequest) returns (Response) {
-		option (google.api.http) = {
-			get: "/v1/users"
 		};
 	};
 	

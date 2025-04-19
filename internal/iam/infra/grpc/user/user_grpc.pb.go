@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.12
-// source: user/user.proto
+// source: internal/iam/infra/grpc/user/user.proto
 
 package grpc_user
 
@@ -22,12 +22,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
-	Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*Response, error)
+	Save(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*Response, error)
 	Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error)
-	GetOne(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*Response, error)
-	GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
-	Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error)
+	Find(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*Response, error)
+	ListByTenant(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type userServiceClient struct {
@@ -38,9 +37,9 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *userServiceClient) Save(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/UserService/Create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/Save", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,27 +64,18 @@ func (c *userServiceClient) Update(ctx context.Context, in *UpdateUserRequest, o
 	return out, nil
 }
 
-func (c *userServiceClient) GetOne(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *userServiceClient) Find(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/UserService/GetOne", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/Find", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userServiceClient) GetMany(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *userServiceClient) ListByTenant(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/UserService/GetMany", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userServiceClient) Search(ctx context.Context, in *EmptyUserRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
-	err := c.cc.Invoke(ctx, "/UserService/Search", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/UserService/ListByTenant", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,12 +86,11 @@ func (c *userServiceClient) Search(ctx context.Context, in *EmptyUserRequest, op
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
-	Create(context.Context, *CreateUserRequest) (*Response, error)
+	Save(context.Context, *CreateUserRequest) (*Response, error)
 	Delete(context.Context, *DeleteUserRequest) (*Response, error)
 	Update(context.Context, *UpdateUserRequest) (*Response, error)
-	GetOne(context.Context, *GetUserRequest) (*Response, error)
-	GetMany(context.Context, *EmptyUserRequest) (*Response, error)
-	Search(context.Context, *EmptyUserRequest) (*Response, error)
+	Find(context.Context, *GETRequest) (*Response, error)
+	ListByTenant(context.Context, *GETRequest) (*Response, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -109,8 +98,8 @@ type UserServiceServer interface {
 type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedUserServiceServer) Create(context.Context, *CreateUserRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (UnimplementedUserServiceServer) Save(context.Context, *CreateUserRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Save not implemented")
 }
 func (UnimplementedUserServiceServer) Delete(context.Context, *DeleteUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -118,14 +107,11 @@ func (UnimplementedUserServiceServer) Delete(context.Context, *DeleteUserRequest
 func (UnimplementedUserServiceServer) Update(context.Context, *UpdateUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedUserServiceServer) GetOne(context.Context, *GetUserRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
+func (UnimplementedUserServiceServer) Find(context.Context, *GETRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Find not implemented")
 }
-func (UnimplementedUserServiceServer) GetMany(context.Context, *EmptyUserRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMany not implemented")
-}
-func (UnimplementedUserServiceServer) Search(context.Context, *EmptyUserRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
+func (UnimplementedUserServiceServer) ListByTenant(context.Context, *GETRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListByTenant not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -140,20 +126,20 @@ func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
 	s.RegisterService(&UserService_ServiceDesc, srv)
 }
 
-func _UserService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_Save_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).Create(ctx, in)
+		return srv.(UserServiceServer).Save(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/UserService/Create",
+		FullMethod: "/UserService/Save",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Create(ctx, req.(*CreateUserRequest))
+		return srv.(UserServiceServer).Save(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -194,56 +180,38 @@ func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_GetOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserRequest)
+func _UserService_Find_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GETRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).GetOne(ctx, in)
+		return srv.(UserServiceServer).Find(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/UserService/GetOne",
+		FullMethod: "/UserService/Find",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetOne(ctx, req.(*GetUserRequest))
+		return srv.(UserServiceServer).Find(ctx, req.(*GETRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_GetMany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyUserRequest)
+func _UserService_ListByTenant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GETRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).GetMany(ctx, in)
+		return srv.(UserServiceServer).ListByTenant(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/UserService/GetMany",
+		FullMethod: "/UserService/ListByTenant",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetMany(ctx, req.(*EmptyUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _UserService_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyUserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).Search(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/UserService/Search",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Search(ctx, req.(*EmptyUserRequest))
+		return srv.(UserServiceServer).ListByTenant(ctx, req.(*GETRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -256,8 +224,8 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Create",
-			Handler:    _UserService_Create_Handler,
+			MethodName: "Save",
+			Handler:    _UserService_Save_Handler,
 		},
 		{
 			MethodName: "Delete",
@@ -268,18 +236,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_Update_Handler,
 		},
 		{
-			MethodName: "GetOne",
-			Handler:    _UserService_GetOne_Handler,
+			MethodName: "Find",
+			Handler:    _UserService_Find_Handler,
 		},
 		{
-			MethodName: "GetMany",
-			Handler:    _UserService_GetMany_Handler,
-		},
-		{
-			MethodName: "Search",
-			Handler:    _UserService_Search_Handler,
+			MethodName: "ListByTenant",
+			Handler:    _UserService_ListByTenant_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "user/user.proto",
+	Metadata: "internal/iam/infra/grpc/user/user.proto",
 }
