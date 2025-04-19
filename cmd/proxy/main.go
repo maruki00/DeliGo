@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"deligo/cmd/proxy/configs"
-	user_grpc "deligo/internal/user/infra/grpc/user"
+	user_grpc "deligo/internal/ia,m/infra/grpc/user"
 	"fmt"
 	"log/slog"
 	"net/http"

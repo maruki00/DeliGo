@@ -20,7 +20,6 @@ func (pg *PGHandler) SetDB(db *gorm.DB) {
 }
 
 func NewDB(dsn string) (*PGHandler, error) {
-
 	objDB := &PGHandler{
 		DB:       nil,
 		MaxTries: MAX_TRIES,
@@ -32,14 +31,12 @@ func NewDB(dsn string) (*PGHandler, error) {
 		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 			Logger: logger.Default.LogMode(logger.Info),
 		})
-
 		if err != nil {
 			continue
 		}
 		objDB.DB = db
 		return objDB, nil
 	}
-
 	return nil, err
 }
 

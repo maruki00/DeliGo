@@ -28,7 +28,7 @@ func (app *App) GetDB() any {
 func InitApp(cfg *configs.Config) (*App, func(), error) {
 
 	fmt.Println("dsn : ", cfg.Postgres.Dsn)
-	db, err := pkgPostgres.NewPG(cfg.Postgres.Dsn)
+	db, err := pkgPostgres.NewDB(cfg.Postgres.Dsn)
 	if err != nil {
 		return nil, func() {}, err
 	}
@@ -47,10 +47,10 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		ProfileSVC:  profileSVC,
 	}
 
-	return app, func() { _ = db.DB.Close() }, nil
+	return app, func() {}, nil
 }
 
-func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.deligo) {
+func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
 
 	for {
 		select {

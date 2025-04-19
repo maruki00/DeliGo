@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"deligo/cmd/user/configs"
+	grpc_user "deligo/internal/iam/infra/grpc/user"
 	"deligo/internal/user/app"
 	grpc_profile "deligo/internal/user/infra/grpc/profile"
-	grpc_user "deligo/internal/user/infra/grpc/user"
 	"fmt"
 	"log/slog"
 	"net"
