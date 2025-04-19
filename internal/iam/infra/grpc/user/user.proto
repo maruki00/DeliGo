@@ -7,48 +7,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
 
-
-// Username          string         `json:"user_name" gorm:"type:varchar(255)"`
-// Email             string         `json:"email" gorm:"type:varchar(255)"`
-// TenantID          string         `json:"tenant_id" gorm:"type:varchar(255)"`
-// Password          string         `json:"password" gorm:"type:varchar(255)"`
-// PasswordChangedAt *time.Time     `json:"password_changed_at" gorm:"type:varchar(255)"`
-// IsActive          bool           `json:"is_active" gorm:"type:int;default:0"`
-// LastLogin         *time.Time     `json:"last_login" `
-// MFAEnabled        bool           `json:"mfa_enabled" gorm:"default:0"`
-// MFASecret         string         `json:"mfa_secret"`
-// Profile           *Profile       `json:"profile" gorm:"foreignKey:UserID"`
-// Groups            []*Group       `json:"groups" gorm:"many2many:user_groups;"`
-// DeletedAt         gorm.DeletedAt `json:"deleted_at" gorm:"index"`
-// CreatedAt         time.Time      `json:"created_at" gorm:"not null;default:now()"`
-// UpdatedAt         time.Time      `json:"updated_at" gorm:"not null;default:now()"`
-
-
-
-// Username
-// Email
-// Password
-
-
-
-FindByID(ctx context.Context, id string) (*models.User, error)
-FindByEmail(ctx context.Context, email string) (*models.User, error)
-FindByUsername(ctx context.Context, username string) (*models.User, error)
-Save(ctx context.Context, user *models.User) error
-Update(ctx context.Context, user *models.User) error
-Delete(ctx context.Context, id string) error
-ListByTenant(ctx context.Context, tenantID string, pagination Pagination) ([]*models.User, error)
-
-
-
-
-
-
-
-
-
-
-
 message User {
 	string ID 						= 1 [json_name = "id"];       
 	string UserName 				= 2 [json_name = "username"];    
@@ -57,7 +15,7 @@ message User {
 }
 
 message CreateUserRequest  {
-	string ID 			= 1 [json_name = "id"];       
+	string UserName		= 1 [json_name = "user_name"];       
 	string Email 		= 2 [json_name = "email"];    
 	string Password 	= 3 [json_name = "password"]; 
 }
@@ -68,10 +26,8 @@ message DeleteUserRequest {
 
 message UpdateUserRequest {
 	string ID 			= 1 [json_name = "id"];       
-	string Email 		= 2 [json_name = "email"];    
-	string Password 	= 3 [json_name = "password"]; 
+	map<string, string> fields  = 2 [json_name = "fields"];
 }
-
 
 message Response {
     int32 Code = 1 [ json_name = "code"];
@@ -83,7 +39,6 @@ message GETRequest {
 	google.protobuf.Struct query_params = 1;
 }
 
-
 service UserService {
 	rpc Save(CreateUserRequest) returns (Response) {
 		option (google.api.http) = {
@@ -91,40 +46,37 @@ service UserService {
 			body: "*"
 		};
 	};
-
 	rpc Delete(DeleteUserRequest) returns (Response) {
 		option (google.api.http) = {
 			post: "/v1/user/delete",
 			body: "*"
 		};
 	};
-
 	rpc Update(UpdateUserRequest) returns (Response) {
 		option (google.api.http) = {
 			put: "/v1/user/update",
 			body: "*"
 		};
 	};
-	
-	rpc FindByID(GetUserRequest) returns (Response) {
+	rpc FindByID(GETRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/user"
 		};
 	};
 
-	rpc FindByEmail(EmptyUserRequest) returns (Response) {
+	rpc FindByEmail(GETRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/users"
 		};
 	};
 
-	rpc FindByUsername(EmptyUserRequest) returns (Response) {
+	rpc FindByUsername(GETRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/users"
 		};
 	};
 	
-	rpc ListByTenant(EmptyUserRequest) returns (Response) {
+	rpc ListByTenant(GETRequest) returns (Response) {
 		option (google.api.http) = {
 			get: "/v1/users/tenanat"
 		};

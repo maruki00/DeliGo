@@ -20,6 +20,7 @@ type User struct {
 	MFASecret         string         `json:"mfa_secret"`
 	Profile           *Profile       `json:"profile" gorm:"foreignKey:UserID"`
 	Groups            []*Group       `json:"groups" gorm:"many2many:user_groups;"`
+	Policies          []*Policy      `json:"policies" gorm:"many2many:user_policies;"`
 	DeletedAt         gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 	CreatedAt         time.Time      `json:"created_at" gorm:"not null;default:now()"`
 	UpdatedAt         time.Time      `json:"updated_at" gorm:"not null;default:now()"`
@@ -55,7 +56,6 @@ func (_this *User) SetMFAEnabled(MFAEnabled bool) {
 func (_this *User) SetMFASecret(MFASecret string) {
 	_this.MFASecret = MFASecret
 }
-
 func (_this *User) SetDeletedAt(DeletedAt gorm.DeletedAt) {
 	_this.DeletedAt = DeletedAt
 }
@@ -64,12 +64,6 @@ func (_this *User) SetCreatedAt(CreatedAt time.Time) {
 }
 func (_this *User) SetUpdatedAt(UpdatedAt time.Time) {
 	_this.UpdatedAt = UpdatedAt
-}
-func (_this *User) SetProfile(Profile *Profile) {
-	_this.Profile = Profile
-}
-func (_this *User) SetGroups(Groups []*Group) {
-	_this.Groups = Groups
 }
 
 func (_this *User) GetID() uuid.UUID {
@@ -102,7 +96,6 @@ func (_this *User) GetMFAEnabled() bool {
 func (_this *User) GetMFASecret() string {
 	return _this.MFASecret
 }
-
 func (_this *User) GetDeletedAt() gorm.DeletedAt {
 	return _this.DeletedAt
 }
@@ -117,4 +110,7 @@ func (_this *User) GetProfile() *Profile {
 }
 func (_this *User) GetGroups() []*Group {
 	return _this.Groups
+}
+func (_this *User) GetPolicies() []*Policy {
+	return _this.Policies
 }
