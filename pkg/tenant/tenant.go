@@ -2,6 +2,7 @@ package pkgTenant
 
 import (
 	"database/sql"
+	pkgPostgres "delivery/pkg/postgres"
 	"encoding/json"
 	"errors"
 	"fmt"

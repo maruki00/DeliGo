@@ -1,6 +1,7 @@
 package pkgValidator
 
 import (
+	pkgValidations "delivery/pkg/validations"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -14,7 +15,7 @@ type Request struct {
 
 func NewRequest() *Request {
 	val := validator.New()
-	val.RegisterValidation("boolean", validations.BooleanValidator)
+	val.RegisterValidation("boolean", pkgValidations.BooleanValidator)
 	return &Request{
 		v: val,
 	}
