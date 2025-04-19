@@ -10,8 +10,6 @@ import (
 	"github.com/google/uuid"
 )
 
-var _ contracts.IUserRepository = (*UserRepository)(nil)
-
 type UserRepository struct {
 	db pkgPostgres.PGHandler
 }
