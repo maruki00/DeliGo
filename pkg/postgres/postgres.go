@@ -1,61 +1,52 @@
 package pkgPostgres
 
 import (
-	"database/sql"
-	"errors"
+	"log/slog"
 
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-type PGDB interface {
-	*sql.DB | *gorm.DB
-}
-
-type SQLDB interface {
-	*sql.DB
-}
-
-type GORMDB interface {
-	*gorm.DB
-}
-
-type PGHandler[T PGDB] struct {
-	DB       T
+type PGHandler struct {
+	DB       *gorm.DB
 	MaxTries int
 	Timeout  int
 }
 
-func (pg *PGHandler[T]) SetDB(db T) {
+func (pg *PGHandler) SetDB(db *gorm.DB) {
 	pg.DB = db
 }
 
-func NewDB[T PGDB](dsn string) (T, error) {
-	var zero T
+func NewDB(dsn string) (*PGHandler, error) {
 
-	switch any(zero).(type) {
-	case *sql.DB:
-		db, err := sql.Open("postgres", dsn)
-		if err != nil {
-			return zero, err
-		}
-		return any(db).(T), nil
-	case *gorm.DB:
-		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-		if err != nil {
-			return zero, err
-		}
-		return any(db).(T), nil
-	default:
-		return zero, errors.New("database type is not supported")
+	objDB := &PGHandler{
+		DB:       nil,
+		MaxTries: MAX_TRIES,
+		Timeout:  TIMEOUT,
 	}
+	var err error
+	for i := range objDB.MaxTries {
+		slog.Info("trying to connect to Postgres.", i, " times")
+		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+			Logger: logger.Default.LogMode(logger.Info),
+		})
+
+		if err != nil {
+			continue
+		}
+		objDB.DB = db
+		return objDB, nil
+	}
+
+	return nil, err
 }
 
-func (pg *PGHandler[T]) GetDB() T {
+func (pg *PGHandler) GetDB() *gorm.DB {
 	return pg.DB
 }
 
-func (pg *PGHandler[T]) Close() {
-	pg.Close()
+func (pg *PGHandler) Close() {
+
 }
