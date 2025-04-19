@@ -77,7 +77,7 @@ func (t *Tenant[T]) Register(tenant string, userID string) (any, error) {
 		return nil, err
 
 	}
-	t.Pgs[tenant] = pg
+	t.Pgs[tenant] = any(pg).(T)
 	return pg, nil
 }
 

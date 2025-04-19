@@ -13,6 +13,14 @@ type PGDB interface {
 	*sql.DB | *gorm.DB
 }
 
+type SQLDB interface {
+	*sql.DB
+}
+
+type GORMDB interface {
+	*gorm.DB
+}
+
 type PGHandler[T PGDB] struct {
 	DB       T
 	MaxTries int
@@ -49,5 +57,5 @@ func (pg *PGHandler[T]) GetDB() T {
 }
 
 func (pg *PGHandler[T]) Close() {
-	// _ = pg.Close()
+	pg.Close()
 }
