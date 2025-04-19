@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"delivery/internal/auth/app"
-	"delivery/internal/auth/domain/dtos"
-	"delivery/internal/auth/userGateWay/requests"
-	"delivery/pkg/utils"
+	"deligo/internal/auth/app"
+	"deligo/internal/auth/domain/dtos"
+	"deligo/internal/auth/userGateWay/requests"
+	"deligo/pkg/utils"
 	"fmt"
 	"net/http"
 

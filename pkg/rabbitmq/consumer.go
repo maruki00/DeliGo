@@ -2,7 +2,7 @@ package pkgRabbitmq
 
 import (
 	"context"
-	"delivery/cmd/user/configs"
+	"deligo/cmd/user/configs"
 
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -36,7 +36,7 @@ func (c *Consumer) MakeChannel() (*amqp091.Channel, error) {
 	return ch, nil
 }
 
-func (c *Consumer) StartConsumer(worker func(ctx context.Context, delivery <-chan amqp091.Delivery)) error {
+func (c *Consumer) StartConsumer(worker func(ctx context.Context, deligo <-chan amqp091.deligo)) error {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -59,7 +59,7 @@ func (c *Consumer) StartConsumer(worker func(ctx context.Context, delivery <-cha
 			return err
 		}
 
-		delivery, err := channel.Consume(
+		deligo, err := channel.Consume(
 			queue.Name,
 			"",
 			false,
@@ -73,7 +73,7 @@ func (c *Consumer) StartConsumer(worker func(ctx context.Context, delivery <-cha
 		}
 
 		for i := 0; i < int(c.poolSize/len(c.queuesName)); i++ {
-			go worker(ctx, delivery)
+			go worker(ctx, deligo)
 		}
 	}
 	forever := make(chan bool)

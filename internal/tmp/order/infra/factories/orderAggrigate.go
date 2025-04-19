@@ -2,11 +2,11 @@ package factories
 
 import (
 	"bytes"
-	"delivery/internal/order/app/enums"
-	aggrigate "delivery/internal/order/domain/aggrigates"
-	"delivery/internal/order/infra/models"
-	product_infra_models "delivery/internal/product/infrastructure/models"
-	shared_models "delivery/internal/shared/infra/models"
+	"deligo/internal/order/app/enums"
+	aggrigate "deligo/internal/order/domain/aggrigates"
+	"deligo/internal/order/infra/models"
+	product_infra_models "deligo/internal/product/infrastructure/models"
+	shared_models "deligo/internal/shared/infra/models"
 	"encoding/json"
 	"errors"
 	"fmt"

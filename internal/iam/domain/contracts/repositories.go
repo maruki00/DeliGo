@@ -2,7 +2,7 @@ package contracts
 
 import (
 	"context"
-	"delivery/internal/iam/infra/models"
+	"deligo/internal/iam/infra/models"
 )
 
 type Pagination struct{}

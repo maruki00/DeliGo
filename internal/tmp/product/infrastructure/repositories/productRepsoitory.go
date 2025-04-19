@@ -2,8 +2,8 @@ package repositories
 
 import (
 	"context"
-	"delivery/internal/product/domian/entities"
-	"delivery/internal/product/infrastructure/models"
+	"deligo/internal/product/domian/entities"
+	"deligo/internal/product/infrastructure/models"
 	"errors"
 	"fmt"
 	"strings"

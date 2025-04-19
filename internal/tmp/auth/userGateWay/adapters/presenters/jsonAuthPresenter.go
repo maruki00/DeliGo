@@ -1,9 +1,9 @@
 package presenters
 
 import (
-	"delivery/internal/auth/userGateWay/adapters/viewmodels"
-	shared_contracts "delivery/internal/shared/domain/contracts"
-	shared_models "delivery/internal/shared/infra/models"
+	"deligo/internal/auth/userGateWay/adapters/viewmodels"
+	shared_contracts "deligo/internal/shared/domain/contracts"
+	shared_models "deligo/internal/shared/infra/models"
 )
 
 type JsonAuthPresenter struct {

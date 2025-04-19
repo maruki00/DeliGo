@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"delivery/internal/auth/app"
+	"deligo/internal/auth/app"
 
 	"github.com/gin-gonic/gin"
 )

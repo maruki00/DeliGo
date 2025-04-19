@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "Delivery",
+  "name": "deligo",
   "type": "collection",
   "ignore": [
     "node_modules",

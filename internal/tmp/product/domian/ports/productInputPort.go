@@ -2,8 +2,8 @@ package ports
 
 import (
 	"context"
-	"delivery/internal/product/domian/dtos"
-	shared_contracts "delivery/internal/shared/domain/contracts"
+	"deligo/internal/product/domian/dtos"
+	shared_contracts "deligo/internal/shared/domain/contracts"
 )
 
 type ProductInputPort interface {

@@ -1,7 +1,7 @@
 package respositories
 
 import (
-	"delivery/internal/shop/domain/entities"
+	"deligo/internal/shop/domain/entities"
 
 	"gorm.io/gorm"
 )

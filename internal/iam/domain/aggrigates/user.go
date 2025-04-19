@@ -1,6 +1,6 @@
 package aggrigates
 
-import "delivery/internal/user/domain/entities"
+import "deligo/internal/user/domain/entities"
 
 type UserAggrigate struct {
 	User    entities.UserEntity

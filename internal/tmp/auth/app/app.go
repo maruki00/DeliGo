@@ -2,12 +2,12 @@ package app
 
 import (
 	"context"
-	"delivery/cmd/auth/configs"
-	"delivery/internal/auth/app/services"
-	"delivery/internal/auth/domain/contracts"
-	"delivery/internal/auth/domain/ports"
-	"delivery/internal/auth/infra/repositories"
-	"delivery/internal/auth/userGateWay/adapters/presenters"
+	"deligo/cmd/auth/configs"
+	"deligo/internal/auth/app/services"
+	"deligo/internal/auth/domain/contracts"
+	"deligo/internal/auth/domain/ports"
+	"deligo/internal/auth/infra/repositories"
+	"deligo/internal/auth/userGateWay/adapters/presenters"
 
 	"github.com/go-playground/validator"
 	"github.com/rabbitmq/amqp091-go"
@@ -36,6 +36,6 @@ func InitApp(cfg *configs.Config) (*App, error) {
 	}, nil
 }
 
-func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
+func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.deligo) {
 
 }

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"delivery/cmd/auth/configs"
-	"delivery/internal/auth/app"
-	"delivery/internal/auth/app/routes"
+	"deligo/cmd/auth/configs"
+	"deligo/internal/auth/app"
+	"deligo/internal/auth/app/routes"
 	"fmt"
 
 	"github.com/gin-gonic/gin"

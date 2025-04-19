@@ -1,11 +1,11 @@
 package main
 
 import (
-	auth_routes "delivery/internal/auth/Application/Routes"
-	order_routes "delivery/internal/order/Application/Routes"
-	prouduct_routes "delivery/internal/product/Application/Routes"
-	shared_configs "delivery/internal/shared/Application/Configs"
-	shareddb "delivery/internal/shared/infra/DB"
+	auth_routes "deligo/internal/auth/Application/Routes"
+	order_routes "deligo/internal/order/Application/Routes"
+	prouduct_routes "deligo/internal/product/Application/Routes"
+	shared_configs "deligo/internal/shared/Application/Configs"
+	shareddb "deligo/internal/shared/infra/DB"
 	"fmt"
 
 	"github.com/gin-gonic/gin"

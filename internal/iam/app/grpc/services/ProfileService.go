@@ -2,9 +2,9 @@ package grpc_services
 
 import (
 	"context"
-	profile_grpc "delivery/internal/user/infra/grpc/profile"
-	"delivery/internal/user/infra/models"
-	"delivery/internal/user/infra/repositories"
+	profile_grpc "deligo/internal/user/infra/grpc/profile"
+	"deligo/internal/user/infra/models"
+	"deligo/internal/user/infra/repositories"
 	"strconv"
 
 	"google.golang.org/protobuf/types/known/structpb"

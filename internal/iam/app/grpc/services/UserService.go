@@ -2,10 +2,10 @@ package grpc_services
 
 import (
 	"context"
-	"delivery/internal/user/domain/contracts"
-	user_grpc "delivery/internal/user/infra/grpc/user"
-	"delivery/internal/user/infra/models"
-	pkgUtils "delivery/pkg/utils"
+	"deligo/internal/user/domain/contracts"
+	user_grpc "deligo/internal/user/infra/grpc/user"
+	"deligo/internal/user/infra/models"
+	pkgUtils "deligo/pkg/utils"
 
 	"google.golang.org/protobuf/types/known/structpb"
 )

@@ -1,11 +1,11 @@
 package repositories
 
 import (
-	"delivery/internal/auth/domain/entities"
-	"delivery/internal/auth/infra/models"
-	auth_infra_models "delivery/internal/auth/infra/models"
-	shared_entities "delivery/internal/shared/domain/entities"
-	shared_models "delivery/internal/shared/infra/models"
+	"deligo/internal/auth/domain/entities"
+	"deligo/internal/auth/infra/models"
+	auth_infra_models "deligo/internal/auth/infra/models"
+	shared_entities "deligo/internal/shared/domain/entities"
+	shared_models "deligo/internal/shared/infra/models"
 	"errors"
 	"sync"
 	"time"

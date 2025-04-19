@@ -1,9 +1,9 @@
 package presenters
 
 import (
-	shared_contracts "delivery/internal/shared/domain/contracts"
-	shared_models "delivery/internal/shared/infra/models"
-	shared_viewmodels "delivery/internal/shared/userGateway/adapters/viewModels"
+	shared_contracts "deligo/internal/shared/domain/contracts"
+	shared_models "deligo/internal/shared/infra/models"
+	shared_viewmodels "deligo/internal/shared/userGateway/adapters/viewModels"
 )
 
 type ProductPresenter struct {

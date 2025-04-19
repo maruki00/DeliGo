@@ -87,7 +87,7 @@ import (
 // 		PUBLISH_IMMEDIATE,
 // 		amqp.Publishing{
 // 			ContentType:  contentType,
-// 			DeliveryMode: amqp.Persistent,
+// 			deligoMode: amqp.Persistent,
 // 			MessageId:    uuid.New().String(),
 // 			Timestamp:    time.Now(),
 // 			Body:         body,

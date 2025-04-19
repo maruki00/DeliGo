@@ -1,14 +1,14 @@
 package services
 
 import (
-	"delivery/internal/auth/domain/contracts"
-	"delivery/internal/auth/domain/dtos"
-	"delivery/internal/auth/domain/ports"
-	"delivery/internal/auth/infra/models"
-	shared_contracts "delivery/internal/shared/domain/contracts"
-	shared_models "delivery/internal/shared/infra/models"
-	pkgJwt "delivery/pkg/jwt"
-	"delivery/pkg/utils"
+	"deligo/internal/auth/domain/contracts"
+	"deligo/internal/auth/domain/dtos"
+	"deligo/internal/auth/domain/ports"
+	"deligo/internal/auth/infra/models"
+	shared_contracts "deligo/internal/shared/domain/contracts"
+	shared_models "deligo/internal/shared/infra/models"
+	pkgJwt "deligo/pkg/jwt"
+	"deligo/pkg/utils"
 	"math/rand"
 	"time"
 

@@ -1,8 +1,8 @@
 package services
 
 import (
-	"delivery/internal/auth/domain/dtos"
-	shared_contracts "delivery/internal/shared/domain/contracts"
+	"deligo/internal/auth/domain/dtos"
+	shared_contracts "deligo/internal/shared/domain/contracts"
 )
 
 type AuthService struct {

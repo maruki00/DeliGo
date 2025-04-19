@@ -1,7 +1,7 @@
 package pkgValidator
 
 import (
-	pkgValidations "delivery/pkg/validations"
+	pkgValidations "deligo/pkg/validations"
 	"encoding/json"
 	"errors"
 	"fmt"

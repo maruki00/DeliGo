@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"delivery/internal/auth/app"
+	"deligo/internal/auth/app"
 )
 
 type CustomerController struct {

@@ -1,8 +1,8 @@
 package ports
 
 import (
-	shared_domain_contracts "delivery/internal/shared/domain/contracts"
-	shared_models "delivery/internal/shared/infra/models"
+	shared_domain_contracts "deligo/internal/shared/domain/contracts"
+	shared_models "deligo/internal/shared/infra/models"
 )
 
 type AuthOutputPort interface {

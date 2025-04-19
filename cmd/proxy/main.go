@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"delivery/cmd/proxy/configs"
-	user_grpc "delivery/internal/user/infra/grpc/user"
+	"deligo/cmd/proxy/configs"
+	user_grpc "deligo/internal/user/infra/grpc/user"
 	"fmt"
 	"log/slog"
 	"net/http"

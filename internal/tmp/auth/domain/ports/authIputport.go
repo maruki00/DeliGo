@@ -1,8 +1,8 @@
 package ports
 
 import (
-	auth_domain_dtos "delivery/internal/auth/domain/dtos"
-	shared_domain_contracts "delivery/internal/shared/domain/contracts"
+	auth_domain_dtos "deligo/internal/auth/domain/dtos"
+	shared_domain_contracts "deligo/internal/shared/domain/contracts"
 )
 
 type AuthInputPort interface {

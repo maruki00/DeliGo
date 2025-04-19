@@ -2,12 +2,12 @@ package services
 
 import (
 	"context"
-	"delivery/internal/product/domian/dtos"
-	"delivery/internal/product/domian/ports"
-	"delivery/internal/product/domian/repositories"
-	"delivery/internal/product/infrastructure/models"
-	shared_contracts "delivery/internal/shared/domain/contracts"
-	shared_models "delivery/internal/shared/infra/models"
+	"deligo/internal/product/domian/dtos"
+	"deligo/internal/product/domian/ports"
+	"deligo/internal/product/domian/repositories"
+	"deligo/internal/product/infrastructure/models"
+	shared_contracts "deligo/internal/shared/domain/contracts"
+	shared_models "deligo/internal/shared/infra/models"
 	"net/http"
 	"strconv"
 	"strings"

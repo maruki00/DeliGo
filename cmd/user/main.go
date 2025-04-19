@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"delivery/cmd/user/configs"
-	"delivery/internal/user/app"
-	grpc_profile "delivery/internal/user/infra/grpc/profile"
-	grpc_user "delivery/internal/user/infra/grpc/user"
+	"deligo/cmd/user/configs"
+	"deligo/internal/user/app"
+	grpc_profile "deligo/internal/user/infra/grpc/profile"
+	grpc_user "deligo/internal/user/infra/grpc/user"
 	"fmt"
 	"log/slog"
 	"net"

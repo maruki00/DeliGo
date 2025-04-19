@@ -2,9 +2,9 @@ package app
 
 import (
 	"context"
-	"delivery/internal/order/app/services"
-	"delivery/internal/order/domain/contracts"
-	"delivery/internal/order/domain/ports"
+	"deligo/internal/order/app/services"
+	"deligo/internal/order/domain/contracts"
+	"deligo/internal/order/domain/ports"
 
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -30,6 +30,6 @@ func NewApp(
 	}
 }
 
-func (app *App) Worder(ctx context.Context, delivery <-chan amqp091.Delivery) {
+func (app *App) Worder(ctx context.Context, deligo <-chan amqp091.deligo) {
 
 }

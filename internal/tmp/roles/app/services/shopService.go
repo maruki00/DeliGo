@@ -1,8 +1,8 @@
 package services
 
 import (
-	"delivery/internal/shop/domain/contracts"
-	shop_domain_contracts "delivery/internal/shop/domain/contracts"
+	"deligo/internal/shop/domain/contracts"
+	shop_domain_contracts "deligo/internal/shop/domain/contracts"
 )
 
 type ShopService struct {

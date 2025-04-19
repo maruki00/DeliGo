@@ -1,7 +1,7 @@
 package main
 
 import (
-	"delivery/cmd/courier/configs"
+	"deligo/cmd/courier/configs"
 	"fmt"
 
 	"github.com/gin-gonic/gin"

@@ -26,7 +26,7 @@
 	|-> Track Order
 	|-> Report For Something wrong
 	|-> Chat  
-	|-> Rate Delivery Service
+	|-> Rate deligo Service
 	|-> Rate Product 
 
 //Restorant Service
@@ -39,10 +39,10 @@
 //Courier Service
 	|-> Accept Order
 	|-> Cancel Order
-	|-> Start delivery
-	|-> Complete delivery
+	|-> Start deligo
+	|-> Complete deligo
 
-//Delivery Integration
+//deligo Integration
 	|-> Integrator
 
 
@@ -50,7 +50,7 @@
 //Domains
 	|-> Auth
 	|-> Costumer
-	|-> Delivery
+	|-> deligo
 	|-> Order
 	|-> Payment
 	|-> Notifications
@@ -85,4 +85,4 @@
 
 
 
-Auth,Costumer,Delivery,Order,Payment,Notifications,Rate,Users,Product
+Auth,Costumer,deligo,Order,Payment,Notifications,Rate,Users,Product

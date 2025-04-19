@@ -1,10 +1,10 @@
 package contracts
 
 import (
-	"delivery/internal/auth/domain/entities"
-	"delivery/internal/auth/infra/models"
-	shared_entities "delivery/internal/shared/domain/entities"
-	shared_models "delivery/internal/shared/infra/models"
+	"deligo/internal/auth/domain/entities"
+	"deligo/internal/auth/infra/models"
+	shared_entities "deligo/internal/shared/domain/entities"
+	shared_models "deligo/internal/shared/infra/models"
 )
 
 type IAuthRepository interface {

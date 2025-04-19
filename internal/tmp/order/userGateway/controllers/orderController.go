@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"delivery/internal/order/domain/ports"
-	"delivery/internal/order/userGateway/requests"
-	shared_models "delivery/internal/shared/infra/models"
+	"deligo/internal/order/domain/ports"
+	"deligo/internal/order/userGateway/requests"
+	shared_models "deligo/internal/shared/infra/models"
 	"fmt"
 	"net/http"
 

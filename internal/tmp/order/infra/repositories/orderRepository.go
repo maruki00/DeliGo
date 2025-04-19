@@ -2,9 +2,9 @@ package repositories
 
 import (
 	"context"
-	aggrigate "delivery/internal/order/domain/aggrigates"
-	"delivery/internal/order/domain/entities"
-	"delivery/internal/order/infra/models"
+	aggrigate "deligo/internal/order/domain/aggrigates"
+	"deligo/internal/order/domain/entities"
+	"deligo/internal/order/infra/models"
 
 	"errors"
 	"fmt"

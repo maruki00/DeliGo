@@ -1,7 +1,7 @@
 package viewmodels
 
 import (
-	shared_models "delivery/internal/shared/infra/models"
+	shared_models "deligo/internal/shared/infra/models"
 	"encoding/json"
 )
 

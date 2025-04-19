@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	"delivery/internal/product/userGetway/controllers"
+	"deligo/internal/product/userGetway/controllers"
 )
 
 var ProductRouter = func(router *gin.Engine, db *gorm.DB) {

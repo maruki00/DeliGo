@@ -2,11 +2,11 @@ package app
 
 import (
 	"context"
-	"delivery/cmd/user/configs"
-	grpc_services "delivery/internal/user/app/grpc/services"
-	"delivery/internal/user/domain/contracts"
-	"delivery/internal/user/infra/repositories"
-	pkgPostgres "delivery/pkg/postgres"
+	"deligo/cmd/user/configs"
+	grpc_services "deligo/internal/user/app/grpc/services"
+	"deligo/internal/user/domain/contracts"
+	"deligo/internal/user/infra/repositories"
+	pkgPostgres "deligo/pkg/postgres"
 	"fmt"
 	"log/slog"
 
@@ -50,7 +50,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	return app, func() { _ = db.DB.Close() }, nil
 }
 
-func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
+func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.deligo) {
 
 	for {
 		select {

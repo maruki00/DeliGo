@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	shared_entities "delivery/internal/shared/domain/entities"
+	shared_entities "deligo/internal/shared/domain/entities"
 	"errors"
 	"net/http"
 	"time"

@@ -15,6 +15,6 @@ func InitApp() (*App, error) {
 	return nil, nil
 }
 
-func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
+func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.deligo) {
 
 }
