@@ -7,6 +7,7 @@ import (
 	"deligo/internal/iam/infra/models"
 	pkgUtils "deligo/pkg/utils"
 
+	"github.com/google/uuid"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
@@ -23,30 +24,44 @@ func NewUserService(userRepo contracts.IUserRepository) *UserService {
 
 func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 
-	ID                uuid.UUID
-    Username          string
-    Email             string
-    TenantID          string
-    Password          string
-    PasswordHash      string
-    PasswordChangedAt *time.Time
-    IsActive          bool
-    LastLogin         *time.Time
-    MFAEnabled        bool
-    MFASecret         string
-    Roles             []Role
-    DeletedAt         gorm.DeletedAt `gorm:"index"`
-    CreatedAt         time.Time
-    UpdatedAt         time.Time
-    Profile           Profile `gorm:"foreignKey:UserID"`
-    Groups            []Group `gorm:"many2many:user_groups;"`
+	// ID                uuid.UUID
+    // Username          string
+    // Email             string
+    // TenantID          string
+    // Password          string
+    // PasswordHash      string
+    // PasswordChangedAt *time.Time
+    // IsActive          bool
+    // LastLogin         *time.Time
+    // MFAEnabled        bool
+    // MFASecret         string
+    // Roles             []Role
+    // DeletedAt         gorm.DeletedAt `gorm:"index"`
+    // CreatedAt         time.Time
+    // UpdatedAt         time.Time
+    // Profile           Profile `gorm:"foreignKey:UserID"`
+    // Groups            []Group `gorm:"many2many:user_groups;"`
 
 
-	
+
 	res, err := us.userRepo.Create(ctx, &models.User{
-		Email:    in.Email,
-		Password: pkgUtils.Sha512(in.Password),
-		Role:     in.Role,
+		ID: uuid.New().String(),
+		Username: in.UserName,
+		Email: in.Email
+		TenantID
+		Password
+		PasswordHash
+		PasswordChangedAt
+		IsActive
+		LastLogin
+		MFAEnabled
+		MFASecret
+		Roles
+		DeletedAt
+		CreatedAt
+		UpdatedAt
+		Profile
+		Groups
 	})
 
 	if err != nil {
