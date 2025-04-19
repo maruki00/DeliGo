@@ -7,21 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type Group struct {
+type UserGroup struct {
 	ID        uuid.UUID      `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
-	Name      string         `gorm:"type:varchar(255);not null"`
+	UserID    string         `gorm:"type:varchar(32);not null;index:idx_user_group"`
+	GroupID   string         `gorm:"type:varchar(32);not null;index:idx_user_group"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	CreatedAt time.Time      `gorm:"not null;default:now()"`
 	UpdatedAt time.Time      `gorm:"not null;default:now()"`
-
-	// Associations
-	Users    []User   `gorm:"many2many:user_groups;"`
-	Policies []Policy `gorm:"many2many:group_policies;"`
 }
 
-func (g *Group) BeforeCreate(tx *gorm.DB) error {
-	if g.ID == uuid.Nil {
-		g.ID = uuid.New()
+func (ug *UserGroup) BeforeCreate(tx *gorm.DB) error {
+	if ug.ID == uuid.Nil {
+		ug.ID = uuid.New()
 	}
 	return nil
 }
