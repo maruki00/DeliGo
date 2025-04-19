@@ -2,8 +2,7 @@ package repositories
 
 import (
 	"context"
-	"deligo/internal/user/domain/entities"
-	"deligo/internal/user/infra/models"
+	"deligo/internal/iam/domain/entities"
 	pkgPostgres "deligo/pkg/postgres"
 	"sync"
 )

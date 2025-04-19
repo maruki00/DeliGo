@@ -5,57 +5,49 @@ import (
 	"errors"
 
 	_ "github.com/lib/pq"
-	"golang.org/x/exp/slog"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-const (
-	MAX_TRIES = 3
-	TIMEOUT   = 1
-)
+type PGDB interface {
+	*sql.DB | *gorm.DB
+}
 
-type PGHandler struct {
-	//DB       *pgx.Conn
-	DB       *sql.DB
+type PGHandler[T PGDB] struct {
+	DB       T
 	MaxTries int
 	Timeout  int
 }
 
-func (pg *PGHandler) SetDB(db *sql.DB) {
+func (pg *PGHandler[T]) SetDB(db T) {
 	pg.DB = db
 }
 
-func NewDB(dsn string) (*sql.DB, error) {
-	db, err := sql.Open("postgres", dsn)
-	if err != nil {
-		return nil, err
-	}
-	return db, nil
-}
-func NewPG(dsn string) (*PGHandler, error) {
+func NewDB[T PGDB](dsn string) (T, error) {
+	var zero T
 
-	if dsn == "" {
-		return nil, errors.New("dsn is not valid")
+	switch any(zero).(type) {
+	case *sql.DB:
+		db, err := sql.Open("postgres", dsn)
+		if err != nil {
+			return zero, err
+		}
+		return any(db).(T), nil
+	case *gorm.DB:
+		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		if err != nil {
+			return zero, err
+		}
+		return any(db).(T), nil
+	default:
+		return zero, errors.New("database type is not supported")
 	}
-
-	pg := &PGHandler{
-		MaxTries: MAX_TRIES,
-		Timeout:  TIMEOUT,
-		DB:       nil,
-	}
-
-	db, err := NewDB(dsn)
-	if err != nil {
-		return nil, err
-	}
-	pg.DB = db
-	slog.Info("postgres is connected !")
-	return pg, nil
 }
 
-func (pg *PGHandler) GetDB() *sql.DB {
+func (pg *PGHandler[T]) GetDB() T {
 	return pg.DB
 }
 
-func (pg *PGHandler) Close() {
-	_ = pg.DB.Close()
+func (pg *PGHandler[T]) Close() {
+	// _ = pg.Close()
 }

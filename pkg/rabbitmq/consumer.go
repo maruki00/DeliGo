@@ -36,7 +36,7 @@ func (c *Consumer) MakeChannel() (*amqp091.Channel, error) {
 	return ch, nil
 }
 
-func (c *Consumer) StartConsumer(worker func(ctx context.Context, deligo <-chan amqp091.deligo)) error {
+func (c *Consumer) StartConsumer(worker func(ctx context.Context, deligo <-chan amqp091.Delivery)) error {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
