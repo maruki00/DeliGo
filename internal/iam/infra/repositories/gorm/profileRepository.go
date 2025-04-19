@@ -7,18 +7,18 @@ import (
 	"sync"
 )
 
-type ProfileRepository struct {
+type ProfileRepository[T pkgPostgres.PGDB] struct {
 	sync.RWMutex
-	db pkgPostgres.PGHandler
+	db T
 }
 
-func NewProfileRepository(db pkgPostgres.PGHandler) *ProfileRepository {
-	return &ProfileRepository{
+func NewProfileRepository[T pkgPostgres.PGDB](db T) *ProfileRepository[T] {
+	return &ProfileRepository[T]{
 		db: db,
 	}
 }
 
-func (ur *ProfileRepository) Create(ctx context.Context, entity entities.ProfileEntity) (entities.ProfileEntity, error) {
+func (ur *ProfileRepository[T]) Create(ctx context.Context, entity entities.ProfileEntity) (entities.ProfileEntity, error) {
 	sql := `INSERT INTO profiles(user_id, full_name, avatar, bio) VALUES($1, $2, $3, $44) RETURNING id`
 	tx, err := ur.db.GetDB().Begin()
 	if err != nil {
