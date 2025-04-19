@@ -15,13 +15,6 @@ type Policy struct {
 	CreatedAt time.Time      `gorm:"not null;default:now()"`
 	UpdatedAt time.Time      `gorm:"not null;default:now()"`
 
-	Permissions []Permission `gorm:"foreignKey:PolicyID"`
-	Groups      []Group      `gorm:"many2many:group_policies;"`
-}
-
-func (p *Policy) BeforeCreate(tx *gorm.DB) error {
-	if p.ID == uuid.Nil {
-		p.ID = uuid.New()
-	}
-	return nil
+	Permissions []*Permission `gorm:"foreignKey:PolicyID"`
+	Groups      []*Group      `gorm:"many2many:group_policies;"`
 }

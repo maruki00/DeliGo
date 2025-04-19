@@ -16,10 +16,3 @@ type Permission struct {
 	CreatedAt   time.Time      `gorm:"not null;default:now()"`
 	UpdatedAt   time.Time      `gorm:"not null;default:now()"`
 }
-
-func (p *Permission) BeforeCreate(tx *gorm.DB) error {
-	if p.ID == uuid.Nil {
-		p.ID = uuid.New()
-	}
-	return nil
-}
