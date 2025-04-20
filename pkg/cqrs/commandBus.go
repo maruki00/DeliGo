@@ -1,0 +1,32 @@
+package pkgCqrs
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type CommandBus struct {
+	handlers map[string]CommandHandler
+}
+
+func NewCommandBus() *CommandBus {
+	return &CommandBus{
+		handlers: make(map[string]CommandHandler),
+	}
+}
+
+func (_this *CommandBus) Register(command Command, handler CommandHandler) {
+	commandName := reflect.TypeOf(command).Name()
+	_this.handlers[commandName] = handler
+}
+
+func (_this *CommandBus) Dispatch(command Command) error {
+	commandName := reflect.TypeOf(command).Name()
+
+	handler, exists := _this.handlers[commandName]
+	if !exists {
+		return fmt.Errorf("no handler registered for command %s", commandName)
+	}
+
+	return handler.Handle(command)
+}
