@@ -3,10 +3,10 @@ package repositories
 import (
 	"context"
 	"deligo/internal/iam/domain/entities"
+	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
 
-	"github.com/volcengine/volc-sdk-golang/service/codePipeline/models"
 	"gorm.io/gorm"
 )
 
