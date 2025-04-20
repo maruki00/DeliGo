@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"deligo/internal/profile/domain/contracts"
 	"deligo/internal/profile/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
 	"sync"
@@ -12,7 +13,7 @@ type ProfileRepository struct {
 	db pkgPostgres.DBHandler
 }
 
-func NewProfileRepository(db pkgPostgres.DBHandler) *ProfileRepository {
+func NewProfileRepository(db pkgPostgres.DBHandler) contracts.IPorofileRepository {
 	return &ProfileRepository{
 		db: db,
 	}

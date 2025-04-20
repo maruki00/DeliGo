@@ -1,25 +1,16 @@
 package grpc_services
 
 import (
+	"deligo/internal/profile/domain/contracts"
 	profile_grpc "deligo/internal/profile/infra/grpc/profile"
-	"deligo/internal/profile/infra/repositories"
 )
 
-// import (
-// 	"context"
-// 	"deligo/internal/iam/infra/models"
-// 	profile_grpc "deligo/internal/user/infra/grpc/profile"
-// 	"strconv"
-
-// 	"google.golang.org/protobuf/types/known/structpb"
-// )
-
 type ProfileService struct {
-	repository *repositories.ProfileRepository
+	repository contracts.IPorofileRepository
 	profile_grpc.UnimplementedProfileServiceServer
 }
 
-func NewProfileService(repository *repositories.ProfileRepository) *ProfileService {
+func NewProfileService(repository contracts.IPorofileRepository) *ProfileService {
 	return &ProfileService{
 		repository: repository,
 	}

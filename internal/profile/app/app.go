@@ -2,8 +2,8 @@ package app
 
 import (
 	"context"
-	"deligo/cmd/profile/configs"
-	grpc_services "deligo/internal/profile/app/grpc/services"
+	"deligo/cmd/user/configs"
+	grpc_services "deligo/internal/profile/app/usecases"
 	"deligo/internal/profile/domain/contracts"
 	"deligo/internal/profile/infra/repositories"
 
