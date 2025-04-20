@@ -1,67 +1,63 @@
-package grpc_services
+package usecases
 
 import (
 	"context"
 	"deligo/internal/iam/domain/contracts"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
 	"deligo/internal/iam/infra/models"
-	pkgUtils "deligo/pkg/utils"
 
-	"github.com/google/uuid"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
-type UserService struct {
+type UserUseCase struct {
 	user_grpc.UnimplementedUserServiceServer
 	userRepo contracts.IUserRepository
 }
 
-func NewUserService(userRepo contracts.IUserRepository) *UserService {
-	return &UserService{
+func NewUserUseCase(userRepo contracts.IUserRepository) *UserUseCase {
+	return &UserUseCase{
 		userRepo: userRepo,
 	}
 }
 
-func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
+func (us *UserUseCase) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 
 	// ID                uuid.UUID
-    // Username          string
-    // Email             string
-    // TenantID          string
-    // Password          string
-    // PasswordHash      string
-    // PasswordChangedAt *time.Time
-    // IsActive          bool
-    // LastLogin         *time.Time
-    // MFAEnabled        bool
-    // MFASecret         string
-    // Roles             []Role
-    // DeletedAt         gorm.DeletedAt `gorm:"index"`
-    // CreatedAt         time.Time
-    // UpdatedAt         time.Time
-    // Profile           Profile `gorm:"foreignKey:UserID"`
-    // Groups            []Group `gorm:"many2many:user_groups;"`
+	// Username          string
+	// Email             string
+	// TenantID          string
+	// Password          string
+	// PasswordHash      string
+	// PasswordChangedAt *time.Time
+	// IsActive          bool
+	// LastLogin         *time.Time
+	// MFAEnabled        bool
+	// MFASecret         string
+	// Roles             []Role
+	// DeletedAt         gorm.DeletedAt `gorm:"index"`
+	// CreatedAt         time.Time
+	// UpdatedAt         time.Time
+	// Profile           Profile `gorm:"foreignKey:UserID"`
+	// Groups            []Group `gorm:"many2many:user_groups;"`
 
-
-
-	res, err := us.userRepo.Create(ctx, &models.User{
-		ID: uuid.New().String(),
-		Username: in.UserName,
-		Email: in.Email
-		TenantID
-		Password
-		PasswordHash
-		PasswordChangedAt
-		IsActive
-		LastLogin
-		MFAEnabled
-		MFASecret
-		Roles
-		DeletedAt
-		CreatedAt
-		UpdatedAt
-		Profile
-		Groups
+	err := us.userRepo.Save(ctx, &models.User{
+		// ID: uuid.New().String(),
+		// Username: in.UserName,
+		// Email: in.Email
+		// TenantID
+		// Password
+		// PasswordHash
+		// PasswordChangedAt
+		// IsActive
+		// LastLogin
+		// MFAEnabled
+		// MFASecret
+		// Roles
+		// DeletedAt
+		// CreatedAt
+		// UpdatedAt
+		// Profile
+		// Groups
 	})
 
 	if err != nil {
@@ -73,9 +69,9 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 	}
 
 	stuctRes, err := structpb.NewValue(map[string]any{
-		"id":    res.GetID(),
-		"email": res.GetEmail(),
-		"role":  res.GetRole(),
+		// "id":    res.GetID(),
+		// "email": res.GetEmail(),
+		// "role":  res.GetRole(),
 	})
 
 	if err != nil {
@@ -93,7 +89,7 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 	}, nil
 }
 
-// func (us *UserService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+// func (us *UserUseCase) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
 // 	if ok, err := us.userRepo.Delete(ctx, in.ID); !ok || err != nil {
 // 		return &user_grpc.Response{
 // 			Code:    400,
@@ -124,7 +120,7 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 
 // }
 
-// func (us *UserService) GetOne(ctx context.Context, in *user_grpc.GetUserRequest) (*user_grpc.Response, error) {
+// func (us *UserUseCase) GetOne(ctx context.Context, in *user_grpc.GetUserRequest) (*user_grpc.Response, error) {
 
 // 	res, err := us.userRepo.GetOne(ctx, in.GetId())
 // 	if err != nil {
@@ -149,7 +145,7 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 // 	}, nil
 // }
 
-// func (us *UserService) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
+// func (us *UserUseCase) GetMany(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 // 	if in.Offset <= 0 {
 // 		in.Offset = 10
 // 	}
@@ -183,7 +179,7 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 // 	}, nil
 // }
 
-// func (us *UserService) Search(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
+// func (us *UserUseCase) Search(ctx context.Context, in *user_grpc.EmptyUserRequest) (*user_grpc.Response, error) {
 // 	if in.Offset <= 0 {
 // 		in.Offset = 10
 // 	}
@@ -217,7 +213,7 @@ func (us *UserService) Create(ctx context.Context, in *user_grpc.CreateUserReque
 // 	}, nil
 // }
 
-// func (us *UserService) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
+// func (us *UserUseCase) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
 // 	u := &models.User{
 // 		Email: in.Email,
 // 		Role:  in.Role,

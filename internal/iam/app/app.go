@@ -3,9 +3,9 @@ package app
 import (
 	"context"
 	"deligo/cmd/user/configs"
-	grpc_services "deligo/internal/user/app/grpc/services"
-	"deligo/internal/user/domain/contracts"
-	"deligo/internal/user/infra/repositories"
+	grpc_services "deligo/internal/iam/app/grpc/services"
+	"deligo/internal/iam/domain/contracts"
+	"deligo/internal/iam/infra/repositories"
 	pkgPostgres "deligo/pkg/postgres"
 	"fmt"
 	"log/slog"
@@ -14,11 +14,13 @@ import (
 )
 
 type App struct {
-	db          *pkgPostgres.PGHandler
-	UserRepo    contracts.IUserRepository
-	ProfileRepo contracts.IProfileRepository
-	UserSVC     *grpc_services.UserService
-	ProfileSVC  *grpc_services.ProfileService
+	db             *pkgPostgres.PGHandler
+	UserRepo       contracts.IUserRepository
+	GroupRepo      contracts.IGroupRepository
+	PermissionRepo contracts.IPermissionRepository
+	PolicyRepo     contracts.IPolicyRepository
+
+	UserSVC *grpc_services.UserService
 }
 
 func (app *App) GetDB() any {
