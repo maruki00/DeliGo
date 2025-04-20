@@ -7,6 +7,10 @@ import (
 
 type PolicyRepository struct{}
 
+func NewPolicyRepository() *PolicyRepository {
+	return &PolicyRepository{}
+}
+
 func (_this *PolicyRepository) FindByID(ctx context.Context, id string) (*models.Policy, error) {
 	return nil, nil
 }

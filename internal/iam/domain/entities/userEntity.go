@@ -36,7 +36,7 @@ type UserEntity interface {
 	GetDeletedAt() gorm.DeletedAt
 	GetCreatedAt() time.Time
 	GetUpdatedAt() time.Time
-	GetProfile() models.Profile
+	// GetProfile() models.Profile
 	GetGroups() []*models.Group
 	GetPolicies() []*models.Policy
 }

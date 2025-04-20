@@ -7,6 +7,10 @@ import (
 
 type GroupRepository struct{}
 
+func NewGroupRepository() *GroupRepository {
+	return &GroupRepository{}
+}
+
 func (_this *GroupRepository) AssignUserToGroup(ctx context.Context, userID, groupID string) error {
 	return nil
 }

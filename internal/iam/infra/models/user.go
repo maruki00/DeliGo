@@ -105,9 +105,10 @@ func (_this *User) GetCreatedAt() time.Time {
 func (_this *User) GetUpdatedAt() time.Time {
 	return _this.UpdatedAt
 }
-func (_this *User) GetProfile() *Profile {
-	return _this.Profile
-}
+
+//	func (_this *User) GetProfile() *Profile {
+//		return _this.Profile
+//	}
 func (_this *User) GetGroups() []*Group {
 	return _this.Groups
 }

@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 	"deligo/cmd/user/configs"
-	grpc_services "deligo/internal/iam/app/grpc/services"
+	"deligo/internal/iam/app/usecases"
 	"deligo/internal/iam/domain/contracts"
 	"deligo/internal/iam/infra/repositories"
 	pkgPostgres "deligo/pkg/postgres"
@@ -14,13 +14,17 @@ import (
 )
 
 type App struct {
-	db             *pkgPostgres.PGHandler
+	db *pkgPostgres.PGHandler
+
 	UserRepo       contracts.IUserRepository
 	GroupRepo      contracts.IGroupRepository
 	PermissionRepo contracts.IPermissionRepository
 	PolicyRepo     contracts.IPolicyRepository
 
-	UserSVC *grpc_services.UserService
+	UserUC       *usecases.UserUseCase
+	PolicyUC     *usecases.PolicyUseCase
+	PermissionUC *usecases.PermissionUseCase
+	GroupUC      *usecases.GroupUseCase
 }
 
 func (app *App) GetDB() any {
@@ -35,18 +39,26 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		return nil, func() {}, err
 	}
 
-	userRepo := repositories.NewUserRepository(*db)
-	userSVC := grpc_services.NewUserService(userRepo)
+	UserRepo := repositories.NewUserRepository(*db)
+	GroupRepo := repositories.NewGroupRepository()
+	PermissionRepo := repositories.NewPermissionRepository()
+	PolicyRepo := repositories.NewPolicyRepository()
 
-	profileRepo := repositories.NewProfileRepository(*db)
-	profileSVC := grpc_services.NewProfileService(profileRepo)
+	UserUC := usecases.NewUserUseCase(UserRepo)
+	PolicyUC := usecases.NewPolicyUseCase(PolicyRepo)
+	PermissionUC := usecases.NewPermissionUseCase(PermissionRepo)
+	GroupUC := usecases.NewGroupUseCase(GroupRepo)
 
 	app := &App{
-		db:          db,
-		UserRepo:    userRepo,
-		ProfileRepo: profileRepo,
-		UserSVC:     userSVC,
-		ProfileSVC:  profileSVC,
+		db:             db,
+		UserRepo:       UserRepo,
+		GroupRepo:      GroupRepo,
+		PermissionRepo: PermissionRepo,
+		PolicyRepo:     PolicyRepo,
+		UserUC:         UserUC,
+		PolicyUC:       PolicyUC,
+		PermissionUC:   PermissionUC,
+		GroupUC:        GroupUC,
 	}
 
 	return app, func() {}, nil

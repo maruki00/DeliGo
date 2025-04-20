@@ -7,6 +7,10 @@ import (
 
 type PermissionRepository struct{}
 
+func NewPermissionRepository() *PermissionRepository {
+	return &PermissionRepository{}
+}
+
 func (_this *PermissionRepository) FindByID(ctx context.Context, id string) (*models.Permission, error) {
 	return nil, nil
 }
