@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+option go_package = "profile.grpc";
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+message Profile {
+	string ID 		= 1 [json_name = "id"];
+	string UserID 	= 2 [json_name = "user_id"];
+	string UserName = 3 [json_name = "user_name"];
+	string FullName = 4 [json_name = "full_name"];
+	string Password = 5 [json_name = "password"];
+	string Avatar 	= 6 [json_name = "avatar"];
+	string Bio 		= 7 [json_name = "bio"];
+}
+
+message CreateProfileRequest  {
+	string UserID 	= 2 [json_name = "user_id"];
+	string UserName = 3 [json_name = "user_name"];
+	string FullName = 4 [json_name = "full_name"];
+	string Password = 5 [json_name = "password"];
+	string Avatar 	= 6 [json_name = "avatar"];
+	string Bio 		= 7 [json_name = "bio"]; 
+}
+
+message DeleteProfileRequest {
+	string ID 			= 1 [json_name = "id"]; 
+}
+
+message GETRequest {
+	google.protobuf.Struct query_params = 1;
+}
+
+message UpdateProfileRequest {
+	string ID 					= 1 [json_name = "id"];
+	map<string, string> fields  = 2 [json_name = "fields"];
+}
+
+message ProfileResponse {
+	int32 Code 								= 1 [ json_name = "code"];
+    string Message 							= 2 [ json_name = "message"];
+	repeated google.protobuf.Value  Result 	= 3 [ json_name = "result"]; 
+}
+
+message EmptyProfileResponse {
+	int32 Page 		= 1 [json_name="page"];
+	int32 Offset 	= 2 [json_name="offset"];
+}
+
+service ProfileService {
+	
+	rpc Create(CreateProfileRequest) returns (ProfileResponse) {
+		option (google.api.http) = {
+			post: "/v1/profile/create",
+			body: "*"
+		};
+	};
+	
+	rpc Delete(DeleteProfileRequest) returns (ProfileResponse) {
+		option (google.api.http) = {
+			post: "/v1/profile/delete",
+			body: "*"
+		};
+	};
+	
+	rpc Update(UpdateProfileRequest) returns (ProfileResponse) {
+		option (google.api.http) = {
+			put: "/v1/profile/update",
+			body: "*"
+		};
+	};
+
+	rpc GetOne(GETRequest) returns (ProfileResponse) {
+		option (google.api.http) = {
+			get: "/v1/profile",
+		};
+	};
+	
+	rpc GetMany(GETRequest) returns (ProfileResponse) {
+		option (google.api.http) = {
+			get: "/v1/profiles"
+		};
+	};
+	
+	rpc Search(GETRequest) returns (ProfileResponse) {
+		option (google.api.http) = {
+			get: "/v1/profiles/search"
+		};
+	};
+} 
+
+
