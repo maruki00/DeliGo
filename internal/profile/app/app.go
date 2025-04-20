@@ -4,6 +4,8 @@ import (
 	"context"
 	"deligo/cmd/profile/configs"
 	grpc_services "deligo/internal/profile/app/grpc/services"
+	"deligo/internal/profile/domain/contracts"
+	"deligo/internal/profile/infra/repositories"
 
 	pkgPostgres "deligo/pkg/postgres"
 	"fmt"
@@ -14,8 +16,8 @@ import (
 
 type App struct {
 	db          *pkgPostgres.PGHandler
-	ProfileRepo //contracts
-	ProfileSVC  //*grpc_services.ProfileService
+	ProfileRepo contracts.IPorofileRepository
+	ProfileSVC  *grpc_services.ProfileService
 }
 
 func (app *App) GetDB() any {
@@ -30,7 +32,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		return nil, func() {}, err
 	}
 
-	profileRepo := repositories.NewProfileRepository(*db)
+	profileRepo := repositories.NewProfileRepository(db)
 	profileSVC := grpc_services.NewProfileService(profileRepo)
 
 	app := &App{

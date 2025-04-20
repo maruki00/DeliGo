@@ -1,6 +1,9 @@
 package grpc_services
 
-import "deligo/internal/profile/infra/repositories"
+import (
+	profile_grpc "deligo/internal/profile/infra/grpc/profile"
+	"deligo/internal/profile/infra/repositories"
+)
 
 // import (
 // 	"context"
@@ -16,11 +19,11 @@ type ProfileService struct {
 	profile_grpc.UnimplementedProfileServiceServer
 }
 
-// func NewProfileService(repository *repositories.ProfileRepository) *ProfileService {
-// 	return &ProfileService{
-// 		repository: repository,
-// 	}
-// }
+func NewProfileService(repository *repositories.ProfileRepository) *ProfileService {
+	return &ProfileService{
+		repository: repository,
+	}
+}
 
 // func (_this *ProfileService) Create(ctx context.Context, in *profile_grpc.CreateProfileRequest) (*profile_grpc.ProfileResponse, error) {
 // 	res, err := _this.repository.Create(ctx, &models.Profile{
