@@ -14,17 +14,15 @@ import (
 )
 
 type App struct {
-	db *pkgPostgres.PGHandler
-
+	db             *pkgPostgres.PGHandler
 	UserRepo       contracts.IUserRepository
 	GroupRepo      contracts.IGroupRepository
 	PermissionRepo contracts.IPermissionRepository
 	PolicyRepo     contracts.IPolicyRepository
-
-	UserUC       *usecases.UserUseCase
-	PolicyUC     *usecases.PolicyUseCase
-	PermissionUC *usecases.PermissionUseCase
-	GroupUC      *usecases.GroupUseCase
+	UserUC         *usecases.UserUseCase
+	PolicyUC       *usecases.PolicyUseCase
+	PermissionUC   *usecases.PermissionUseCase
+	GroupUC        *usecases.GroupUseCase
 }
 
 func (app *App) GetDB() any {
@@ -39,7 +37,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		return nil, func() {}, err
 	}
 
-	UserRepo := repositories.NewUserRepository(*db)
+	UserRepo := repositories.NewUserRepository(db)
 	GroupRepo := repositories.NewGroupRepository()
 	PermissionRepo := repositories.NewPermissionRepository()
 	PolicyRepo := repositories.NewPolicyRepository()

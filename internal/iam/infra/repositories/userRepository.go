@@ -11,10 +11,10 @@ import (
 )
 
 type UserRepository struct {
-	db pkgPostgres.PGHandler
+	db *pkgPostgres.PGHandler
 }
 
-func NewUserRepository(db pkgPostgres.PGHandler) *UserRepository {
+func NewUserRepository(db *pkgPostgres.PGHandler) *UserRepository {
 	return &UserRepository{
 		db: db,
 	}
