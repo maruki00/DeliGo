@@ -1,5 +1,7 @@
 package pkgCqrs
 
+import "context"
+
 type QueryHandler interface {
-	Handle(query Query) (interface{}, error)
+	Handle(ctx context.Context, query Query) (interface{}, error)
 }

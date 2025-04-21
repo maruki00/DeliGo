@@ -1,6 +1,7 @@
 package pkgCqrs
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 )
@@ -20,7 +21,7 @@ func (b *QueryBus) Register(query Query, handler QueryHandler) {
 	b.handlers[queryName] = handler
 }
 
-func (b *QueryBus) Dispatch(query Query) (interface{}, error) {
+func (b *QueryBus) Dispatch(ctx context.Context, query Query) (interface{}, error) {
 	queryName := reflect.TypeOf(query).Name()
 
 	handler, exists := b.handlers[queryName]
@@ -28,5 +29,5 @@ func (b *QueryBus) Dispatch(query Query) (interface{}, error) {
 		return nil, fmt.Errorf("no handler registered for query %s", queryName)
 	}
 
-	return handler.Handle(query)
+	return handler.Handle(ctx, query)
 }

@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"deligo/cmd/user/configs"
-	"deligo/internal/iam/app/usecases"
 	userCommands "deligo/internal/iam/app/user/commands"
 	userHandlers "deligo/internal/iam/app/user/handlers"
 	userQueries "deligo/internal/iam/app/user/queries"
@@ -23,10 +22,14 @@ type App struct {
 	GroupRepo      contracts.IGroupRepository
 	PermissionRepo contracts.IPermissionRepository
 	PolicyRepo     contracts.IPolicyRepository
-	UserUC         *usecases.UserUseCase
-	PolicyUC       *usecases.PolicyUseCase
-	PermissionUC   *usecases.PermissionUseCase
-	GroupUC        *usecases.GroupUseCase
+
+	UserCommandBus *pkgCqrs.CommandBus
+	UserQuerydBus  *pkgCqrs.QueryBus
+
+	// UserUC         *usecases.UserUseCase
+	// PolicyUC       *usecases.PolicyUseCase
+	// PermissionUC   *usecases.PermissionUseCase
+	// GroupUC        *usecases.GroupUseCase
 }
 
 func (app *App) GetDB() any {
@@ -53,8 +56,9 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	userCommandBus.Register(&userCommands.UpdateUserCommand{}, userHandlers.NewUpdateUserHandler(UserRepo))
 
 	userQuerydBus.Register(&userQueries.FindUserByIdQuery{}, userHandlers.NewFindUserByIdHandler(UserRepo))
-	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandlers.NewDeleteUserHandler(UserRepo))
-	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandlers.NewUpdateUserHandler(UserRepo))
+	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandlers.NewFindUserByEmailHandler(UserRepo))
+	userQuerydBus.Register(&userQueries.FindUserByUsernameQuery{}, userHandlers.NewFindUserByUsernameHandler(UserRepo))
+	userQuerydBus.Register(&userQueries.ListUsersByTenantQuery{}, userHandlers.NewListUsersByTenantHandler(UserRepo))
 
 	// UserUC := usecases.NewUserUseCase(UserRepo)
 	// PolicyUC := usecases.NewPolicyUseCase(PolicyRepo)
@@ -67,10 +71,9 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		GroupRepo:      GroupRepo,
 		PermissionRepo: PermissionRepo,
 		PolicyRepo:     PolicyRepo,
-		UserUC:         UserUC,
-		PolicyUC:       PolicyUC,
-		PermissionUC:   PermissionUC,
-		GroupUC:        GroupUC,
+
+		UserCommandBus: userCommandBus,
+		UserQuerydBus:  userQuerydBus,
 	}
 
 	return app, func() {}, nil

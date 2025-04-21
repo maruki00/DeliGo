@@ -16,6 +16,6 @@ func NewFindUserByEmailHandler(userRepo contracts.IUserRepository) *FindUserByEm
 	}
 }
 
-func (_this *FindUserByEmailHandler) Handle(ctx context.Context, command pkgCqrs.Command) (interface{}, error) {
+func (_this *FindUserByEmailHandler) Handle(ctx context.Context, command pkgCqrs.Query) (interface{}, error) {
 	return nil, nil
 }
