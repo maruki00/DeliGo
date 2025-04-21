@@ -1,6 +1,7 @@
 package pkgCqrs
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 )
@@ -20,7 +21,7 @@ func (_this *CommandBus) Register(command Command, handler CommandHandler) {
 	_this.handlers[commandName] = handler
 }
 
-func (_this *CommandBus) Dispatch(command Command) error {
+func (_this *CommandBus) Dispatch(ctx context.Context, command Command) error {
 	commandName := reflect.TypeOf(command).Name()
 
 	handler, exists := _this.handlers[commandName]
@@ -28,5 +29,5 @@ func (_this *CommandBus) Dispatch(command Command) error {
 		return fmt.Errorf("no handler registered for command %s", commandName)
 	}
 
-	return handler.Handle(command)
+	return handler.Handle(ctx, command)
 }

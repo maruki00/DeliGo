@@ -2,9 +2,7 @@ package usecases
 
 import (
 	"context"
-	"deligo/internal/iam/domain/contracts"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
-	"deligo/internal/iam/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
 
 	"google.golang.org/protobuf/types/known/structpb"
@@ -12,18 +10,20 @@ import (
 
 type UserUseCase struct {
 	user_grpc.UnimplementedUserServiceServer
-	///userRepo contracts.IUserRepository
 	commandBus *pkgCqrs.CommandBus
 	queryBus   *pkgCqrs.QueryBus
 }
 
-func NewUserUseCase(userRepo contracts.IUserRepository) *UserUseCase {
+func NewUserUseCase(
+	commandBus *pkgCqrs.CommandBus,
+	queryBus *pkgCqrs.QueryBus) *UserUseCase {
 	return &UserUseCase{
-		userRepo: userRepo,
+		commandBus: commandBus,
+		queryBus:   queryBus,
 	}
 }
 
-func (us *UserUseCase) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
+func (_this *UserUseCase) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 
 	// ID                uuid.UUID
 	// Username          string
@@ -43,25 +43,26 @@ func (us *UserUseCase) Create(ctx context.Context, in *user_grpc.CreateUserReque
 	// Profile           Profile `gorm:"foreignKey:UserID"`
 	// Groups            []Group `gorm:"many2many:user_groups;"`
 
-	err := us.userRepo.Save(ctx, &models.User{
-		// ID: uuid.New().String(),
-		// Username: in.UserName,
-		// Email: in.Email
-		// TenantID
-		// Password
-		// PasswordHash
-		// PasswordChangedAt
-		// IsActive
-		// LastLogin
-		// MFAEnabled
-		// MFASecret
-		// Roles
-		// DeletedAt
-		// CreatedAt
-		// UpdatedAt
-		// Profile
-		// Groups
-	})
+	err := _this.commandBus.Dispatch(nil)
+	// 	&models.User{
+	// 	// ID: uuid.New().String(),
+	// 	// Username: in.UserName,
+	// 	// Email: in.Email
+	// 	// TenantID
+	// 	// Password
+	// 	// PasswordHash
+	// 	// PasswordChangedAt
+	// 	// IsActive
+	// 	// LastLogin
+	// 	// MFAEnabled
+	// 	// MFASecret
+	// 	// Roles
+	// 	// DeletedAt
+	// 	// CreatedAt
+	// 	// UpdatedAt
+	// 	// Profile
+	// 	// Groups
+	// })
 
 	if err != nil {
 		return &user_grpc.Response{

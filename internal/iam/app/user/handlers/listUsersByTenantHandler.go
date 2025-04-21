@@ -1,9 +1,21 @@
 package userHandlers
 
+import (
+	"context"
+	"deligo/internal/iam/domain/contracts"
+	pkgCqrs "deligo/pkg/cqrs"
+)
+
 type ListUsersByTenantHandler struct {
-	ID string
+	userRepo contracts.IUserRepository
 }
 
-func (_this *ListUsersByTenantHandler) Handle() string {
-	return "ListUsersByTenantQuery"
+func NewListUsersByTenantHandler(userRepo contracts.IUserRepository) *ListUsersByTenantHandler {
+	return &ListUsersByTenantHandler{
+		userRepo: userRepo,
+	}
+}
+
+func (_this *ListUsersByTenantHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
+	return nil
 }

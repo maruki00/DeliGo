@@ -1,9 +1,21 @@
 package userHandlers
 
+import (
+	"context"
+	"deligo/internal/iam/domain/contracts"
+	pkgCqrs "deligo/pkg/cqrs"
+)
+
 type FindUserByEmailHandler struct {
-	ID string
+	userRepo contracts.IUserRepository
 }
 
-func (_this *FindUserByEmailHandler) Handle() string {
-	return "FindUserByEmailQuery"
+func NewFindUserByEmailHandler(userRepo contracts.IUserRepository) *FindUserByEmailHandler {
+	return &FindUserByEmailHandler{
+		userRepo: userRepo,
+	}
+}
+
+func (_this *FindUserByEmailHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
+	return nil
 }
