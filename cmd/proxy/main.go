@@ -16,7 +16,7 @@ import (
 func GateWay(ctx context.Context, cfg *configs.Config, opts []gruntime.ServeMuxOption) (http.Handler, error) {
 	mux := gruntime.NewServeMux(opts...)
 
-	userEndPoint := fmt.Sprintf("%s:%s", cfg.GRPCServer.Host, cfg.GRPCServer.Port)
+	userEndPoint := fmt.Sprintf("%s:%s", cfg.IAMGRPC.Host, cfg.IAMGRPC.Port)
 
 	dialOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if err := grpc_user.RegisterUserServiceHandlerFromEndpoint(ctx, mux, userEndPoint, dialOpts); err != nil {

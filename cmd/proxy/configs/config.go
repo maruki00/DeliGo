@@ -18,7 +18,7 @@ type Config struct {
 		Host string `yaml:"host"`
 	} `yaml:"http_server"`
 
-	GRPCServer struct {
+	IAMGRPC struct {
 		Port string `yaml:"port"`
 		Host string `yaml:"host"`
 	} `yaml:"user_grpc"`
