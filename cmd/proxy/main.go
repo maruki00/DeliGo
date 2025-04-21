@@ -51,6 +51,8 @@ func main() {
 
 	mux.Handle("/", gw)
 
+	fmt.Println(fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port))
+
 	s := http.Server{
 		Addr:    fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port),
 		Handler: withLogger(mux),
