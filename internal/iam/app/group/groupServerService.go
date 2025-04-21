@@ -1,4 +1,4 @@
-package userServerServices
+package GroupServerServices
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type UserServerService struct {
+type GroupServerService struct {
 	user_grpc.UnimplementedUserServiceServer
 	commandBus *pkgCqrs.CommandBus
 	queryBus   *pkgCqrs.QueryBus
@@ -17,14 +17,14 @@ type UserServerService struct {
 
 func NewUserUseCase(
 	commandBus *pkgCqrs.CommandBus,
-	queryBus *pkgCqrs.QueryBus) *UserServerService {
-	return &UserServerService{
+	queryBus *pkgCqrs.QueryBus) *GroupServerService {
+	return &GroupServerService{
 		commandBus: commandBus,
 		queryBus:   queryBus,
 	}
 }
 
-func (_this *UserServerService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	command := &userCommands.CreateUserCommand{
 		ID:         uuid.New(),
 		Username:   in.UserName,
@@ -48,18 +48,15 @@ func (_this *UserServerService) Create(ctx context.Context, in *user_grpc.Create
 	}, nil
 }
 
-func (_this *UserServerService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (_this *UserServerService) Find(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) AssignUserToGroup(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (_this *UserServerService) ListByTenant(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) UnassignUserToGroup(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (_this *UserServerService) Save(context.Context, *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
-}
-func (_this *UserServerService) Update(context.Context, *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) GetUserGroups(context.Context, *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
