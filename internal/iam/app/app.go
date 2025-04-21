@@ -4,8 +4,12 @@ import (
 	"context"
 	"deligo/cmd/user/configs"
 	"deligo/internal/iam/app/usecases"
+	userCommands "deligo/internal/iam/app/user/commands"
+	userHandlers "deligo/internal/iam/app/user/handlers"
+	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/contracts"
 	"deligo/internal/iam/infra/repositories"
+	pkgCqrs "deligo/pkg/cqrs"
 	pkgPostgres "deligo/pkg/postgres"
 	"fmt"
 	"log/slog"
@@ -36,16 +40,26 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	if err != nil {
 		return nil, func() {}, err
 	}
+	userCommandBus := pkgCqrs.NewCommandBus()
+	userQuerydBus := pkgCqrs.NewQueryBus()
 
 	UserRepo := repositories.NewUserRepository(db)
 	GroupRepo := repositories.NewGroupRepository()
 	PermissionRepo := repositories.NewPermissionRepository()
 	PolicyRepo := repositories.NewPolicyRepository()
 
-	UserUC := usecases.NewUserUseCase(UserRepo)
-	PolicyUC := usecases.NewPolicyUseCase(PolicyRepo)
-	PermissionUC := usecases.NewPermissionUseCase(PermissionRepo)
-	GroupUC := usecases.NewGroupUseCase(GroupRepo)
+	userCommandBus.Register(&userCommands.CreateUserCommand{}, userHandlers.NewCreateUserHandler(UserRepo))
+	userCommandBus.Register(&userCommands.DeleteUserCommand{}, userHandlers.NewDeleteUserHandler(UserRepo))
+	userCommandBus.Register(&userCommands.UpdateUserCommand{}, userHandlers.NewUpdateUserHandler(UserRepo))
+
+	userQuerydBus.Register(&userQueries.FindUserByIdQuery{}, userHandlers.NewFindUserByIdHandler(UserRepo))
+	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandlers.NewDeleteUserHandler(UserRepo))
+	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandlers.NewUpdateUserHandler(UserRepo))
+
+	// UserUC := usecases.NewUserUseCase(UserRepo)
+	// PolicyUC := usecases.NewPolicyUseCase(PolicyRepo)
+	// PermissionUC := usecases.NewPermissionUseCase(PermissionRepo)
+	// GroupUC := usecases.NewGroupUseCase(GroupRepo)
 
 	app := &App{
 		db:             db,

@@ -4,6 +4,6 @@ type FindUserByIdQuery struct {
 	ID string
 }
 
-func (_this *FindUserByIdQuery) CommandName() string {
+func (_this *FindUserByIdQuery) QueryName() string {
 	return "FindUserByIdQuery"
 }
