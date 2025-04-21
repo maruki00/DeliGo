@@ -43,7 +43,7 @@ func (_this *UserUseCase) Create(ctx context.Context, in *user_grpc.CreateUserRe
 	// Profile           Profile `gorm:"foreignKey:UserID"`
 	// Groups            []Group `gorm:"many2many:user_groups;"`
 
-	err := _this.commandBus.Dispatch(nil)
+	err := _this.commandBus.Dispatch(ctx, nil)
 	// 	&models.User{
 	// 	// ID: uuid.New().String(),
 	// 	// Username: in.UserName,
