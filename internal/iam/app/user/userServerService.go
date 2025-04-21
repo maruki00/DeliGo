@@ -2,10 +2,11 @@ package usecases
 
 import (
 	"context"
+	userCommands "deligo/internal/iam/app/user/commands"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
 	pkgCqrs "deligo/pkg/cqrs"
 
-	"google.golang.org/protobuf/types/known/structpb"
+	"github.com/google/uuid"
 )
 
 type UserUseCase struct {
@@ -24,46 +25,15 @@ func NewUserUseCase(
 }
 
 func (_this *UserUseCase) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
-
-	// ID                uuid.UUID
-	// Username          string
-	// Email             string
-	// TenantID          string
-	// Password          string
-	// PasswordHash      string
-	// PasswordChangedAt *time.Time
-	// IsActive          bool
-	// LastLogin         *time.Time
-	// MFAEnabled        bool
-	// MFASecret         string
-	// Roles             []Role
-	// DeletedAt         gorm.DeletedAt `gorm:"index"`
-	// CreatedAt         time.Time
-	// UpdatedAt         time.Time
-	// Profile           Profile `gorm:"foreignKey:UserID"`
-	// Groups            []Group `gorm:"many2many:user_groups;"`
-
-	err := _this.commandBus.Dispatch(ctx, nil)
-	// 	&models.User{
-	// 	// ID: uuid.New().String(),
-	// 	// Username: in.UserName,
-	// 	// Email: in.Email
-	// 	// TenantID
-	// 	// Password
-	// 	// PasswordHash
-	// 	// PasswordChangedAt
-	// 	// IsActive
-	// 	// LastLogin
-	// 	// MFAEnabled
-	// 	// MFASecret
-	// 	// Roles
-	// 	// DeletedAt
-	// 	// CreatedAt
-	// 	// UpdatedAt
-	// 	// Profile
-	// 	// Groups
-	// })
-
+	command := &userCommands.CreateUserCommand{
+		ID:         uuid.New(),
+		Username:   in.UserName,
+		Email:      in.Email,
+		Password:   in.Password,
+		IsActive:   false,
+		MFAEnabled: false,
+	}
+	err := _this.commandBus.Dispatch(ctx, command)
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    400,
@@ -71,25 +41,10 @@ func (_this *UserUseCase) Create(ctx context.Context, in *user_grpc.CreateUserRe
 			Result:  nil,
 		}, err
 	}
-
-	stuctRes, err := structpb.NewValue(map[string]any{
-		// "id":    res.GetID(),
-		// "email": res.GetEmail(),
-		// "role":  res.GetRole(),
-	})
-
-	if err != nil {
-		return &user_grpc.Response{
-			Code:    400,
-			Message: err.Error(),
-			Result:  nil,
-		}, err
-	}
-
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  []*structpb.Value{stuctRes},
+		Result:  nil,
 	}, nil
 }
 
