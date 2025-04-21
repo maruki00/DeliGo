@@ -2,7 +2,8 @@ package app
 
 import (
 	"context"
-	"deligo/cmd/user/configs"
+	"deligo/cmd/iam/configs"
+	userServerServices "deligo/internal/iam/app/user"
 	userCommands "deligo/internal/iam/app/user/commands"
 	userHandlers "deligo/internal/iam/app/user/handlers"
 	userQueries "deligo/internal/iam/app/user/queries"
@@ -10,7 +11,6 @@ import (
 	"deligo/internal/iam/infra/repositories"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgPostgres "deligo/pkg/postgres"
-	"fmt"
 	"log/slog"
 
 	"github.com/rabbitmq/amqp091-go"
@@ -22,7 +22,7 @@ type App struct {
 	GroupRepo      contracts.IGroupRepository
 	PermissionRepo contracts.IPermissionRepository
 	PolicyRepo     contracts.IPolicyRepository
-
+	UserServerSvc  *userServerServices.UserServerService
 	UserCommandBus *pkgCqrs.CommandBus
 	UserQuerydBus  *pkgCqrs.QueryBus
 
@@ -38,7 +38,6 @@ func (app *App) GetDB() any {
 
 func InitApp(cfg *configs.Config) (*App, func(), error) {
 
-	fmt.Println("dsn : ", cfg.Postgres.Dsn)
 	db, err := pkgPostgres.NewDB(cfg.Postgres.Dsn)
 	if err != nil {
 		return nil, func() {}, err
@@ -46,19 +45,21 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	userCommandBus := pkgCqrs.NewCommandBus()
 	userQuerydBus := pkgCqrs.NewQueryBus()
 
-	UserRepo := repositories.NewUserRepository(db)
-	GroupRepo := repositories.NewGroupRepository()
-	PermissionRepo := repositories.NewPermissionRepository()
-	PolicyRepo := repositories.NewPolicyRepository()
+	userRepo := repositories.NewUserRepository(db)
+	groupRepo := repositories.NewGroupRepository()
+	permissionRepo := repositories.NewPermissionRepository()
+	policyRepo := repositories.NewPolicyRepository()
 
-	userCommandBus.Register(&userCommands.CreateUserCommand{}, userHandlers.NewCreateUserHandler(UserRepo))
-	userCommandBus.Register(&userCommands.DeleteUserCommand{}, userHandlers.NewDeleteUserHandler(UserRepo))
-	userCommandBus.Register(&userCommands.UpdateUserCommand{}, userHandlers.NewUpdateUserHandler(UserRepo))
+	userServiceSvc := userServerServices.NewUserUseCase(userCommandBus, userQuerydBus)
 
-	userQuerydBus.Register(&userQueries.FindUserByIdQuery{}, userHandlers.NewFindUserByIdHandler(UserRepo))
-	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandlers.NewFindUserByEmailHandler(UserRepo))
-	userQuerydBus.Register(&userQueries.FindUserByUsernameQuery{}, userHandlers.NewFindUserByUsernameHandler(UserRepo))
-	userQuerydBus.Register(&userQueries.ListUsersByTenantQuery{}, userHandlers.NewListUsersByTenantHandler(UserRepo))
+	userCommandBus.Register(&userCommands.CreateUserCommand{}, userHandlers.NewCreateUserHandler(userRepo))
+	userCommandBus.Register(&userCommands.DeleteUserCommand{}, userHandlers.NewDeleteUserHandler(userRepo))
+	userCommandBus.Register(&userCommands.UpdateUserCommand{}, userHandlers.NewUpdateUserHandler(userRepo))
+
+	userQuerydBus.Register(&userQueries.FindUserByIdQuery{}, userHandlers.NewFindUserByIdHandler(userRepo))
+	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandlers.NewFindUserByEmailHandler(userRepo))
+	userQuerydBus.Register(&userQueries.FindUserByUsernameQuery{}, userHandlers.NewFindUserByUsernameHandler(userRepo))
+	userQuerydBus.Register(&userQueries.ListUsersByTenantQuery{}, userHandlers.NewListUsersByTenantHandler(userRepo))
 
 	// UserUC := usecases.NewUserUseCase(UserRepo)
 	// PolicyUC := usecases.NewPolicyUseCase(PolicyRepo)
@@ -67,11 +68,11 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 
 	app := &App{
 		db:             db,
-		UserRepo:       UserRepo,
-		GroupRepo:      GroupRepo,
-		PermissionRepo: PermissionRepo,
-		PolicyRepo:     PolicyRepo,
-
+		UserRepo:       userRepo,
+		GroupRepo:      groupRepo,
+		PermissionRepo: permissionRepo,
+		PolicyRepo:     policyRepo,
+		UserServerSvc:  userServiceSvc,
 		UserCommandBus: userCommandBus,
 		UserQuerydBus:  userQuerydBus,
 	}
@@ -85,7 +86,7 @@ func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
 		select {
 		case <-ctx.Done():
 			slog.Info("Shuting Down the client.")
-			break
+			return
 		default:
 			slog.Info("default interception ....")
 		}

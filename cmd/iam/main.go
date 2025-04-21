@@ -2,10 +2,9 @@ package main
 
 import (
 	"context"
-	"deligo/cmd/user/configs"
+	"deligo/cmd/iam/configs"
+	"deligo/internal/iam/app"
 	grpc_user "deligo/internal/iam/infra/grpc/user"
-	"deligo/internal/user/app"
-	grpc_profile "deligo/internal/user/infra/grpc/profile"
 	"fmt"
 	"log/slog"
 	"net"
@@ -66,8 +65,7 @@ func main() {
 
 	slog.Info("🌏 start server...", "address", address)
 
-	grpc_user.RegisterUserServiceServer(server, app.UserSVC)
-	grpc_profile.RegisterProfileServiceServer(server, app.ProfileSVC)
+	grpc_user.RegisterUserServiceServer(server, app.UserServerSvc)
 
 	defer func() {
 		if err := l.Close(); err != nil {

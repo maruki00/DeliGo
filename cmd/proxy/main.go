@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"deligo/cmd/proxy/configs"
-	user_grpc "deligo/internal/ia,m/infra/grpc/user"
+	grpc_user "deligo/internal/iam/infra/grpc/user"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -16,10 +16,10 @@ import (
 func GateWay(ctx context.Context, cfg *configs.Config, opts []gruntime.ServeMuxOption) (http.Handler, error) {
 	mux := gruntime.NewServeMux(opts...)
 
-	userEndPoint := fmt.Sprintf("%s:%s", cfg.UserGRPC.Host, cfg.UserGRPC.Port)
+	userEndPoint := fmt.Sprintf("%s:%s", cfg.GRPCServer.Host, cfg.GRPCServer.Port)
 
 	dialOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	if err := user_grpc.RegisterUserServiceHandlerFromEndpoint(ctx, mux, userEndPoint, dialOpts); err != nil {
+	if err := grpc_user.RegisterUserServiceHandlerFromEndpoint(ctx, mux, userEndPoint, dialOpts); err != nil {
 		return nil, err
 	}
 
