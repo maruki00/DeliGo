@@ -1,7 +1,9 @@
 package userQueries
 
+import "github.com/google/uuid"
+
 type FindUserByIdQuery struct {
-	ID string
+	ID uuid.UUID
 }
 
 func (_this *FindUserByIdQuery) QueryName() string {

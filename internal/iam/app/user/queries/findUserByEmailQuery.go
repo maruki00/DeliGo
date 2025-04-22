@@ -1,7 +1,7 @@
 package userQueries
 
 type FindUserByEmailQuery struct {
-	ID string
+	Email string
 }
 
 func (_this *FindUserByEmailQuery) QueryName() string {

@@ -2,6 +2,7 @@ package userHandlers
 
 import (
 	"context"
+	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/contracts"
 	pkgCqrs "deligo/pkg/cqrs"
 )
@@ -16,6 +17,15 @@ func NewListUsersByTenantHandler(userRepo contracts.IUserRepository) *ListUsersB
 	}
 }
 
-func (_this *ListUsersByTenantHandler) Handle(ctx context.Context, command pkgCqrs.Query) (interface{}, error) {
-	return nil, nil
+func (_this *ListUsersByTenantHandler) Handle(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
+	qry := query.(*userQueries.ListUsersByTenantQuery)
+	users, err := _this.userRepo.ListByTenant(ctx, qry.TenantID.String(), qry.Pagination)
+
+	if err != nil {
+		return nil, err
+	}
+	if users == nil {
+		return nil, nil
+	}
+	return users, nil
 }

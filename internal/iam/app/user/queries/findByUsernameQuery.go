@@ -1,7 +1,7 @@
 package userQueries
 
 type FindUserByUsernameQuery struct {
-	ID string
+	Username string
 }
 
 func (_this *FindUserByUsernameQuery) QueryName() string {

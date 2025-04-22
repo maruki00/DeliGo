@@ -2,6 +2,7 @@ package userHandlers
 
 import (
 	"context"
+	userCommands "deligo/internal/iam/app/user/commands"
 	"deligo/internal/iam/domain/contracts"
 	pkgCqrs "deligo/pkg/cqrs"
 )
@@ -17,5 +18,7 @@ func NewDeleteUserHandler(userRepo contracts.IUserRepository) *DeleteUserHandler
 }
 
 func (_this *DeleteUserHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
-	return nil
+	cmd := command.(*userCommands.DeleteUserCommand)
+	err := _this.userRepo.Delete(ctx, cmd.ID.String())
+	return err
 }
