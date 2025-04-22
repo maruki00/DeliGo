@@ -27,13 +27,6 @@ func NewUserUseCase(
 	}
 }
 
-// func (UnimplementedUserServiceServer) Find(context.Context, *GETRequest) (*Response, error) {
-// 	return nil, status.Errorf(codes.Unimplemented, "method Find not implemented")
-// }
-// func (UnimplementedUserServiceServer) ListByTenant(context.Context, *GETRequest) (*Response, error) {
-// 	return nil, status.Errorf(codes.Unimplemented, "method ListByTenant not implemented")
-// }
-
 func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	command := &userCommands.CreateUserCommand{
 		ID:         uuid.New(),
@@ -58,7 +51,7 @@ func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUs
 	}, nil
 }
 
-func (_this *UserServerService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
 
 	command := &userCommands.DeleteUserCommand{
 		ID: uuid.MustParse(in.ID),
@@ -156,13 +149,23 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 	}, nil
 }
 
-func (_this *UserServerService) ListByTenant(ctx context.Context, in *GETRequest) (*user_grpc.Response, error) {
-	query := &userQueries.ListUsersByTenantQuery{
-		TenantID: uuid.MustParse(in.TenantId),
-		Page:     in.Page,
-		PageSize: in.PageSize,
+func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
+
+	queryParams := in.GetQueryParams()
+	var tenantID = ""
+
+	filter, ok := queryParams.Fields["tenantId"]
+	if ok {
+		tenantID = filter.GetStringValue()
+
 	}
-	err := _this.queryBus.Dispatch(ctx, query)
+
+	id, _ := uuid.Parse(tenantID)
+
+	query := &userQueries.ListUsersByTenantQuery{
+		TenantID: id,
+	}
+	res, err := _this.queryBus.Dispatch(ctx, query)
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    400,
@@ -173,6 +176,6 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *GETRequest
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  nil,
+		Result:  res.([]*structpb.Value),
 	}, nil
 }

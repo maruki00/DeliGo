@@ -1,7 +1,9 @@
 package userQueries
 
+import "github.com/google/uuid"
+
 type ListUsersByTenantQuery struct {
-	ID string
+	TenantID uuid.UUID
 }
 
 func (_this *ListUsersByTenantQuery) QueryName() string {
