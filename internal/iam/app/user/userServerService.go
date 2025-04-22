@@ -100,9 +100,19 @@ func (_this *UserServerService) Update(ctx context.Context, in *UpdateUserReques
 
 
 func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
-	in.QueryParams = map[string]string{
-		"filter": in.Filter,
-		"email":    in.Email,
+	params := in.GetQueryParams()
+	var filter string
+	var value string
+	for p. field := range params.Fields {
+		if p == "filter" {
+			continue
+		}
+		if p == "tenantId" {
+			continue
+		}
+		if p == "username" {
+			continue
+		}	
 	}
 	query := &userQueries.
 	return nil, nil
