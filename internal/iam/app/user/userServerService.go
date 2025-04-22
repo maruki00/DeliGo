@@ -48,10 +48,27 @@ func (_this *UserServerService) Create(ctx context.Context, in *user_grpc.Create
 	}, nil
 }
 
-func (_this *UserServerService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
+func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+
+	command := &userCommands.DeleteUserCommand{
+		ID: uuid.MustParse(in.ID),
+	}
+	err := _this.commandBus.Dispatch(ctx, command)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  nil,
+	}, nil
 }
 func (_this *UserServerService) Find(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
+	query := &userQueries.
 	return nil, nil
 }
 func (_this *UserServerService) ListByTenant(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
