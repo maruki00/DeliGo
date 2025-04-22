@@ -3,10 +3,13 @@ package userServerServices
 import (
 	"context"
 	userCommands "deligo/internal/iam/app/user/commands"
+	userQueries "deligo/internal/iam/app/user/queries"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
 	pkgCqrs "deligo/pkg/cqrs"
+	"fmt"
 
 	"github.com/google/uuid"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 type UserServerService struct {
@@ -24,7 +27,6 @@ func NewUserUseCase(
 	}
 }
 
-
 // func (UnimplementedUserServiceServer) Find(context.Context, *GETRequest) (*Response, error) {
 // 	return nil, status.Errorf(codes.Unimplemented, "method Find not implemented")
 // }
@@ -32,9 +34,7 @@ func NewUserUseCase(
 // 	return nil, status.Errorf(codes.Unimplemented, "method ListByTenant not implemented")
 // }
 
-
-
-func (_this *UserServerService) Save(ctx context.Context, in *CreateUserRequest) (*user_grpc.Response, error) {
+func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	command := &userCommands.CreateUserCommand{
 		ID:         uuid.New(),
 		Username:   in.UserName,
@@ -58,7 +58,7 @@ func (_this *UserServerService) Save(ctx context.Context, in *CreateUserRequest)
 	}, nil
 }
 
-func (_this *UserServerService) Delete(context.Context, *DeleteUserRequest) (*user_grpc.Response, error) {
+func (_this *UserServerService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
 
 	command := &userCommands.DeleteUserCommand{
 		ID: uuid.MustParse(in.ID),
@@ -78,10 +78,10 @@ func (_this *UserServerService) Delete(context.Context, *DeleteUserRequest) (*us
 	}, nil
 }
 
-func (_this *UserServerService) Update(ctx context.Context, in *UpdateUserRequest) (*user_grpc.Response, error)  {
+func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
 	command := &userCommands.UpdateUserCommand{
-		ID:         uuid.MustParse(in.ID),
-		Fields:    in.Fields,
+		ID:     uuid.MustParse(in.ID),
+		Fields: in.Fields,
 	}
 	err := _this.commandBus.Dispatch(ctx, command)
 	if err != nil {
@@ -93,32 +93,68 @@ func (_this *UserServerService) Update(ctx context.Context, in *UpdateUserReques
 	}
 	return &user_grpc.Response{
 		Code:    200,
-		Message: "success",	
+		Message: "success",
 		Result:  nil,
 	}, nil
 }
 
-
 func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
-	params := in.GetQueryParams()
-	var filter string
-	var value string
-	for p. field := range params.Fields {
-		if p == "filter" {
-			continue
-		}
-		if p == "tenantId" {
-			continue
-		}
-		if p == "username" {
-			continue
-		}	
+	queryParams := in.GetQueryParams()
+	var filterValue = "id"
+	var valueValue = ""
+
+	filter, ok := queryParams.Fields["filter"]
+	if ok {
+		filterValue = filter.GetStringValue()
 	}
-	query := &userQueries.
-	return nil, nil
+
+	value, ok := queryParams.Fields["value"]
+	if ok {
+		valueValue = value.GetStringValue()
+	}
+	var query pkgCqrs.Query
+	switch filterValue {
+	case "id":
+		id, err := uuid.Parse(valueValue)
+		if err != nil {
+			return &user_grpc.Response{
+				Code:    400,
+				Message: "invalid id",
+				Result:  nil,
+			}, err
+		}
+		query = &userQueries.FindUserByIdQuery{
+			ID: id,
+		}
+	case "username":
+		query = &userQueries.FindUserByUsernameQuery{
+			Username: valueValue,
+		}
+	case "email":
+		query = &userQueries.FindUserByEmailQuery{
+			Email: valueValue,
+		}
+	default:
+		return &user_grpc.Response{
+			Code:    400,
+			Message: "invalid filter",
+			Result:  nil,
+		}, fmt.Errorf("invalid filter")
+	}
+	res, err := _this.queryBus.Dispatch(ctx, query)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  res.([]*structpb.Value),
+	}, nil
 }
-
-
 
 func (_this *UserServerService) ListByTenant(ctx context.Context, in *GETRequest) (*user_grpc.Response, error) {
 	query := &userQueries.ListUsersByTenantQuery{
@@ -140,4 +176,3 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *GETRequest
 		Result:  nil,
 	}, nil
 }
-
