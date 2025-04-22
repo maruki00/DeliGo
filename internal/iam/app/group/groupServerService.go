@@ -48,15 +48,15 @@ func (_this *GroupServerService) Create(ctx context.Context, in *user_grpc.Creat
 	}, nil
 }
 
-func (_this *GroupServerService) Delete(context.Context, *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (_this *GroupServerService) AssignUserToGroup(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) AssignUserToGroup(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (_this *GroupServerService) UnassignUserToGroup(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) UnassignUserToGroup(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (_this *GroupServerService) GetUserGroups(context.Context, *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
+func (_this *GroupServerService) GetUserGroups(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
