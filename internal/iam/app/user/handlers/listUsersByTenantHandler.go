@@ -16,6 +16,6 @@ func NewListUsersByTenantHandler(userRepo contracts.IUserRepository) *ListUsersB
 	}
 }
 
-func (_this *ListUsersByTenantHandler) Handle(ctx context.Context, command pkgCqrs.Query) (interface{}, error) {
+func (_this *ListUsersByTenantHandler) Handle(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
 	return nil, nil
 }
