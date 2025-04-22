@@ -49,7 +49,23 @@ func (_this *GroupServerService) Create(ctx context.Context, in *user_grpc.Creat
 }
 
 func (_this *GroupServerService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
+	command := &userCommands.DeleteUserCommand{
+		ID: uuid.MustParse(in.ID),
+	}
+
+	res := _this.commandBus.Dispatch(ctx, command)
+	if res != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: res.Error(),
+			Result:  nil,
+		}, res
+	}
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  nil,
+	}, nil
 }
 func (_this *GroupServerService) AssignUserToGroup(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
 	return nil, nil
