@@ -68,6 +68,7 @@ func (_this *GroupServerService) Delete(ctx context.Context, in *user_grpc.Delet
 	}, nil
 }
 func (_this *GroupServerService) AssignUserToGroup(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
+	command := &userCommands.AssignUserToGroupCommand{}
 	return nil, nil
 }
 func (_this *GroupServerService) UnassignUserToGroup(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
