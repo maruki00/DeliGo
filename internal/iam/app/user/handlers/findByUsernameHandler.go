@@ -2,6 +2,7 @@ package userHandlers
 
 import (
 	"context"
+	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/contracts"
 	pkgCqrs "deligo/pkg/cqrs"
 )
@@ -16,6 +17,14 @@ func NewFindUserByUsernameHandler(userRepo contracts.IUserRepository) *FindUserB
 	}
 }
 
-func (_this *FindUserByUsernameHandler) Handle(ctx context.Context, command pkgCqrs.Query) (interface{}, error) {
-	return nil, nil
+func (_this *FindUserByUsernameHandler) Handle(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
+	cmd := query.(*userQueries.FindUserByUsernameQuery)
+	user, err := _this.userRepo.FindByUsername(ctx, cmd.Username)
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, nil
+	}
+	return user, nil
 }
