@@ -34,7 +34,6 @@ func NewUserUseCase(
 
 
 
-
 func (_this *UserServerService) Save(ctx context.Context, in *CreateUserRequest) (*user_grpc.Response, error) {
 	command := &userCommands.CreateUserCommand{
 		ID:         uuid.New(),
@@ -100,13 +99,35 @@ func (_this *UserServerService) Update(ctx context.Context, in *UpdateUserReques
 }
 
 
-func (_this *UserServerService) Find(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
+func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
+	in.QueryParams = map[string]string{
+		"filter": in.Filter,
+		"email":    in.Email,
+	}
 	query := &userQueries.
 	return nil, nil
 }
-func (_this *UserServerService) ListByTenant(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
-	return nil, nil
+
+
+
+func (_this *UserServerService) ListByTenant(ctx context.Context, in *GETRequest) (*user_grpc.Response, error) {
+	query := &userQueries.ListUsersByTenantQuery{
+		TenantID: uuid.MustParse(in.TenantId),
+		Page:     in.Page,
+		PageSize: in.PageSize,
+	}
+	err := _this.queryBus.Dispatch(ctx, query)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",
+		Result:  nil,
+	}, nil
 }
-func (_this *UserServerService) Save(context.Context, *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
-}
+
