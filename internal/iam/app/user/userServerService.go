@@ -24,7 +24,24 @@ func NewUserUseCase(
 	}
 }
 
-func (_this *UserServerService) Create(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
+
+// func (UnimplementedUserServiceServer) Delete(context.Context, *DeleteUserRequest) (*Response, error) {
+// 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+// }
+// func (UnimplementedUserServiceServer) Update(context.Context, *UpdateUserRequest) (*Response, error) {
+// 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+// }
+// func (UnimplementedUserServiceServer) Find(context.Context, *GETRequest) (*Response, error) {
+// 	return nil, status.Errorf(codes.Unimplemented, "method Find not implemented")
+// }
+// func (UnimplementedUserServiceServer) ListByTenant(context.Context, *GETRequest) (*Response, error) {
+// 	return nil, status.Errorf(codes.Unimplemented, "method ListByTenant not implemented")
+// }
+
+
+
+
+func (_this *UserServerService) Save(ctx context.Context, in *CreateUserRequest) (*user_grpc.Response, error) {
 	command := &userCommands.CreateUserCommand{
 		ID:         uuid.New(),
 		Username:   in.UserName,
@@ -48,7 +65,7 @@ func (_this *UserServerService) Create(ctx context.Context, in *user_grpc.Create
 	}, nil
 }
 
-func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.DeleteUserRequest) (*user_grpc.Response, error) {
+func (_this *UserServerService) Delete(context.Context, *DeleteUserRequest) (*user_grpc.Response, error) {
 
 	command := &userCommands.DeleteUserCommand{
 		ID: uuid.MustParse(in.ID),
@@ -67,6 +84,7 @@ func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.Delete
 		Result:  nil,
 	}, nil
 }
+
 func (_this *UserServerService) Find(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
 	query := &userQueries.
 	return nil, nil
@@ -77,6 +95,6 @@ func (_this *UserServerService) ListByTenant(context.Context, *user_grpc.GETRequ
 func (_this *UserServerService) Save(context.Context, *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 	return nil, nil
 }
-func (_this *UserServerService) Update(context.Context, *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
+func (_this *UserServerService) Update(ctx context.Context, in *UpdateUserRequest) (*user_grpc.Response, error)  {
 	return nil, nil
 }
