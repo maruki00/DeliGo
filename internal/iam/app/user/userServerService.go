@@ -25,12 +25,6 @@ func NewUserUseCase(
 }
 
 
-// func (UnimplementedUserServiceServer) Delete(context.Context, *DeleteUserRequest) (*Response, error) {
-// 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
-// }
-// func (UnimplementedUserServiceServer) Update(context.Context, *UpdateUserRequest) (*Response, error) {
-// 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
-// }
 // func (UnimplementedUserServiceServer) Find(context.Context, *GETRequest) (*Response, error) {
 // 	return nil, status.Errorf(codes.Unimplemented, "method Find not implemented")
 // }
@@ -85,6 +79,27 @@ func (_this *UserServerService) Delete(context.Context, *DeleteUserRequest) (*us
 	}, nil
 }
 
+func (_this *UserServerService) Update(ctx context.Context, in *UpdateUserRequest) (*user_grpc.Response, error)  {
+	command := &userCommands.UpdateUserCommand{
+		ID:         uuid.MustParse(in.ID),
+		Fields:    in.Fields,
+	}
+	err := _this.commandBus.Dispatch(ctx, command)
+	if err != nil {
+		return &user_grpc.Response{
+			Code:    400,
+			Message: err.Error(),
+			Result:  nil,
+		}, err
+	}
+	return &user_grpc.Response{
+		Code:    200,
+		Message: "success",	
+		Result:  nil,
+	}, nil
+}
+
+
 func (_this *UserServerService) Find(context.Context, *user_grpc.GETRequest) (*user_grpc.Response, error) {
 	query := &userQueries.
 	return nil, nil
@@ -93,8 +108,5 @@ func (_this *UserServerService) ListByTenant(context.Context, *user_grpc.GETRequ
 	return nil, nil
 }
 func (_this *UserServerService) Save(context.Context, *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
-	return nil, nil
-}
-func (_this *UserServerService) Update(ctx context.Context, in *UpdateUserRequest) (*user_grpc.Response, error)  {
 	return nil, nil
 }
