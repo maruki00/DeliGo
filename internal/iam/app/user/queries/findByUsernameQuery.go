@@ -4,6 +4,6 @@ type FindUserByUsernameQuery struct {
 	Username string
 }
 
-func (_this *FindUserByUsernameQuery) QueryName() string {
+func (_this *FindUserByUsernameQuery) Name() string {
 	return "FindUserByUsernameQuery"
 }

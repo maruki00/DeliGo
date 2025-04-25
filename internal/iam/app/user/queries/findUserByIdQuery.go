@@ -6,6 +6,6 @@ type FindUserByIdQuery struct {
 	ID uuid.UUID
 }
 
-func (_this *FindUserByIdQuery) QueryName() string {
+func (_this *FindUserByIdQuery) Name() string {
 	return "FindUserByIdQuery"
 }

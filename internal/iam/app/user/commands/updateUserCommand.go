@@ -7,6 +7,6 @@ type UpdateUserCommand struct {
 	Fields map[string]string `json:"fields"`
 }
 
-func (_this *UpdateUserCommand) CommandName() string {
+func (_this *UpdateUserCommand) Name() string {
 	return "UpdateUserCommand"
 }

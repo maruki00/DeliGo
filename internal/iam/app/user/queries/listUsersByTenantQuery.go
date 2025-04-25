@@ -11,6 +11,6 @@ type ListUsersByTenantQuery struct {
 	Pagination shared_models.Pagination
 }
 
-func (_this *ListUsersByTenantQuery) QueryName() string {
+func (_this *ListUsersByTenantQuery) Name() string {
 	return "ListUsersByTenantQuery"
 }

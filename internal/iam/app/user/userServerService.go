@@ -37,6 +37,7 @@ func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUs
 		IsActive:   false,
 		MFAEnabled: false,
 	}
+
 	err := _this.commandBus.Dispatch(ctx, command)
 	if err != nil {
 		return &user_grpc.Response{
@@ -45,6 +46,7 @@ func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUs
 			Result:  nil,
 		}, err
 	}
+
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",

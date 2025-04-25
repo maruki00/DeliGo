@@ -17,6 +17,6 @@ type CreateUserCommand struct {
 	MFASecret         string
 }
 
-func (_this *CreateUserCommand) CommandName() string {
+func (_this *CreateUserCommand) Name() string {
 	return "CreateUserCommand"
 }

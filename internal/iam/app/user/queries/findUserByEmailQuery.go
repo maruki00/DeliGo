@@ -4,6 +4,6 @@ type FindUserByEmailQuery struct {
 	Email string
 }
 
-func (_this *FindUserByEmailQuery) QueryName() string {
+func (_this *FindUserByEmailQuery) Name() string {
 	return "FindUserByEmailQuery"
 }

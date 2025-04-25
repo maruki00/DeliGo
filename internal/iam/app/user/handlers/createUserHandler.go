@@ -7,6 +7,7 @@ import (
 	valueobjects "deligo/internal/iam/domain/valueobject"
 	"deligo/internal/iam/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
+	"fmt"
 )
 
 type CreateUserHandler struct {
@@ -20,6 +21,7 @@ func NewCreateUserHandler(userRepo contracts.IUserRepository) *CreateUserHandler
 }
 
 func (_this *CreateUserHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
+	fmt.Println("called : func (_this *CreateUserHandler) Handle(ctx context.Context, command pkgCqrs.Command) error")
 	cmd := command.(*userCommands.CreateUserCommand)
 	err := _this.userRepo.Save(ctx, &models.User{
 		ID:                valueobjects.ID(cmd.ID.String()),

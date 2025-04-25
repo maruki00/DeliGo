@@ -1,5 +1,5 @@
 package pkgCqrs
 
 type Query interface {
-	QueryName() string
+	Name() string
 }

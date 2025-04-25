@@ -22,7 +22,13 @@ func (_this *CommandBus) Register(command Command, handler CommandHandler) {
 }
 
 func (_this *CommandBus) Dispatch(ctx context.Context, command Command) error {
-	commandName := reflect.TypeOf(command).Name()
+
+	// commandName := reflect.TypeOf(command).Name()
+	commandName := command.Name()
+
+	if commandName == "" {
+		return fmt.Errorf("the command is not registred")
+	}
 
 	handler, exists := _this.handlers[commandName]
 	if !exists {

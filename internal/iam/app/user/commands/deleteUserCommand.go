@@ -6,6 +6,6 @@ type DeleteUserCommand struct {
 	ID uuid.UUID
 }
 
-func (_this *DeleteUserCommand) CommandName() string {
+func (_this *DeleteUserCommand) Name() string {
 	return "DeleteUserCommand"
 }
