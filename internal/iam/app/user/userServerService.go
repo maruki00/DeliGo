@@ -28,7 +28,7 @@ func NewUserUseCase(
 }
 
 func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
-	fmt.Println("hello world ....")
+
 	command := &userCommands.CreateUserCommand{
 		ID:         uuid.New(),
 		Username:   in.UserName,

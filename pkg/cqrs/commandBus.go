@@ -3,7 +3,6 @@ package pkgCqrs
 import (
 	"context"
 	"fmt"
-	"reflect"
 )
 
 type CommandBus struct {
@@ -17,7 +16,7 @@ func NewCommandBus() *CommandBus {
 }
 
 func (_this *CommandBus) Register(command Command, handler CommandHandler) {
-	commandName := reflect.TypeOf(command).Name()
+	commandName := command.Name() //reflect.TypeOf(command).Name()
 	_this.handlers[commandName] = handler
 }
 
