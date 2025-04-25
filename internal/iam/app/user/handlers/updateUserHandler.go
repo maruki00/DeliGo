@@ -19,8 +19,8 @@ func NewUpdateUserHandler(userRepo contracts.IUserRepository) *UpdateUserHandler
 
 func (_this *UpdateUserHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
 	cmd := command.(*userCommands.UpdateUserCommand)
-	// TODO : Implement the logic to update the user
-	err := _this.userRepo.Update(ctx, nil)
+	id := cmd.ID
+	err := _this.userRepo.Update(ctx, id, cmd.Fields)
 	if err != nil {
 		return err
 	}

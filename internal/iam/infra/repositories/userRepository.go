@@ -58,7 +58,7 @@ func (ur *UserRepository) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-func (ur *UserRepository) Update(ctx context.Context, id uuid.UUID, entity interface{}) error {
+func (ur *UserRepository) Update(ctx context.Context, id uuid.UUID, entity map[string]string) error {
 	// sql := `
 	// 		UPDATE users
 	// 		SET email=$1, role=$2, updated_at = now()
