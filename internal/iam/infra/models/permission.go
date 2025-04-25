@@ -8,7 +8,7 @@ import (
 )
 
 type Permission struct {
-	ID          uuid.UUID      `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	ID          uuid.UUID      `gorm:"type:uuid;primaryKey"`
 	Name        string         `gorm:"type:varchar(255);not null"`
 	Description string         `gorm:"type:text;not null"`
 	PolicyID    string         `gorm:"type:varchar(255);not null;index"`

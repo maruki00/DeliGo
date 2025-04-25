@@ -8,7 +8,7 @@ import (
 )
 
 type Policy struct {
-	ID        uuid.UUID      `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	ID        uuid.UUID      `gorm:"type:uuid;primaryKey"`
 	Name      string         `gorm:"type:varchar(255);not null"`
 	GroupID   string         `gorm:"type:varchar(32);not null;index"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`

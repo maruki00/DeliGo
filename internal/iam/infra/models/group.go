@@ -8,7 +8,7 @@ import (
 )
 
 type Group struct {
-	ID        uuid.UUID      `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	ID        uuid.UUID      `gorm:"type:uuid;primaryKey"`
 	Name      string         `gorm:"type:varchar(255);not null"`
 	Users     []*User        `gorm:"many2many:user_groups;"`
 	Policies  []*Policy      `gorm:"many2many:group_policies;"`

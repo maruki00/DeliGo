@@ -8,13 +8,13 @@ import (
 )
 
 type User struct {
-	ID                valueobjects.ID       `json:"id" gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	ID                valueobjects.ID       `json:"id" gorm:"type:uuid;primaryKey"`
 	Username          string                `json:"user_name" gorm:"type:varchar(255)"`
 	Email             string                `json:"email" gorm:"type:varchar(255)"`
 	TenantID          valueobjects.ID       `json:"tenant_id" gorm:"type:varchar(255)"`
 	Password          valueobjects.Password `json:"password" gorm:"type:varchar(255)"`
 	PasswordChangedAt *time.Time            `json:"password_changed_at" gorm:"type:varchar(255)"`
-	IsActive          bool                  `json:"is_active" gorm:"type:int;default:0"`
+	IsActive          bool                  `json:"is_active" gorm:"default:0"`
 	LastLogin         *time.Time            `json:"last_login" `
 	MFAEnabled        bool                  `json:"mfa_enabled" gorm:"default:0"`
 	MFASecret         string                `json:"mfa_secret"`
