@@ -1,6 +1,7 @@
 package models
 
 import (
+	valueobjects "deligo/internal/iam/domain/valueobject"
 	"time"
 
 	"github.com/google/uuid"
@@ -8,22 +9,22 @@ import (
 )
 
 type User struct {
-	ID                uuid.UUID      `json:"id" gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
-	Username          string         `json:"user_name" gorm:"type:varchar(255)"`
-	Email             string         `json:"email" gorm:"type:varchar(255)"`
-	TenantID          string         `json:"tenant_id" gorm:"type:varchar(255)"`
-	Password          string         `json:"password" gorm:"type:varchar(255)"`
-	PasswordChangedAt *time.Time     `json:"password_changed_at" gorm:"type:varchar(255)"`
-	IsActive          bool           `json:"is_active" gorm:"type:int;default:0"`
-	LastLogin         *time.Time     `json:"last_login" `
-	MFAEnabled        bool           `json:"mfa_enabled" gorm:"default:0"`
-	MFASecret         string         `json:"mfa_secret"`
-	Profile           *Profile       `json:"profile" gorm:"foreignKey:UserID"`
-	Groups            []*Group       `json:"groups" gorm:"many2many:user_groups;"`
-	Policies          []*Policy      `json:"policies" gorm:"many2many:user_policies;"`
-	DeletedAt         gorm.DeletedAt `json:"deleted_at" gorm:"index"`
-	CreatedAt         time.Time      `json:"created_at" gorm:"not null;default:now()"`
-	UpdatedAt         time.Time      `json:"updated_at" gorm:"not null;default:now()"`
+	ID                valueobjects.ID       `json:"id" gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	Username          string                `json:"user_name" gorm:"type:varchar(255)"`
+	Email             string                `json:"email" gorm:"type:varchar(255)"`
+	TenantID          valueobjects.ID       `json:"tenant_id" gorm:"type:varchar(255)"`
+	Password          valueobjects.Password `json:"password" gorm:"type:varchar(255)"`
+	PasswordChangedAt *time.Time            `json:"password_changed_at" gorm:"type:varchar(255)"`
+	IsActive          bool                  `json:"is_active" gorm:"type:int;default:0"`
+	LastLogin         *time.Time            `json:"last_login" `
+	MFAEnabled        bool                  `json:"mfa_enabled" gorm:"default:0"`
+	MFASecret         string                `json:"mfa_secret"`
+	Profile           *Profile              `json:"profile" gorm:"foreignKey:UserID"`
+	Groups            []*Group              `json:"groups" gorm:"many2many:user_groups;"`
+	Policies          []*Policy             `json:"policies" gorm:"many2many:user_policies;"`
+	DeletedAt         gorm.DeletedAt        `json:"deleted_at" gorm:"index"`
+	CreatedAt         time.Time             `json:"created_at" gorm:"not null;default:now()"`
+	UpdatedAt         time.Time             `json:"updated_at" gorm:"not null;default:now()"`
 }
 
 func (_this *User) SetID(ID uuid.UUID) {
