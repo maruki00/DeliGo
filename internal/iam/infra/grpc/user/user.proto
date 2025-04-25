@@ -42,7 +42,7 @@ message GETRequest {
 service UserService {
 	rpc Save(CreateUserRequest) returns (Response) {
 		option (google.api.http) = {
-			post: "/v1/user/create",
+			post: "/v1/user/save",
 			body: "*"
 		};
 	};
