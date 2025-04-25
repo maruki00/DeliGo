@@ -3,22 +3,21 @@ package contracts
 import (
 	"context"
 	"deligo/internal/iam/domain/entities"
+	valueobjects "deligo/internal/iam/domain/valueobject"
 	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
-
-	"github.com/google/uuid"
 )
 
 type Pagination struct{}
 
 type IUserRepository interface {
 	Save(ctx context.Context, entity entities.UserEntity) error
-	Delete(ctx context.Context, id string) error
-	Update(ctx context.Context, id uuid.UUID, entity map[string]string) error
-	FindByID(ctx context.Context, id string) (*models.User, error)
+	Delete(ctx context.Context, id valueobjects.ID) error
+	Update(ctx context.Context, id valueobjects.ID, entity map[string]string) error
+	FindByID(ctx context.Context, id valueobjects.ID) (*models.User, error)
 	FindByEmail(ctx context.Context, email string) (*models.User, error)
 	FindByUsername(ctx context.Context, username string) (*models.User, error)
-	ListByTenant(ctx context.Context, tenantID string, pagination shared_models.Pagination) ([]*models.User, error)
+	ListByTenant(ctx context.Context, tenantID valueobjects.ID, pagination shared_models.Pagination) ([]*models.User, error)
 }
 
 type IPolicyRepository interface {
