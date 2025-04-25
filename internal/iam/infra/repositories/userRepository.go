@@ -7,6 +7,7 @@ import (
 	shared_models "deligo/internal/shared/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -57,7 +58,7 @@ func (ur *UserRepository) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-func (ur *UserRepository) Update(ctx context.Context, entity entities.UserEntity) error {
+func (ur *UserRepository) Update(ctx context.Context, id uuid.UUID, entity interface{}) error {
 	// sql := `
 	// 		UPDATE users
 	// 		SET email=$1, role=$2, updated_at = now()
@@ -65,7 +66,8 @@ func (ur *UserRepository) Update(ctx context.Context, entity entities.UserEntity
 	// 		AND deleted_at = NULL
 	// 	`
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Model(&entity).UpdateColumns(&entity).Error; err != nil {
+		user := models.User{ID: id}
+		if err := tx.Model(&user).Updates(&entity).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
