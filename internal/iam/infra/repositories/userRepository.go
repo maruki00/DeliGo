@@ -3,11 +3,11 @@ package repositories
 import (
 	"context"
 	"deligo/internal/iam/domain/entities"
+	valueobjects "deligo/internal/iam/domain/valueobject"
 	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -39,7 +39,7 @@ func (ur *UserRepository) Save(ctx context.Context, entity entities.UserEntity) 
 	return nil
 }
 
-func (ur *UserRepository) Delete(ctx context.Context, id string) error {
+func (ur *UserRepository) Delete(ctx context.Context, id valueobjects.ID) error {
 	//sql := `UPDATE users SET deleted_at = now(), updated_at = now() WHERE id = $1 `
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Delete(&models.User{}, map[string]interface{}{
@@ -58,7 +58,7 @@ func (ur *UserRepository) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-func (ur *UserRepository) Update(ctx context.Context, id uuid.UUID, entity map[string]string) error {
+func (ur *UserRepository) Update(ctx context.Context, id valueobjects.ID, entity map[string]string) error {
 	// sql := `
 	// 		UPDATE users
 	// 		SET email=$1, role=$2, updated_at = now()
@@ -79,7 +79,7 @@ func (ur *UserRepository) Update(ctx context.Context, id uuid.UUID, entity map[s
 	return nil
 }
 
-func (ur *UserRepository) FindByID(ctx context.Context, id string) (*models.User, error) {
+func (ur *UserRepository) FindByID(ctx context.Context, id valueobjects.ID) (*models.User, error) {
 	// sql := `
 	// 		SELECT id,email,role
 	// 		FROM users
@@ -142,7 +142,7 @@ func (ur *UserRepository) FindByUsername(ctx context.Context, username string) (
 	return &user, nil
 }
 
-func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID string, pagination shared_models.Pagination) ([]*models.User, error) {
+func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID valueobjects.ID, pagination shared_models.Pagination) ([]*models.User, error) {
 	// sql := `
 	// 		SELECT id,email,role
 	// 		FROM users

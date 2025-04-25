@@ -4,7 +4,6 @@ import (
 	valueobjects "deligo/internal/iam/domain/valueobject"
 	"time"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -27,7 +26,7 @@ type User struct {
 	UpdatedAt         time.Time             `json:"updated_at" gorm:"not null;default:now()"`
 }
 
-func (_this *User) SetID(ID uuid.UUID) {
+func (_this *User) SetID(ID valueobjects.ID) {
 	_this.ID = ID
 }
 func (_this *User) SetUsername(Username string) {
@@ -36,10 +35,10 @@ func (_this *User) SetUsername(Username string) {
 func (_this *User) SetEmail(Email string) {
 	_this.Email = Email
 }
-func (_this *User) SetTenantID(TenantID string) {
+func (_this *User) SetTenantID(TenantID valueobjects.ID) {
 	_this.TenantID = TenantID
 }
-func (_this *User) SetPassword(Password string) {
+func (_this *User) SetPassword(Password valueobjects.Password) {
 	_this.Password = Password
 }
 func (_this *User) SetPasswordChangedAt(PasswordChangedAt *time.Time) {
@@ -67,7 +66,7 @@ func (_this *User) SetUpdatedAt(UpdatedAt time.Time) {
 	_this.UpdatedAt = UpdatedAt
 }
 
-func (_this *User) GetID() uuid.UUID {
+func (_this *User) GetID() valueobjects.ID {
 	return _this.ID
 }
 func (_this *User) GetUsername() string {
@@ -76,10 +75,10 @@ func (_this *User) GetUsername() string {
 func (_this *User) GetEmail() string {
 	return _this.Email
 }
-func (_this *User) GetTenantID() string {
+func (_this *User) GetTenantID() valueobjects.ID {
 	return _this.TenantID
 }
-func (_this *User) GetPassword() string {
+func (_this *User) GetPassword() valueobjects.Password {
 	return _this.Password
 }
 func (_this *User) GetPasswordChangedAt() *time.Time {

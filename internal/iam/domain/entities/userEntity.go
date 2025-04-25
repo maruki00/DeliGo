@@ -1,19 +1,19 @@
 package entities
 
 import (
+	valueobjects "deligo/internal/iam/domain/valueobject"
 	"deligo/internal/iam/infra/models"
 	"time"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type UserEntity interface {
-	SetID(ID uuid.UUID)
+	SetID(ID valueobjects.ID)
 	SetUsername(Username string)
 	SetEmail(Email string)
-	SetTenantID(TenantID string)
-	SetPassword(Password string)
+	SetTenantID(TenantID valueobjects.ID)
+	SetPassword(Password valueobjects.Password)
 	SetPasswordChangedAt(PasswordChangedAt *time.Time)
 	SetIsActive(IsActive bool)
 	SetLastLogin(LastLogin *time.Time)
@@ -23,11 +23,11 @@ type UserEntity interface {
 	SetCreatedAt(CreatedAt time.Time)
 	SetUpdatedAt(UpdatedAt time.Time)
 
-	GetID() uuid.UUID
+	GetID() valueobjects.ID
 	GetUsername() string
 	GetEmail() string
-	GetTenantID() string
-	GetPassword() string
+	GetTenantID() valueobjects.ID
+	GetPassword() valueobjects.Password
 	GetPasswordChangedAt() *time.Time
 	GetIsActive() bool
 	GetLastLogin() *time.Time
