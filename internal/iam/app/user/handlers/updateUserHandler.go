@@ -2,7 +2,6 @@ package userHandlers
 
 import (
 	"context"
-	userCommands "deligo/internal/iam/app/user/commands"
 	"deligo/internal/iam/domain/contracts"
 	pkgCqrs "deligo/pkg/cqrs"
 )
@@ -18,11 +17,11 @@ func NewUpdateUserHandler(userRepo contracts.IUserRepository) *UpdateUserHandler
 }
 
 func (_this *UpdateUserHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
-	cmd := command.(*userCommands.UpdateUserCommand)
-	id := cmd.ID
-	err := _this.userRepo.Update(ctx, id, cmd.Fields)
-	if err != nil {
-		return err
-	}
+	// cmd := command.(*userCommands.UpdateUserCommand)
+	// id := cmd.ID
+	// err := _this.userRepo.Update(ctx, id, cmd.Fields)
+	// if err != nil {
+	// 	return err
+	// }
 	return nil
 }

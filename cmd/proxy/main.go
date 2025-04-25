@@ -15,14 +15,12 @@ import (
 
 func GateWay(ctx context.Context, cfg *configs.Config, opts []gruntime.ServeMuxOption) (http.Handler, error) {
 	mux := gruntime.NewServeMux(opts...)
-
-	userEndPoint := fmt.Sprintf("%s:%s", cfg.IAMGRPC.Host, cfg.IAMGRPC.Port)
-
+	fmt.Printf("%s:%s", cfg.IAMGRPC.Host, cfg.IAMGRPC.Port)
+	userEndPoint := "0.0.0.0:9001" // fmt.Sprintf("%s:%s", cfg.IAMGRPC.Host, cfg.IAMGRPC.Port)
 	dialOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if err := grpc_user.RegisterUserServiceHandlerFromEndpoint(ctx, mux, userEndPoint, dialOpts); err != nil {
 		return nil, err
 	}
-
 	return mux, nil
 }
 
@@ -51,12 +49,11 @@ func main() {
 
 	mux.Handle("/", gw)
 
-	fmt.Println(fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port))
-
 	s := http.Server{
-		Addr:    fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port),
+		Addr:    "0.0.0.0:9000", ///fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port),
 		Handler: withLogger(mux),
 	}
+
 	go func() {
 		<-ctx.Done()
 		slog.Info("Shutting down server")
@@ -70,5 +67,4 @@ func main() {
 	if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		slog.Error("Server failed to start: ", err)
 	}
-
 }
