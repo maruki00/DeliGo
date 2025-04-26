@@ -22,13 +22,30 @@ func NewUserRepository(db *pkgPostgres.PGHandler) *UserRepository {
 }
 
 func (ur *UserRepository) Save(ctx context.Context, entity entities.UserEntity) error {
+	//sql := `INSERT INTO "users" ("id","username","email","tenant_id","password","password_changed_at","is_active","last_login","mfa_enabled","mfa_secret","deleted_at")
+	// 				VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
 
-	//sql := `INSERT INTO users(id, email, password, role) VALUES($1, $2, $3, $4) RETURNING id`
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Create(&entity).Error; err != nil {
-			tx.Rollback()
+		sql := `INSERT INTO "users" 
+			("id", "username", "email", "tenant_id", "password", "password_changed_at", "is_active", "last_login", "mfa_enabled", "mfa_secret", "deleted_at")
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
+		if err := tx.Exec(sql,
+			entity.GetID(),
+			entity.GetUsername(),
+			entity.GetEmail(),
+			entity.GetTenantID(),
+			entity.GetPassword(),
+			entity.GetPasswordChangedAt(),
+			entity.GetIsActive(),
+			entity.GetLastLogin(),
+			entity.GetMFAEnabled(),
+			entity.GetMFASecret(),
+			entity.GetDeletedAt(),
+		).Error; err != nil {
 			return err
 		}
+
 		return nil
 	})
 
