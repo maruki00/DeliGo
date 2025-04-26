@@ -15,7 +15,18 @@ import (
 
 	"go.uber.org/automaxprocs/maxprocs"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
+
+func validationInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	if v, ok := req.(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return nil, status.Error(codes.InvalidArgument, err.Error())
+		}
+	}
+	return handler(ctx, req)
+}
 
 func withLogger(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +57,9 @@ func main() {
 
 	}
 
-	server := grpc.NewServer()
+	server := grpc.NewServer(
+		grpc.UnaryInterceptor(validationInterceptor),
+	)
 
 	go func() {
 		defer server.GracefulStop()
