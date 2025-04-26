@@ -105,7 +105,7 @@ func (ur *UserRepository) FindByID(ctx context.Context, id valueobjects.ID) (*mo
 	// 	`
 	var user models.User
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.First(&user).Where("id", id).Error; err != nil {
+		if err := tx.First(&user).Where("id = ?", id).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
@@ -126,7 +126,7 @@ func (ur *UserRepository) FindByEmail(ctx context.Context, email string) (*model
 	// 	`
 	var user models.User
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.First(&user).Where("email", email).Error; err != nil {
+		if err := tx.Where("email = ?", email).First(&user).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
@@ -147,7 +147,7 @@ func (ur *UserRepository) FindByUsername(ctx context.Context, username string) (
 	// 	`
 	var user models.User
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.First(&user).Where("username", username).Error; err != nil {
+		if err := tx.Where("username = ?", username).First(&user).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
@@ -170,7 +170,7 @@ func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID valueobject
 
 	users := make([]*models.User, pagination.Limit)
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Find(&users).Where("tenant_id", tenantID).Limit(pagination.GetLimit()).Offset(pagination.GetOffset()).Error; err != nil {
+		if err := tx.Model(&models.User{}).First(&users).Where("tenant_id = ?", tenantID).Limit(pagination.GetLimit()).Offset(pagination.GetOffset()).Error; err != nil {
 			tx.Rollback()
 			return err
 		}

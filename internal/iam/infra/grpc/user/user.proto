@@ -46,10 +46,14 @@ message UpdateUserRequest {
 	map<string, string> fields  = 2 [json_name = "fields"];
 }
 
+
+// "code": 2,
+// "message": "record not found",
+// "details": []
 message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-	google.protobuf.Struct  Result = 3 [ json_name = "result"]; 
+	google.protobuf.Struct  Details = 3 [ json_name = "details"]; 
 }
 
 message GETRequest {
