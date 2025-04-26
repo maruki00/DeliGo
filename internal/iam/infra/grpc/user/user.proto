@@ -5,6 +5,7 @@ option go_package = "grpc.user";
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
+import "validate/validate.proto";
 
 
 message User {
