@@ -576,39 +576,7 @@ func (m *Response) validate(all bool) error {
 
 	// no validation rules for Message
 
-	for idx, item := range m.GetResult() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ResponseValidationError{
-						field:  fmt.Sprintf("Result[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ResponseValidationError{
-						field:  fmt.Sprintf("Result[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ResponseValidationError{
-					field:  fmt.Sprintf("Result[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
+	// no validation rules for Result
 
 	if len(errors) > 0 {
 		return ResponseMultiError(errors)
