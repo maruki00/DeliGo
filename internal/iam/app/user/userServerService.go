@@ -30,12 +30,14 @@ func NewUserUseCase(
 func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUserRequest) (*user_grpc.Response, error) {
 
 	command := &userCommands.CreateUserCommand{
-		ID:         uuid.New(),
-		Username:   in.UserName,
-		Email:      in.Email,
-		Password:   in.Password,
-		IsActive:   false,
-		MFAEnabled: false,
+		ID:                uuid.New(),
+		Username:          in.UserName,
+		Email:             in.Email,
+		Password:          in.Password,
+		IsActive:          false,
+		MFAEnabled:        false,
+		PasswordChangedAt: nil,
+		MFASecret:         "",
 	}
 
 	err := _this.commandBus.Dispatch(ctx, command)
