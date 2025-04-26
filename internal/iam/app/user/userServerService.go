@@ -51,14 +51,14 @@ func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUs
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  nil,
+			Details: nil,
 		}, err
 	}
 
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  nil,
+		Details: nil,
 	}, nil
 }
 
@@ -72,13 +72,13 @@ func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.Delete
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  nil,
+			Details: nil,
 		}, err
 	}
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  nil,
+		Details: nil,
 	}, nil
 }
 
@@ -92,13 +92,13 @@ func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.Update
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  nil,
+			Details: nil,
 		}, err
 	}
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  nil,
+		Details: nil,
 	}, nil
 }
 
@@ -136,7 +136,7 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 			return &user_grpc.Response{
 				Code:    400,
 				Message: "invalid id",
-				Result:  nil,
+				Details: nil,
 			}, err
 		}
 		query = &userQueries.FindUserByIdQuery{
@@ -150,7 +150,7 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  nil,
+			Details: nil,
 		}, err
 	}
 	entity := res.(entities.UserEntity)
@@ -166,7 +166,7 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  dd,
+		Details: dd,
 	}, nil
 }
 
@@ -192,12 +192,12 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  nil,
+			Details: nil,
 		}, err
 	}
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  nil,
+		Details: nil,
 	}, nil
 }
