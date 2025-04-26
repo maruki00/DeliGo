@@ -3,7 +3,6 @@ package pkgCqrs
 import (
 	"context"
 	"fmt"
-	"reflect"
 )
 
 type QueryBus struct {
@@ -17,17 +16,15 @@ func NewQueryBus() *QueryBus {
 }
 
 func (b *QueryBus) Register(query Query, handler QueryHandler) {
-	queryName := reflect.TypeOf(query).Name()
+	queryName := query.Name()
 	b.handlers[queryName] = handler
 }
 
 func (b *QueryBus) Dispatch(ctx context.Context, query Query) (interface{}, error) {
-	queryName := reflect.TypeOf(query).Name()
-
+	queryName := query.Name()
 	handler, exists := b.handlers[queryName]
 	if !exists {
 		return nil, fmt.Errorf("no handler registered for query %s", queryName)
 	}
-
 	return handler.Handle(ctx, query)
 }

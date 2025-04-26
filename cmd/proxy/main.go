@@ -12,6 +12,7 @@ import (
 	gruntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 )
 
 func GateWay(ctx context.Context, cfg *configs.Config, opts []gruntime.ServeMuxOption) (http.Handler, error) {
@@ -33,7 +34,6 @@ func GateWay(ctx context.Context, cfg *configs.Config, opts []gruntime.ServeMuxO
 	return mux, nil
 }
 
-// Add a client interceptor to measure gRPC request duration
 func clientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 	start := time.Now()
 	err := invoker(ctx, method, req, reply, cc, opts...)
@@ -48,14 +48,8 @@ func clientInterceptor(ctx context.Context, method string, req, reply interface{
 func withLogger(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-
-		// Create a custom response writer to capture status code
 		rw := newResponseWriter(w)
-
-		// Process the request
 		h.ServeHTTP(rw, r)
-
-		// Log request details including duration
 		slog.Info("HTTP request completed",
 			"method", r.Method,
 			"url", r.URL.String(),
@@ -79,6 +73,10 @@ func (rw *responseWriter) WriteHeader(code int) {
 	rw.ResponseWriter.WriteHeader(code)
 }
 
+func CustomMetadata(ctx context.Context, req *http.Request) metadata.MD {
+	return metadata.Pairs("x-raw-query", req.URL.RawQuery)
+}
+
 func main() {
 	totalStart := time.Now()
 	ctx, cancel := context.WithCancel(context.Background())
@@ -92,20 +90,18 @@ func main() {
 	}
 	slog.Info("Config loaded", "duration", time.Since(configStart))
 
-	// Setup gateway
 	gwStart := time.Now()
-	gw, err := GateWay(ctx, cfg, nil)
+	gw, err := GateWay(ctx, cfg, []gruntime.ServeMuxOption{gruntime.WithMetadata(CustomMetadata)})
 	if err != nil {
 		panic(err)
 	}
 	slog.Info("Gateway setup completed", "duration", time.Since(gwStart))
 
-	// Configure server
 	mux := http.NewServeMux()
 	mux.Handle("/", gw)
 
 	s := http.Server{
-		Addr:    "0.0.0.0:9000", ///fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port),
+		Addr:    fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port),
 		Handler: withLogger(mux),
 	}
 
@@ -124,7 +120,6 @@ func main() {
 		slog.Info("Server shutdown completed", "duration", time.Since(shutdownStart))
 	}()
 
-	// Log startup time
 	slog.Info("Server initialization completed",
 		"total_setup_time", time.Since(totalStart),
 		"listen_address", s.Addr)
