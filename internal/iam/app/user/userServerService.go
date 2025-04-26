@@ -4,13 +4,14 @@ import (
 	"context"
 	userCommands "deligo/internal/iam/app/user/commands"
 	userQueries "deligo/internal/iam/app/user/queries"
+	"deligo/internal/iam/domain/entities"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgUtils "deligo/pkg/utils"
-	"encoding/json"
 	"fmt"
 
 	"github.com/google/uuid"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 type UserServerService struct {
@@ -50,14 +51,14 @@ func (_this *UserServerService) Save(ctx context.Context, in *user_grpc.CreateUs
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  "{}",
+			Result:  nil,
 		}, err
 	}
 
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  "{}",
+		Result:  nil,
 	}, nil
 }
 
@@ -71,13 +72,13 @@ func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.Delete
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  "{}",
+			Result:  nil,
 		}, err
 	}
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  "{}",
+		Result:  nil,
 	}, nil
 }
 
@@ -91,13 +92,13 @@ func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.Update
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  "{}",
+			Result:  nil,
 		}, err
 	}
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  "{}",
+		Result:  nil,
 	}, nil
 }
 
@@ -116,6 +117,7 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 		filter = params["filter"][0]
 
 	}
+
 	var query pkgCqrs.Query
 	switch filter {
 	case "username":
@@ -132,30 +134,36 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 			return &user_grpc.Response{
 				Code:    400,
 				Message: "invalid id",
-				Result:  "{}",
+				Result:  nil,
 			}, err
 		}
 		query = &userQueries.FindUserByIdQuery{
 			ID: id,
 		}
 	}
+
 	res, err := _this.queryBus.Dispatch(ctx, query)
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  "{}",
+			Result:  nil,
 		}, err
 	}
-
-	fmt.Println(res)
-
-	data, _ := json.Marshal(res)
-
+	entity := res.(entities.UserEntity)
+	var m = map[string]any{
+		"id":         string(entity.GetID()),
+		"email":      entity.GetEmail(),
+		"user_name":  entity.GetUsername(),
+		"profile":    "",
+		"updated_at": entity.GetUpdatedAt().String(),
+		"created_at": entity.GetCreatedAt().String(),
+	}
+	dd, _ := structpb.NewStruct(m)
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  string(data),
+		Result:  dd,
 	}, nil
 }
 
@@ -181,12 +189,12 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 		return &user_grpc.Response{
 			Code:    400,
 			Message: err.Error(),
-			Result:  "{}",
+			Result:  nil,
 		}, err
 	}
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Result:  "{}",
+		Result:  nil,
 	}, nil
 }

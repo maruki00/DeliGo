@@ -37,10 +37,14 @@ func GateWay(ctx context.Context, cfg *configs.Config, opts []gruntime.ServeMuxO
 func clientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 	start := time.Now()
 	err := invoker(ctx, method, req, reply, cc, opts...)
+	errMsg := ""
+	if err != nil {
+		errMsg = err.Error()
+	}
 	slog.Info("gRPC request completed",
 		"method", method,
 		"duration", time.Since(start).String(),
-		"error", err != nil)
+		"error", errMsg)
 	return err
 }
 

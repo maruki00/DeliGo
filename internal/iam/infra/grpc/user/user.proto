@@ -49,7 +49,7 @@ message UpdateUserRequest {
 message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-	string  Result = 3 [ json_name = "result"]; 
+	google.protobuf.Struct  Result = 3 [ json_name = "result"]; 
 }
 
 message GETRequest {
