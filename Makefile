@@ -2,9 +2,9 @@
 
 
 user:
-	protoc -I. \
-    -I./internal/shared/infra/proto \
-    -I$(go list -f '{{ .Dir }}' -m github.com/envoyproxy/protoc-gen-validate)/../.. \
+	protoc -I. \                                           
+    -I/../.. \
+    -I$(go env GOPATH)/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v1.2.1 \ 
     ./internal/iam/infra/grpc/user/user.proto \
     --go_out=./internal/iam/infra/grpc/user --go_opt=paths=source_relative \
     --go-grpc_out=./internal/iam/infra/grpc/user --go-grpc_opt=paths=source_relative \
