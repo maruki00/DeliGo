@@ -7,20 +7,33 @@ import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
 
-message User {       
-	string UserName = 1 [(validate.rules).string = {
-		min_len: 5,  
-		max_len: 20,
-		pattern: "^[a-zA-Z0-9_]+$"
-	  },    	  json_name = "user_name"];    
-	string Email 					= 2 [(validate.rules).string.email = true,    json_name = "email"];    
-	string Password 				= 3 [(validate.rules).string.email = true,    json_name = "password"];   	
+message User {
+	string ID 						= 1 [json_name = "id"];       
+	string UserName 				= 2 [json_name = "username"];    
+	string Email 					= 3 [json_name = "email"];    
+	string Password 				= 4 [json_name = "password"];   	
 }
 
 message CreateUserRequest  {
-	string UserName		= 1 [json_name = "user_name"];       
-	string Email 		= 2 [json_name = "email"];    
-	string Password 	= 3 [json_name = "password"]; 
+	string UserName		= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 20,
+			pattern: "^[a-zA-Z0-9_]+$"
+		},
+		json_name = "user_name"
+	];       
+	string Email 		= 2 [
+		(validate.rules).string.email = true,
+		json_name = "email"
+	];    
+	string Password 	= 3 [
+		(validate.rules).string = {
+			min_len: 8,  
+			max_len: 100
+		},
+		json_name = "password"
+	]; 
 }
 
 message DeleteUserRequest {
