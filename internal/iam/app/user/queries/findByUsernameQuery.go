@@ -1,6 +1,7 @@
 package userQueries
 
 type FindUserByUsernameQuery struct {
+	Key      string
 	Username string
 }
 

@@ -105,7 +105,7 @@ func (ur *UserRepository) FindByID(ctx context.Context, id valueobjects.ID) (*mo
 	// 	`
 	var user models.User
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.First(&user, id).Error; err != nil {
+		if err := tx.First(&user).Where("id", id).Error; err != nil {
 			tx.Rollback()
 			return err
 		}

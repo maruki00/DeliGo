@@ -1,6 +1,7 @@
 package userQueries
 
 type FindUserByEmailQuery struct {
+	Key   string
 	Email string
 }
 

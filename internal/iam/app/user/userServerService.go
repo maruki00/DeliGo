@@ -122,10 +122,12 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 	switch filter {
 	case "username":
 		query = &userQueries.FindUserByUsernameQuery{
+			Key:      "username",
 			Username: value,
 		}
 	case "email":
 		query = &userQueries.FindUserByEmailQuery{
+			Key:   "email",
 			Email: value,
 		}
 	default:
@@ -138,7 +140,8 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 			}, err
 		}
 		query = &userQueries.FindUserByIdQuery{
-			ID: id,
+			Key: "id",
+			ID:  id,
 		}
 	}
 
