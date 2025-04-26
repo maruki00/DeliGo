@@ -7,11 +7,10 @@ import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
 
-message User {
-	string ID 						= 1 [json_name = "id"];       
-	string UserName 				= 2 [json_name = "username"];    
-	string Email 					= 3 [json_name = "email"];    
-	string Password 				= 4 [json_name = "password"];   	
+message User {       
+	string UserName 				= 2 [(validate.rules).string.email = true,    json_name = "user_name"];    
+	string Email 					= 3 [(validate.rules).string.email = true,    json_name = "email"];    
+	string Password 				= 4 [(validate.rules).string.email = true,    json_name = "password"];   	
 }
 
 message CreateUserRequest  {

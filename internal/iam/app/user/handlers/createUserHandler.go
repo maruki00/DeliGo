@@ -26,8 +26,6 @@ func (_this *CreateUserHandler) Handle(ctx context.Context, command pkgCqrs.Comm
 		return err
 	}
 
-	// fmt.Println("username : ", cmd.Username)
-
 	err = _this.userRepo.Save(ctx, &models.User{
 		ID:                valueobjects.ID(cmd.ID.String()),
 		Username:          cmd.Username,
