@@ -11,7 +11,7 @@ type Password string
 
 func NewPassword(password string) (Password, error) {
 	if len(password) < 8 {
-		return "", errors.New("password should contains atleast 88 chars")
+		return "", errors.New("password should contains atleast 8 chars")
 	}
 	hasLower := regexp.MustCompile(`[a-z]`).MatchString(password)
 	hasUpper := regexp.MustCompile(`[A-Z]`).MatchString(password)

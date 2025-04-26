@@ -8,9 +8,13 @@ import "google/protobuf/struct.proto";
 
 
 message User {       
-	string UserName 				= 2 [(validate.rules).string.email = true,    json_name = "user_name"];    
-	string Email 					= 3 [(validate.rules).string.email = true,    json_name = "email"];    
-	string Password 				= 4 [(validate.rules).string.email = true,    json_name = "password"];   	
+	string UserName = 1 [(validate.rules).string = {
+		min_len: 5,  
+		max_len: 20,
+		pattern: "^[a-zA-Z0-9_]+$"
+	  },    	  json_name = "user_name"];    
+	string Email 					= 2 [(validate.rules).string.email = true,    json_name = "email"];    
+	string Password 				= 3 [(validate.rules).string.email = true,    json_name = "password"];   	
 }
 
 message CreateUserRequest  {
