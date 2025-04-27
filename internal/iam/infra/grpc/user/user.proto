@@ -47,9 +47,6 @@ message UpdateUserRequest {
 }
 
 
-// "code": 2,
-// "message": "record not found",
-// "details": []
 message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
