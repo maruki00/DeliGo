@@ -7,7 +7,6 @@ import (
 	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -169,10 +168,9 @@ func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID valueobject
 	// 		LIMIT $2
 	// 	`
 
-	fmt.Println("pagination : ", pagination)
 	users := make([]*models.User, pagination.Limit)
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Model(&models.User{}).Where("tenant_id = ?", tenantID).Find(&users).Limit(pagination.GetLimit()).Offset(pagination.GetOffset()).Error; err != nil {
+		if err := tx.Model(&models.User{}).Where("tenant_id = ?", tenantID).Limit(pagination.GetLimit()).Offset(pagination.GetOffset()).Find(&users).Error; err != nil {
 			tx.Rollback()
 			return err
 		}

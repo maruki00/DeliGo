@@ -6,10 +6,10 @@ import (
 	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/entities"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
-	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgUtils "deligo/pkg/utils"
+	"fmt"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -164,11 +164,11 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 		"updated_at": entity.GetUpdatedAt().String(),
 		"created_at": entity.GetCreatedAt().String(),
 	}
-	dd, _ := structpb.NewValue(m)
+	dd, _ := structpb.NewStruct(m)
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Details: []*structpb.Value{dd},
+		Details: []*structpb.Struct{dd},
 	}, nil
 }
 
@@ -180,7 +180,7 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 	}
 	tID := ""
 	page := 1
-	offset := 10
+	limit := 10
 	if len(params["tenant_id"]) > 0 {
 		tID = params["tenant_id"][0]
 	}
@@ -188,8 +188,8 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 		page, _ = strconv.Atoi(params["page]"][0])
 	}
 
-	if len(params["offset"]) > 0 {
-		offset, _ = strconv.Atoi(params["offset"][0])
+	if len(params["limit"]) > 0 {
+		limit, _ = strconv.Atoi(params["limit"][0])
 	}
 
 	tenantID, _ := uuid.Parse(tID)
@@ -197,27 +197,46 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 	query := &userQueries.ListUsersByTenantQuery{
 		TenantID: tenantID,
 		Pagination: shared_models.Pagination{
-			Page:   page,
-			Offset: offset,
+			Page:  page,
+			Limit: limit,
 		},
 	}
 	res, err := _this.queryBus.Dispatch(ctx, query)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(res)
+	// data := make([]*structpb.Struct, limit)
+	// for index, entity := range res.([]*models.User) {
+	// 	data[index], _ = structpb.NewStruct(map[string]any{
+	// 		"id":         string(entity.GetID()),
+	// 		"email":      entity.GetEmail(),
+	// 		"user_name":  entity.GetUsername(),
+	// 		"profile":    "",
+	// 		"updated_at": entity.GetUpdatedAt().String(),
+	// 		"created_at": entity.GetCreatedAt().String(),
+	// 	})
+	// }
 
-	data := make([]*structpb.Value, offset)
-	index := 0
-	for _, entity := range res.([]*models.User) {
-		data[index], _ = structpb.NewValue(map[string]any{
-			"id":         string(entity.GetID()),
-			"email":      entity.GetEmail(),
-			"user_name":  entity.GetUsername(),
-			"profile":    "",
-			"updated_at": entity.GetUpdatedAt().String(),
-			"created_at": entity.GetCreatedAt().String(),
-		})
-		index++
+	d1, _ := structpb.NewStruct(map[string]any{
+		"name": "nam3e1",
+	})
+
+	d2, _ := structpb.NewStruct(map[string]any{
+		"name": "nam3e1",
+	})
+	d3, _ := structpb.NewStruct(map[string]any{
+		"name": "nam3e1",
+	})
+	d4, _ := structpb.NewStruct(map[string]any{
+		"name": "nam3e1",
+	})
+
+	data := []*structpb.Struct{
+		d1,
+		d2,
+		d3,
+		d4,
 	}
 
 	return &user_grpc.Response{
