@@ -6,10 +6,10 @@ import (
 	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/entities"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
+	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgUtils "deligo/pkg/utils"
-	"fmt"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -156,19 +156,20 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 		}, err
 	}
 	entity := res.(entities.UserEntity)
-	var m = map[string]any{
+
+	d, _ := structpb.NewStruct(map[string]any{
 		"id":         string(entity.GetID()),
 		"email":      entity.GetEmail(),
 		"user_name":  entity.GetUsername(),
 		"profile":    "",
 		"updated_at": entity.GetUpdatedAt().String(),
 		"created_at": entity.GetCreatedAt().String(),
-	}
-	dd, _ := structpb.NewStruct(m)
+	})
+
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Details: []*structpb.Struct{dd},
+		Details: []*structpb.Struct{d},
 	}, nil
 }
 
@@ -205,43 +206,25 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(res)
-	// data := make([]*structpb.Struct, limit)
-	// for index, entity := range res.([]*models.User) {
-	// 	data[index], _ = structpb.NewStruct(map[string]any{
-	// 		"id":         string(entity.GetID()),
-	// 		"email":      entity.GetEmail(),
-	// 		"user_name":  entity.GetUsername(),
-	// 		"profile":    "",
-	// 		"updated_at": entity.GetUpdatedAt().String(),
-	// 		"created_at": entity.GetCreatedAt().String(),
-	// 	})
-	// }
 
-	d1, _ := structpb.NewStruct(map[string]any{
-		"name": "nam3e1",
-	})
-
-	d2, _ := structpb.NewStruct(map[string]any{
-		"name": "nam3e1",
-	})
-	d3, _ := structpb.NewStruct(map[string]any{
-		"name": "nam3e1",
-	})
-	d4, _ := structpb.NewStruct(map[string]any{
-		"name": "nam3e1",
-	})
-
-	data := []*structpb.Struct{
-		d1,
-		d2,
-		d3,
-		d4,
+	details := make([]*structpb.Struct, limit)
+	index := 0
+	for _, entity := range res.([]*models.User) {
+		d, _ := structpb.NewStruct(map[string]any{
+			"id":         string(entity.GetID()),
+			"email":      entity.GetEmail(),
+			"user_name":  entity.GetUsername(),
+			"profile":    "",
+			"updated_at": entity.GetUpdatedAt().String(),
+			"created_at": entity.GetCreatedAt().String(),
+		})
+		details[index] = d
+		index++
 	}
 
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Details: data,
+		Details: details[:index],
 	}, nil
 }
