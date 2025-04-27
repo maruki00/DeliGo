@@ -164,11 +164,11 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 		"updated_at": entity.GetUpdatedAt().String(),
 		"created_at": entity.GetCreatedAt().String(),
 	}
-	dd, _ := structpb.NewStruct(m)
+	dd, _ := structpb.NewValue(m)
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Details: dd,
+		Details: []*structpb.Value{dd},
 	}, nil
 }
 
@@ -202,25 +202,27 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 		},
 	}
 	res, err := _this.queryBus.Dispatch(ctx, query)
+	if err != nil {
+		return nil, err
+	}
 
-	data := make([]any, offset)
+	data := make([]*structpb.Value, offset)
 	index := 0
 	for _, entity := range res.([]*models.User) {
-		data[index] = map[string]any{
+		data[index], _ = structpb.NewValue(map[string]any{
 			"id":         string(entity.GetID()),
 			"email":      entity.GetEmail(),
 			"user_name":  entity.GetUsername(),
 			"profile":    "",
 			"updated_at": entity.GetUpdatedAt().String(),
 			"created_at": entity.GetCreatedAt().String(),
-		}
+		})
 		index++
 	}
 
-	x, _ := structpb.NewList(data)
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Details: x,
+		Details: data,
 	}, nil
 }
