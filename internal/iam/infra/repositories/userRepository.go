@@ -59,9 +59,7 @@ func (ur *UserRepository) Save(ctx context.Context, entity entities.UserEntity) 
 func (ur *UserRepository) Delete(ctx context.Context, id valueobjects.ID) error {
 	//sql := `UPDATE users SET deleted_at = now(), updated_at = now() WHERE id = $1 `
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Delete(&models.User{}, map[string]interface{}{
-			"id": id,
-		}).Error; err != nil {
+		if err := tx.Where("id = ?", id).Delete(&models.User{}).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
@@ -84,7 +82,7 @@ func (ur *UserRepository) Update(ctx context.Context, id valueobjects.ID, entity
 	// 	`
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		user := models.User{ID: id}
-		if err := tx.Model(&user).Updates(&entity).Error; err != nil {
+		if err := tx.Model(&user).Where("id = ?", id).Updates(entity).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
@@ -105,7 +103,7 @@ func (ur *UserRepository) FindByID(ctx context.Context, id valueobjects.ID) (*mo
 	// 	`
 	var user models.User
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.First(&user).Where("id = ?", id).Error; err != nil {
+		if err := tx.Where("id = ?", id).First(&user).Error; err != nil {
 			tx.Rollback()
 			return err
 		}

@@ -10,6 +10,7 @@ import (
 	shared_models "deligo/internal/shared/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgUtils "deligo/pkg/utils"
+	"fmt"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -85,9 +86,11 @@ func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.Delete
 }
 
 func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
+	fmt.Println(in.Fields)
+	return nil, nil
 	command := &userCommands.UpdateUserCommand{
-		ID:     uuid.MustParse(in.ID),
-		Fields: in.Fields,
+		ID: uuid.MustParse(in.ID),
+		//Fields: in.Fields,
 	}
 	err := _this.commandBus.Dispatch(ctx, command)
 	if err != nil {
@@ -127,12 +130,13 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 			Key:      "username",
 			Username: value,
 		}
+
 	case "email":
 		query = &userQueries.FindUserByEmailQuery{
 			Key:   "email",
 			Email: value,
 		}
-	default:
+	case "id":
 		id, err := uuid.Parse(value)
 		if err != nil {
 			return &user_grpc.Response{
@@ -145,6 +149,14 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 			Key: "id",
 			ID:  id,
 		}
+
+	default:
+		return &user_grpc.Response{
+			Code:    400,
+			Message: "invalid id",
+			Details: nil,
+		}, err
+
 	}
 
 	res, err := _this.queryBus.Dispatch(ctx, query)
