@@ -50,7 +50,7 @@ message UpdateUserRequest {
 message Response {
     int32 Code = 1 [ json_name = "code"];
     string Message = 2 [ json_name = "message"];
-	google.protobuf.Struct  Details = 3 [ json_name = "details"]; 
+	repeated google.protobuf.Value  Details = 3 [ json_name = "details"]; 
 }
 
 message GETRequest {

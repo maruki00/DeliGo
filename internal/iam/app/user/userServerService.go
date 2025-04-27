@@ -6,9 +6,11 @@ import (
 	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/entities"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
+	"deligo/internal/iam/infra/models"
+	shared_models "deligo/internal/shared/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgUtils "deligo/pkg/utils"
-	"fmt"
+	"strconv"
 
 	"github.com/google/uuid"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -172,32 +174,53 @@ func (_this *UserServerService) Find(ctx context.Context, in *user_grpc.GETReque
 
 func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.GETRequest) (*user_grpc.Response, error) {
 
-	queryParams := in.GetQueryParams()
-	var tenantID = ""
-
-	filter, ok := queryParams.Fields["tenantId"]
-	if ok {
-		tenantID = filter.GetStringValue()
-
+	params, err := pkgUtils.ParamsFromGrpc(ctx)
+	if err != nil {
+		return nil, err
+	}
+	tID := ""
+	page := 1
+	offset := 10
+	if len(params["tenant_id"]) > 0 {
+		tID = params["value"][0]
+	}
+	if len(params["page"]) > 0 {
+		page, _ = strconv.Atoi(params["page]"][0])
 	}
 
-	id, _ := uuid.Parse(tenantID)
+	if len(params["offset"]) > 0 {
+		offset, _ = strconv.Atoi(params["offset"][0])
+	}
+
+	tenantID, _ := uuid.Parse(tID)
 
 	query := &userQueries.ListUsersByTenantQuery{
-		TenantID: id,
+		TenantID: tenantID,
+		Pagination: shared_models.Pagination{
+			Page:   page,
+			Offset: offset,
+		},
 	}
 	res, err := _this.queryBus.Dispatch(ctx, query)
-	fmt.Println(res)
-	if err != nil {
-		return &user_grpc.Response{
-			Code:    400,
-			Message: err.Error(),
-			Details: nil,
-		}, err
+
+	data := make([]any, offset)
+	index := 0
+	for _, entity := range res.([]*models.User) {
+		data[index] = map[string]any{
+			"id":         string(entity.GetID()),
+			"email":      entity.GetEmail(),
+			"user_name":  entity.GetUsername(),
+			"profile":    "",
+			"updated_at": entity.GetUpdatedAt().String(),
+			"created_at": entity.GetCreatedAt().String(),
+		}
+		index++
 	}
+
+	x, _ := structpb.NewList(data)
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
-		Details: nil,
+		Details: x,
 	}, nil
 }

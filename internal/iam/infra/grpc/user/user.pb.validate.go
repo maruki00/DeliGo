@@ -576,33 +576,38 @@ func (m *Response) validate(all bool) error {
 
 	// no validation rules for Message
 
-	if all {
-		switch v := interface{}(m.GetDetails()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ResponseValidationError{
-					field:  "Details",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetDetails() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ResponseValidationError{
+						field:  fmt.Sprintf("Details[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ResponseValidationError{
+						field:  fmt.Sprintf("Details[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ResponseValidationError{
-					field:  "Details",
+				return ResponseValidationError{
+					field:  fmt.Sprintf("Details[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetDetails()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ResponseValidationError{
-				field:  "Details",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
