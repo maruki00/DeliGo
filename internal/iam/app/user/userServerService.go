@@ -182,7 +182,7 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 	page := 1
 	offset := 10
 	if len(params["tenant_id"]) > 0 {
-		tID = params["value"][0]
+		tID = params["tenant_id"][0]
 	}
 	if len(params["page"]) > 0 {
 		page, _ = strconv.Atoi(params["page]"][0])
