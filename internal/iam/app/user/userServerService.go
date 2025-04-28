@@ -5,11 +5,13 @@ import (
 	userCommands "deligo/internal/iam/app/user/commands"
 	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/entities"
+	valueobjects "deligo/internal/iam/domain/valueobject"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
 	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgUtils "deligo/pkg/utils"
+	"fmt"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -85,22 +87,36 @@ func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.Delete
 }
 
 func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
-	fiels := in.GetFields()
-	if fiels == nil {
+	fields := in.GetFields()
+	if fields == nil {
 		return &user_grpc.Response{
 			Code:    200,
 			Message: "success",
 			Details: nil,
 		}, nil
 	}
-	return &user_grpc.Response{
-		Code:    200,
-		Message: "success",
-		Details: nil,
-	}, nil
+	var allowedField = map[string]bool{
+		"email":    true,
+		"password": true,
+		"username": true,
+	}
+	for key, value := range fields {
+		allowed, ok := allowedField[key]
+		if !allowed || !ok {
+			return &user_grpc.Response{
+				Code:    400,
+				Message: fmt.Sprintf("%s is not allowed to modify", key),
+				Details: nil,
+			}, nil
+		}
+		if key == "password" {
+			pass, _ := valueobjects.NewPassword(value)
+			fields["password"] = string(pass)
+		}
+	}
 	command := &userCommands.UpdateUserCommand{
-		ID: uuid.MustParse(in.ID),
-		//Fields: in.Fields,
+		ID:     uuid.MustParse(in.ID),
+		Fields: in.Fields,
 	}
 	err := _this.commandBus.Dispatch(ctx, command)
 	if err != nil {
