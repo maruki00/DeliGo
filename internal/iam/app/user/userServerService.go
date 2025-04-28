@@ -10,7 +10,6 @@ import (
 	shared_models "deligo/internal/shared/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgUtils "deligo/pkg/utils"
-	"fmt"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -86,7 +85,14 @@ func (_this *UserServerService) Delete(ctx context.Context, in *user_grpc.Delete
 }
 
 func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.UpdateUserRequest) (*user_grpc.Response, error) {
-	fmt.Println(in.Fields)
+	fiels := in.GetFields()
+	if fiels == nil {
+		return &user_grpc.Response{
+			Code:    200,
+			Message: "success",
+			Details: nil,
+		}, nil
+	}
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",
