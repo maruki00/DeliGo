@@ -5,7 +5,6 @@ import (
 	userCommands "deligo/internal/iam/app/user/commands"
 	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/entities"
-	valueobjects "deligo/internal/iam/domain/valueobject"
 	user_grpc "deligo/internal/iam/infra/grpc/user"
 	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
@@ -98,9 +97,9 @@ func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.Update
 
 	var allowedField = map[string]bool{
 		"email":    true,
-		"password": true,
 		"username": true,
 	}
+	flds := make(map[string]interface{})
 
 	for key, value := range fields {
 		allowed, ok := allowedField[key]
@@ -111,30 +110,24 @@ func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.Update
 				Details: nil,
 			}, nil
 		}
-		if key == "password" {
-			pass, _ := valueobjects.NewPassword(value)
-			fields["password"] = string(pass)
-		}
-	}
 
-	return &user_grpc.Response{
-		Code:    200,
-		Message: "test",
-		Details: nil,
-	}, nil
+		flds[key] = value
+	}
 
 	command := &userCommands.UpdateUserCommand{
 		ID:     uuid.MustParse(in.ID),
-		Fields: in.Fields,
+		Fields: flds,
 	}
+
 	err := _this.commandBus.Dispatch(ctx, command)
 	if err != nil {
 		return &user_grpc.Response{
 			Code:    400,
-			Message: err.Error(),
+			Message: "Error : " + err.Error(),
 			Details: nil,
 		}, err
 	}
+
 	return &user_grpc.Response{
 		Code:    200,
 		Message: "success",

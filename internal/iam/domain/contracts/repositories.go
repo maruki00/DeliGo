@@ -13,7 +13,7 @@ type Pagination struct{}
 type IUserRepository interface {
 	Save(ctx context.Context, entity entities.UserEntity) error
 	Delete(ctx context.Context, id valueobjects.ID) error
-	Update(ctx context.Context, id valueobjects.ID, entity map[string]string) error
+	Update(ctx context.Context, id valueobjects.ID, entity map[string]interface{}) error
 	FindByID(ctx context.Context, id valueobjects.ID) (*models.User, error)
 	FindByEmail(ctx context.Context, email string) (*models.User, error)
 	FindByUsername(ctx context.Context, username string) (*models.User, error)

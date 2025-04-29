@@ -7,6 +7,7 @@ import (
 	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -73,17 +74,19 @@ func (ur *UserRepository) Delete(ctx context.Context, id valueobjects.ID) error 
 	return nil
 }
 
-func (ur *UserRepository) Update(ctx context.Context, id valueobjects.ID, entity map[string]string) error {
+func (ur *UserRepository) Update(ctx context.Context, id valueobjects.ID, fields map[string]interface{}) error {
 	// sql := `
 	// 		UPDATE users
 	// 		SET email=$1, role=$2, updated_at = now()
 	// 		WHERE id=$3
 	// 		AND deleted_at = NULL
 	// 	`
+
+	fmt.Println("fields : ", fields, "id = ?", string(id))
+
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
-		user := models.User{ID: id}
-		if err := tx.Model(&user).Where("id = ?", id).Updates(entity).Error; err != nil {
-			tx.Rollback()
+		err := tx.Model(&models.User{}).Where("id = ?", string(id)).Updates(fields).Error
+		if err != nil {
 			return err
 		}
 		return nil

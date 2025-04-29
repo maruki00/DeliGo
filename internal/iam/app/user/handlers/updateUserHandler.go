@@ -20,18 +20,11 @@ func NewUpdateUserHandler(userRepo contracts.IUserRepository) *UpdateUserHandler
 	}
 }
 
-var fields = map[string]bool{
-	"email":    true,
-	"password": true,
-	"username": true,
-}
-
 func (_this *UpdateUserHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
-	fmt.Println("called : func (_this *UpdateUserHandler) Handle(ctx context.Context, command pkgCqrs.Command) error ")
 	cmd := command.(*userCommands.UpdateUserCommand)
 	err := _this.userRepo.Update(ctx, valueobjects.ID(cmd.ID.String()), cmd.Fields)
 	if err != nil {
-		return err
+		return fmt.Errorf("error : %s", err.Error())
 	}
 	return nil
 }
