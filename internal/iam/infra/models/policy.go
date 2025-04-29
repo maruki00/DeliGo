@@ -17,3 +17,31 @@ type Policy struct {
 	Permissions []*Permission   `gorm:"foreignKey:PolicyID"`
 	Groups      []*Group        `gorm:"many2many:group_policies;"`
 }
+
+func (_this *Policy) SetID(_ID valueobjects.ID) {
+	_this.ID = _ID
+}
+func (_this *Policy) SetName(_Name string) {
+	_this.Name = _Name
+}
+func (_this *Policy) GetID() valueobjects.ID {
+	return _this.ID
+}
+func (_this *Policy) GetName() string {
+	return _this.Name
+}
+func (_this *Policy) GetGroupID() string {
+	return _this.GroupID
+}
+func (_this *Policy) GetCreatedAt() time.Time {
+	return _this.CreatedAt
+}
+func (_this *Policy) GetUpdatedAt() time.Time {
+	return _this.UpdatedAt
+}
+func (_this *Policy) GetPermissions() []*Permission {
+	return _this.Permissions
+}
+func (_this *Policy) GetGroups() []*Group {
+	return _this.Groups
+}

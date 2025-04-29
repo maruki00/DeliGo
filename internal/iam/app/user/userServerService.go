@@ -110,7 +110,6 @@ func (_this *UserServerService) Update(ctx context.Context, in *user_grpc.Update
 				Details: nil,
 			}, nil
 		}
-
 		flds[key] = value
 	}
 
