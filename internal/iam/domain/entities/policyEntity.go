@@ -1,20 +1,23 @@
 package entities
 
-import "time"
+import (
+	valueobjects "deligo/internal/iam/domain/valueobject"
+	"deligo/internal/iam/infra/models"
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type PolicyEntity interface {
-	SetID(ID string)
-	SetEmail(Email string)
-	SetPassword(Password string)
-	SetRole(Role string)
-	SetDeletedAt(DeletedAt *time.Time)
-	SetCreatedAt(CreatedAt *time.Time)
-	SetUpdatedAt(UpdatedAt *time.Time)
-	GetID() string
-	GetEmail() string
-	GetPassword() string
-	GetRole() string
-	GetDeletedAt() *time.Time
-	GetCreatedAt() *time.Time
-	GetUpdatedAt() *time.Time
+	SetID(_ID valueobjects.ID)
+	SetName(_Name string)
+	SetGroupID(_GroupID string)
+
+	GetID() valueobjects.ID
+	GetName() string
+	GetGroupID() string
+	GetDeletedAt() gorm.DeletedAt
+	GetUpdatedAt() time.Time
+	GetPermissions() []*models.Permission
+	GetGroups() []*models.Group
 }
