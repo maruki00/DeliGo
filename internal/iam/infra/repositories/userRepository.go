@@ -7,7 +7,6 @@ import (
 	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -81,9 +80,6 @@ func (ur *UserRepository) Update(ctx context.Context, id valueobjects.ID, fields
 	// 		WHERE id=$3
 	// 		AND deleted_at = NULL
 	// 	`
-
-	fmt.Println("fields : ", fields, "id = ?", string(id))
-
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		err := tx.Model(&models.User{}).Where("id = ?", string(id)).Updates(fields).Error
 		if err != nil {
