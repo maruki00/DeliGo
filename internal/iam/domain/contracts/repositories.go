@@ -11,21 +11,21 @@ import (
 type Pagination struct{}
 
 type IUserRepository interface {
-	Save(ctx context.Context, entity entities.UserEntity) error
-	Delete(ctx context.Context, id valueobjects.ID) error
-	Update(ctx context.Context, id valueobjects.ID, entity map[string]interface{}) error
-	FindByID(ctx context.Context, id valueobjects.ID) (*models.User, error)
-	FindByEmail(ctx context.Context, email string) (*models.User, error)
-	FindByUsername(ctx context.Context, username string) (*models.User, error)
-	ListByTenant(ctx context.Context, tenantID valueobjects.ID, pagination shared_models.Pagination) ([]*models.User, error)
+	Save(context.Context, entities.UserEntity) error
+	Delete(context.Context, valueobjects.ID) error
+	Update(context.Context, valueobjects.ID, map[string]interface{}) error
+	FindByID(context.Context, valueobjects.ID) (*models.User, error)
+	FindByEmail(context.Context, string) (*models.User, error)
+	FindByUsername(context.Context, string) (*models.User, error)
+	ListByTenant(context.Context, valueobjects.ID, shared_models.Pagination) ([]*models.User, error)
 }
 
 type IPolicyRepository interface {
-	FindByID(ctx context.Context, id string) (*models.Policy, error)
-	FindByName(ctx context.Context, name string) (*models.Policy, error)
-	Save(ctx context.Context, policy *models.Policy) error
-	Delete(ctx context.Context, id string) error
-	ListForTenant(ctx context.Context, tenantID string) ([]*models.Policy, error)
+	FindByID(context.Context, string) (*models.Policy, error)
+	FindByName(context.Context, string) (*models.Policy, error)
+	Save(context.Context, *models.Policy) error
+	Delete(context.Context, string) error
+	ListForTenant(context.Context, string) ([]*models.Policy, error)
 }
 
 type IPermissionRepository interface {
