@@ -8,8 +8,6 @@ import (
 	shared_models "deligo/internal/shared/infra/models"
 )
 
-type Pagination struct{}
-
 type IUserRepository interface {
 	Save(context.Context, entities.UserEntity) error
 	Delete(context.Context, valueobjects.ID) error
@@ -20,14 +18,6 @@ type IUserRepository interface {
 	ListByTenant(context.Context, valueobjects.ID, shared_models.Pagination) ([]*models.User, error)
 }
 
-type IPolicyRepository interface {
-	Save(context.Context, *models.Policy) error
-	Delete(context.Context, string) error
-	FindByID(context.Context, string) (*models.Policy, error)
-	FindByName(context.Context, string) (*models.Policy, error)
-	ListForTenant(context.Context, string) ([]*models.Policy, error)
-}
-
 type IRoleRepository interface {
 	Create(ctx context.Context, role *models.Role) error
 	GetByID(ctx context.Context, id string) (*models.Role, error)
@@ -36,18 +26,26 @@ type IRoleRepository interface {
 	Delete(ctx context.Context, id string) error
 }
 
+type IUserRoleRepository interface {
+	AssignRole(ctx context.Context, userID, roleID string) error
+	RemoveRole(ctx context.Context, userID, roleID string) error
+	GetRolesByUserID(ctx context.Context, userID string) ([]*models.Role, error)
+}
+
+type IPolicyRepository interface {
+	Save(context.Context, *models.Policy) error
+	Delete(context.Context, string) error
+	FindByID(context.Context, string) (*models.Policy, error)
+	FindByName(context.Context, string) (*models.Policy, error)
+	ListForTenant(context.Context, string) ([]*models.Policy, error)
+}
+
 type IPermissionRepository interface {
 	Create(ctx context.Context, permission *models.Permission) error
 	GetByID(ctx context.Context, id string) (*models.Permission, error)
 	GetByName(ctx context.Context, name string) (*models.Permission, error)
 	List(ctx context.Context) ([]*models.Permission, error)
 	Delete(ctx context.Context, id string) error
-}
-
-type IUserRoleRepository interface {
-	AssignRole(ctx context.Context, userID, roleID string) error
-	RemoveRole(ctx context.Context, userID, roleID string) error
-	GetRolesByUserID(ctx context.Context, userID string) ([]*models.Role, error)
 }
 
 type IRolePermissionRepository interface {
@@ -60,10 +58,8 @@ type IRBACManager interface {
 	AddRoleForUser(userID, roleName string) error
 	DeleteRoleForUser(userID, roleName string) error
 	GetRolesForUser(userID string) ([]string, error)
-
 	AddPermissionForRole(roleName string, permissions ...string) error
 	DeletePermissionForRole(roleName string, permissions ...string) error
 	GetPermissionsForRole(roleName string) ([]string, error)
-
 	Enforce(userID, obj, act string) (bool, error)
 }
