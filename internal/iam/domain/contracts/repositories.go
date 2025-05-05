@@ -43,8 +43,27 @@ type IPermissionRepository interface {
 	List(ctx context.Context) ([]*models.Permission, error)
 	Delete(ctx context.Context, id string) error
 }
-type IGroupRepository interface {
-	AssignUserToGroup(ctx context.Context, userID, groupID string) error
-	RemoveUserFromGroup(ctx context.Context, userID, groupID string) error
-	GetUserGroups(ctx context.Context, userID string) ([]*models.Group, error)
+
+type IUserRoleRepository interface {
+	AssignRole(ctx context.Context, userID, roleID string) error
+	RemoveRole(ctx context.Context, userID, roleID string) error
+	GetRolesByUserID(ctx context.Context, userID string) ([]*models.Role, error)
+}
+
+type IRolePermissionRepository interface {
+	AttachPermission(ctx context.Context, roleID, permissionID string) error
+	DetachPermission(ctx context.Context, roleID, permissionID string) error
+	GetPermissionsByRoleID(ctx context.Context, roleID string) ([]*models.Permission, error)
+}
+
+type IRBACManager interface {
+	AddRoleForUser(userID, roleName string) error
+	DeleteRoleForUser(userID, roleName string) error
+	GetRolesForUser(userID string) ([]string, error)
+
+	AddPermissionForRole(roleName string, permissions ...string) error
+	DeletePermissionForRole(roleName string, permissions ...string) error
+	GetPermissionsForRole(roleName string) ([]string, error)
+
+	Enforce(userID, obj, act string) (bool, error)
 }
