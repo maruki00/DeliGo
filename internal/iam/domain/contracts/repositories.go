@@ -19,17 +19,17 @@ type IUserRepository interface {
 }
 
 type IRoleRepository interface {
-	Create(ctx context.Context, role *models.Role) error
-	GetByID(ctx context.Context, id string) (*models.Role, error)
-	GetByName(ctx context.Context, name string) (*models.Role, error)
-	List(ctx context.Context) ([]*models.Role, error)
+	Create(ctx context.Context, role entities.RoleEntity) error
+	GetByID(ctx context.Context, id string) (entities.RoleEntity, error)
+	GetByName(ctx context.Context, name string) (entities.RoleEntity, error)
+	List(ctx context.Context) ([]entities.RoleEntity, error)
 	Delete(ctx context.Context, id string) error
 }
 
 type IUserRoleRepository interface {
 	AssignRole(ctx context.Context, userID, roleID string) error
 	RemoveRole(ctx context.Context, userID, roleID string) error
-	GetRolesByUserID(ctx context.Context, userID string) ([]*models.Role, error)
+	GetRolesByUserID(ctx context.Context, userID string) ([]entities.RoleEntity, error)
 }
 
 type IPolicyRepository interface {
