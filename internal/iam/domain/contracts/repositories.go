@@ -19,11 +19,11 @@ type IUserRepository interface {
 }
 
 type IRoleRepository interface {
-	Create(ctx context.Context, role entities.RoleEntity) error
-	GetByID(ctx context.Context, id string) (entities.RoleEntity, error)
-	GetByName(ctx context.Context, name string) (entities.RoleEntity, error)
-	List(ctx context.Context) ([]entities.RoleEntity, error)
-	Delete(ctx context.Context, id string) error
+	Save(context.Context, entities.RoleEntity) error
+	GetByID(context.Context, string) (entities.RoleEntity, error)
+	GetByName(context.Context, string) (entities.RoleEntity, error)
+	List(context.Context) ([]entities.RoleEntity, error)
+	Delete(context.Context, string) error
 }
 
 type IUserRoleRepository interface {
