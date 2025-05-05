@@ -49,14 +49,22 @@ func (_this *RoleRepository) FindByName(ctx context.Context, name string) (entit
 	return &role, nil
 }
 
-func (_this *RoleRepository) List(ctx context.Context, pagination shared_models.Pagination) ([]entities.RoleEntity, error) {
+func (_this *RoleRepository) List(ctx context.Context, pagination shared_models.Pagination) ([]*models.Role, error) {
 
-	var roles []*models.Role
-
-	return nil, nil
+	roles := make([]*models.Role, pagination.Limit)
+	if err := _this.db.DB.Model(&models.Role{}).Limit(pagination.GetLimit()).Offset(pagination.GetOffset()).Find(&roles).Error; err != nil {
+		return []*models.Role{}, err
+	}
+	return roles, nil
 }
 
-func (_this *RoleRepository) Delete(ctx context.Context, id string) error {
+func (_this *RoleRepository) Delete(ctx context.Context, id valueobjects.ID) error {
 
-	return nil
+	err := _this.db.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("id = ?", id).Delete(&models.Role{}).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+	return err
 }
