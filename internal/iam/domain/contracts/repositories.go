@@ -21,10 +21,10 @@ type IUserRepository interface {
 }
 
 type IPolicyRepository interface {
-	FindByID(context.Context, string) (*models.Policy, error)
-	FindByName(context.Context, string) (*models.Policy, error)
 	Save(context.Context, *models.Policy) error
 	Delete(context.Context, string) error
+	FindByID(context.Context, string) (*models.Policy, error)
+	FindByName(context.Context, string) (*models.Policy, error)
 	ListForTenant(context.Context, string) ([]*models.Policy, error)
 }
 

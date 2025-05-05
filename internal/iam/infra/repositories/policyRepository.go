@@ -14,13 +14,12 @@ type PolicyRepository struct {
 }
 
 /*
-id uuid primary key,
-name varchar(255) not null,
-group_id varchar(32) not null,
-deleted_at timestamp default null,
-updated_at timestamp not null default now(),
-created_at timestamp not null default now()
-
+	id uuid primary key,
+	name varchar(255) not null,
+	group_id varchar(32) not null,
+	deleted_at timestamp default null,
+	updated_at timestamp not null default now(),
+	created_at timestamp not null default now()
 */
 
 func (_this *PolicyRepository) Save(ctx context.Context, entity *models.Policy) error {
