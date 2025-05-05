@@ -28,6 +28,13 @@ type IPolicyRepository interface {
 	ListForTenant(context.Context, string) ([]*models.Policy, error)
 }
 
+type RoleRepository interface {
+	Create(ctx context.Context, role *Role) error
+	GetByID(ctx context.Context, id string) (*Role, error)
+	List(ctx context.Context) ([]*Role, error)
+	Delete(ctx context.Context, id string) error
+}
+
 type IPermissionRepository interface {
 	FindByID(ctx context.Context, id string) (*models.Permission, error)
 	FindByPolicyID(ctx context.Context, policyID string) ([]*models.Permission, error)
