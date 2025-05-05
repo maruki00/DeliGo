@@ -28,20 +28,21 @@ type IPolicyRepository interface {
 	ListForTenant(context.Context, string) ([]*models.Policy, error)
 }
 
-type RoleRepository interface {
-	Create(ctx context.Context, role *Role) error
-	GetByID(ctx context.Context, id string) (*Role, error)
-	List(ctx context.Context) ([]*Role, error)
+type IRoleRepository interface {
+	Create(ctx context.Context, role *models.Role) error
+	GetByID(ctx context.Context, id string) (*models.Role, error)
+	GetByName(ctx context.Context, name string) (*models.Role, error)
+	List(ctx context.Context) ([]*models.Role, error)
 	Delete(ctx context.Context, id string) error
 }
 
 type IPermissionRepository interface {
-	FindByID(ctx context.Context, id string) (*models.Permission, error)
-	FindByPolicyID(ctx context.Context, policyID string) ([]*models.Permission, error)
-	Save(ctx context.Context, permission *models.Permission) error
+	Create(ctx context.Context, permission *models.Permission) error
+	GetByID(ctx context.Context, id string) (*models.Permission, error)
+	GetByName(ctx context.Context, name string) (*models.Permission, error)
+	List(ctx context.Context) ([]*models.Permission, error)
 	Delete(ctx context.Context, id string) error
 }
-
 type IGroupRepository interface {
 	AssignUserToGroup(ctx context.Context, userID, groupID string) error
 	RemoveUserFromGroup(ctx context.Context, userID, groupID string) error
