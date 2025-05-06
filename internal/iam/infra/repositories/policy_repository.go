@@ -13,15 +13,6 @@ type PolicyRepository struct {
 	db *pkgPostgres.PGHandler
 }
 
-/*
-	id uuid primary key,
-	name varchar(255) not null,
-	group_id varchar(32) not null,
-	deleted_at timestamp default null,
-	updated_at timestamp not null default now(),
-	created_at timestamp not null default now()
-*/
-
 func (_this *PolicyRepository) Save(ctx context.Context, entity *models.Policy) error {
 	err := _this.db.DB.Transaction(func(tx *gorm.DB) error {
 		sql := `INSERT INTO "policies" ("id", "name", "group_id") VALUES (?, ?, ?)`

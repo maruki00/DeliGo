@@ -22,10 +22,9 @@ func NewRoleRepository(db *pkgPostgres.PGHandler) *RoleRepository {
 }
 
 func (_this *RoleRepository) Save(ctx context.Context, role entities.RoleEntity) error {
-	// sql := insert into roles (id, name) values ($1, $2)
 	err := _this.db.DB.Transaction(func(tx *gorm.DB) error {
-		sql := `INSERT INTO roles (id, name) VALUES ($1, $2)`
-		if err := tx.Exec(sql, role.GetID(), role.GetName()).Error; err != nil {
+		sql := `INSERT INTO roles (id, name, description) VALUES ($1, $2, $3)`
+		if err := tx.Exec(sql, role.GetID(), role.GetName(), role.GetDescription()).Error; err != nil {
 			return err
 		}
 		return nil
