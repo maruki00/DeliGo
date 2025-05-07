@@ -41,7 +41,7 @@ func (_this *PermissionRepository) Save(ctx context.Context, permission entities
 
 func (_this *PermissionRepository) FindByID(ctx context.Context, id string) (*models.Permission, error) {
 	var permession models.Permission
-	if err := _this.db.DB.Where("id = ?", id).First(&permession).Error; err != nil {
+	if err := _this.db.DB.Where("id = ? ", id).First(&permession).Error; err != nil {
 		return nil, err
 	}
 	return nil, nil
@@ -52,7 +52,7 @@ func (_this *PermissionRepository) FindByPolicyID(ctx context.Context, policyID 
 
 func (_this *PermissionRepository) Delete(ctx context.Context, id string) error {
 	err := _this.db.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Where("id = ?", id).Delete(&models.Permission{}).Error; err != nil {
+		if err := tx.Where("id = ? ", id).Delete(&models.Permission{}).Error; err != nil {
 			return err
 		}
 		return nil
