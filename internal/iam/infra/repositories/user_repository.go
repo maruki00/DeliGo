@@ -136,12 +136,6 @@ func (ur *UserRepository) FindByEmail(ctx context.Context, email string) (*model
 }
 
 func (ur *UserRepository) FindByUsername(ctx context.Context, username string) (*models.User, error) {
-	// sql := `
-	// 		SELECT id,email,role
-	// 		FROM users
-	// 		WHERE id = $1
-	// 		LIMIT 1
-	// 	`
 	var user models.User
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("username = ?", username).First(&user).Error; err != nil {
@@ -157,14 +151,6 @@ func (ur *UserRepository) FindByUsername(ctx context.Context, username string) (
 }
 
 func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID valueobjects.ID, pagination shared_models.Pagination) ([]*models.User, error) {
-	// sql := `
-	// 		SELECT id,email,role
-	// 		FROM users
-	// 		-- WHERE deleted_at = NULL
-	// 		OFFSET $1
-	// 		LIMIT $2
-	// 	`
-
 	users := make([]*models.User, pagination.Limit)
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&models.User{}).Where("tenant_id = ?", tenantID).Limit(pagination.GetLimit()).Offset(pagination.GetOffset()).Find(&users).Error; err != nil {
