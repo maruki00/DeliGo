@@ -19,7 +19,6 @@ import (
 type App struct {
 	db             *pkgPostgres.PGHandler
 	UserRepo       contracts.IUserRepository
-	GroupRepo      contracts.IGroupRepository
 	PermissionRepo contracts.IPermissionRepository
 	PolicyRepo     contracts.IPolicyRepository
 	UserServerSvc  *userServerServices.UserServerService
@@ -46,9 +45,8 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	userQuerydBus := pkgCqrs.NewQueryBus()
 
 	userRepo := repositories.NewUserRepository(db)
-	groupRepo := repositories.NewGroupRepository()
-	permissionRepo := repositories.NewPermissionRepository()
-	policyRepo := repositories.NewPolicyRepository()
+
+	//permissionRepo := repositories.NewPermissionRepository()
 
 	userServiceSvc := userServerServices.NewUserUseCase(userCommandBus, userQuerydBus)
 
@@ -67,11 +65,10 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	// GroupUC := usecases.NewGroupUseCase(GroupRepo)
 
 	app := &App{
-		db:             db,
-		UserRepo:       userRepo,
-		GroupRepo:      groupRepo,
-		PermissionRepo: permissionRepo,
-		PolicyRepo:     policyRepo,
+		db:       db,
+		UserRepo: userRepo,
+		// PermissionRepo: permissionRepo,
+		// PolicyRepo:     policyRepo,
 		UserServerSvc:  userServiceSvc,
 		UserCommandBus: userCommandBus,
 		UserQuerydBus:  userQuerydBus,

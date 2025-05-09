@@ -15,5 +15,4 @@ type PolicyEntity interface {
 	GetCreatedAt() time.Time
 	GetUpdatedAt() time.Time
 	GetPermissions() []*models.Permission
-	GetGroups() []*models.Group
 }
