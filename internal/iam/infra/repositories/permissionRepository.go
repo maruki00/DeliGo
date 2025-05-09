@@ -4,6 +4,7 @@ import (
 	"context"
 	"deligo/internal/iam/domain/entities"
 	"deligo/internal/iam/infra/models"
+	shared_models "deligo/internal/shared/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
 
 	"gorm.io/gorm"
@@ -46,7 +47,22 @@ func (_this *PermissionRepository) FindByID(ctx context.Context, id string) (*mo
 	}
 	return nil, nil
 }
-func (_this *PermissionRepository) FindByPolicyID(ctx context.Context, policyID string) ([]*models.Permission, error) {
+
+func (_this *PermissionRepository) FindByPolicyID(ctx context.Context, policyID string, pagination shared_models.Pagination) ([]*models.Permission, error) {
+	res, err := _this.db.DB.Raw(`
+			SELECT * from permissions pr 
+			LEFT JOIN policies_permissions pp ON pr.id = pp.permission_id 
+			LEFT JOIN policies pl on pp.policies_id = pl.id
+			where pr.id = ?
+	`, policyID).Rows()
+	if err != nil {
+		return nil, err
+	}
+
+	for res.Next() {
+
+	}
+
 	return nil, nil
 }
 
