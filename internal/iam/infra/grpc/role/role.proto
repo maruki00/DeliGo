@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+
+option go_package = "grpc.user";
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+import "validate/validate.proto";
+
+
+message User {
+	string ID 						= 1 [json_name = "id"];       
+	string Name 				= 2 [json_name = "name"];    
+	string Description 					= 3 [json_name = "description"];    	
+}
+
+message CreateRoleRequest  {
+	string Name	= 1 [
+		(validate.rules).string = {
+			min_len: 2,  
+			max_len: 32
+		},
+		json_name = "name"
+	];       
+	string Description 	= 2 [
+		(validate.rules).string = {
+			min_len: 20,  
+			max_len: 255
+		},
+		json_name = "description"
+	];    
+	
+}
+
+message DeleteRoleRequest {
+	string ID 			= 1 [json_name = "id"]; 
+}
+
+message UpdateRoleRequest {
+	string ID 			= 1 [json_name = "id"];       
+	map<string, string> fields  = 2 [json_name = "fields"];
+}
+
+
+message Response {
+    int32 Code = 1 [ json_name = "code"];
+    string Message = 2 [ json_name = "message"];
+	repeated google.protobuf.Struct  Details = 3 [ json_name = "details"]; 
+}
+
+message GETRequest {
+	google.protobuf.Struct query_params = 1;
+}
+
+service UserService {
+	rpc Save(CreateUserRequest) returns (Response) {
+		option (google.api.http) = {
+			post: "/v1/role/save",
+			body: "*"
+		};
+	};
+	rpc Delete(DeleteUserRequest) returns (Response) {
+		option (google.api.http) = {
+			post: "/v1/role/delete",
+			body: "*"
+		};
+	};
+	rpc Update(UpdateUserRequest) returns (Response) {
+		option (google.api.http) = {
+			put: "/v1/role/update",
+			body: "*"
+		};
+	};
+	rpc Find(GETRequest) returns (Response) {
+		option (google.api.http) = {
+			get: "/v1/user"
+		};
+	};
+	
+	rpc ListByTenant(GETRequest) returns (Response) {
+		option (google.api.http) = {
+			get: "/v1/users/tenanat"
+		};
+	};
+} 

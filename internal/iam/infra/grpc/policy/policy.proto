@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+
+option go_package = "grpc.user";
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+import "validate/validate.proto";
+
+
+message User {
+	string ID 						= 1 [json_name = "id"];       
+	string UserName 				= 2 [json_name = "username"];    
+	string Email 					= 3 [json_name = "email"];    
+	string Password 				= 4 [json_name = "password"];   	
+}
+
+message CreateUserRequest  {
+	string UserName		= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 20,
+			pattern: "^[a-zA-Z0-9_]+$"
+		},
+		json_name = "user_name"
+	];       
+	string Email 		= 2 [
+		(validate.rules).string.email = true,
+		json_name = "email"
+	];    
+	string Password 	= 3 [
+		(validate.rules).string = {
+			min_len: 8,  
+			max_len: 100
+		},
+		json_name = "password"
+	]; 
+}
+
+message DeleteUserRequest {
+	string ID 			= 1 [json_name = "id"]; 
+}
+
+message UpdateUserRequest {
+	string ID 			= 1 [json_name = "id"];       
+	map<string, string> fields  = 2 [json_name = "fields"];
+}
+
+
+message Response {
+    int32 Code = 1 [ json_name = "code"];
+    string Message = 2 [ json_name = "message"];
+	repeated google.protobuf.Struct  Details = 3 [ json_name = "details"]; 
+}
+
+message GETRequest {
+	google.protobuf.Struct query_params = 1;
+}
+
+service UserService {
+	rpc Save(CreateUserRequest) returns (Response) {
+		option (google.api.http) = {
+			post: "/v1/user/save",
+			body: "*"
+		};
+	};
+	rpc Delete(DeleteUserRequest) returns (Response) {
+		option (google.api.http) = {
+			post: "/v1/user/delete",
+			body: "*"
+		};
+	};
+	rpc Update(UpdateUserRequest) returns (Response) {
+		option (google.api.http) = {
+			put: "/v1/user/update",
+			body: "*"
+		};
+	};
+	rpc Find(GETRequest) returns (Response) {
+		option (google.api.http) = {
+			get: "/v1/user"
+		};
+	};
+	
+	rpc ListByTenant(GETRequest) returns (Response) {
+		option (google.api.http) = {
+			get: "/v1/users/tenanat"
+		};
+	};
+} 

@@ -15,7 +15,6 @@ type Policy struct {
 	CreatedAt   time.Time       `gorm:"not null;default:now()"`
 	UpdatedAt   time.Time       `gorm:"not null;default:now()"`
 	Permissions []*Permission   `gorm:"foreignKey:PolicyID"`
-	Groups      []*Group        `gorm:"many2many:group_policies;"`
 }
 
 func (_this *Policy) SetID(_ID valueobjects.ID) {
@@ -41,7 +40,4 @@ func (_this *Policy) GetUpdatedAt() time.Time {
 }
 func (_this *Policy) GetPermissions() []*Permission {
 	return _this.Permissions
-}
-func (_this *Policy) GetGroups() []*Group {
-	return _this.Groups
 }

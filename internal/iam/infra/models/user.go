@@ -19,8 +19,8 @@ type User struct {
 	MFAEnabled        bool                  `json:"mfa_enabled" gorm:"default:0"`
 	MFASecret         string                `json:"mfa_secret"`
 	Profile           *Profile              `json:"profile" gorm:"foreignKey:UserID"`
-	Groups            []*Group              `json:"groups" gorm:"many2many:user_groups;"`
 	Policies          []*Policy             `json:"policies" gorm:"many2many:user_policies;"`
+	Role              *Role                 `json:"role"`
 	DeletedAt         gorm.DeletedAt        `json:"deleted_at" gorm:"index"`
 	CreatedAt         time.Time             `json:"created_at" gorm:"not null;default:now()"`
 	UpdatedAt         time.Time             `json:"updated_at" gorm:"not null;default:now()"`
