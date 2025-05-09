@@ -2,7 +2,6 @@ package pkgRabbitmq
 
 import (
 	"context"
-	"deligo/cmd/user/configs"
 
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -19,11 +18,11 @@ type Consumer struct {
 
 func NewConsumer(
 	conn *amqp091.Connection,
-	cfg *configs.Config,
+	queuesName []string,
 ) *Consumer {
 	return &Consumer{
 		conn:       conn,
-		queuesName: cfg.Queues,
+		queuesName: queuesName,
 		poolSize:   POOL_SIZE,
 	}
 }
