@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"deligo/internal/iam/domain/entities"
+	valueobjects "deligo/internal/iam/domain/valueobject"
 	"deligo/internal/iam/infra/models"
 	shared_models "deligo/internal/shared/infra/models"
 	pkgPostgres "deligo/pkg/postgres"
@@ -54,16 +55,31 @@ func (_this *PermissionRepository) FindByPolicyID(ctx context.Context, policyID 
 			LEFT JOIN policies_permissions pp ON pr.id = pp.permission_id 
 			LEFT JOIN policies pl on pp.policies_id = pl.id
 			where pr.id = ?
-	`, policyID).Rows()
+			LIMIT ? OFFSET ?
+	`, policyID, pagination.GetLimit(), pagination.GetOffset()).Rows()
 	if err != nil {
 		return nil, err
 	}
-
+	permissions := make([]*models.Permission, pagination.GetLimit())
+	var (
+		_ID          string
+		_Name        string
+		_Action      string
+		_Description string
+	)
+	index := 0
 	for res.Next() {
-
+		res.Scan(&_ID, &_Name, &_Action, &_Description)
+		permissions[index] = &models.Permission{
+			ID:          valueobjects.ID(_ID),
+			Name:        _Name,
+			Action:      _Action,
+			Description: _Description,
+		}
+		index++
 	}
 
-	return nil, nil
+	return permissions[:index], nil
 }
 
 func (_this *PermissionRepository) Delete(ctx context.Context, id string) error {
