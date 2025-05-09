@@ -144,3 +144,19 @@ func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID valueobject
 
 	return users, nil
 }
+
+func (_this *PolicyRepository) AffectRole(ctx context.Context, id, role_id string) error {
+
+	return _this.db.DB.Transaction(func(tx *gorm.DB) error {
+		sql := `INSERT INTO "roles_policies" ("id", "role_id", "policy_id") VALUES (?, ?, ?)`
+		if err := tx.Exec(sql,
+			id,
+			role_id,
+			policy_id,
+		).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+}

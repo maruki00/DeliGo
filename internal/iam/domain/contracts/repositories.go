@@ -23,6 +23,7 @@ type IRoleRepository interface {
 	GetByID(context.Context, string) (entities.RoleEntity, error)
 	GetByName(context.Context, string) (entities.RoleEntity, error)
 	List(context.Context) ([]entities.RoleEntity, error)
+	AffectPolicy(context.Context, string, string, string)
 	Delete(context.Context, string) error
 }
 
@@ -37,6 +38,8 @@ type IPolicyRepository interface {
 	Delete(context.Context, string) error
 	FindByID(context.Context, string) (*models.Policy, error)
 	FindByName(context.Context, string) (*models.Policy, error)
+	AttachPermission(context.Context, string, string, string) error
+	DetachPermission(ctx context.Context, roleID, permissionID string) error
 	ListForTenant(context.Context, string) ([]*models.Policy, error)
 }
 
@@ -48,11 +51,11 @@ type IPermissionRepository interface {
 	Delete(ctx context.Context, id string) error
 }
 
-type IRolePermissionRepository interface {
-	AttachPermission(ctx context.Context, roleID, permissionID string) error
-	DetachPermission(ctx context.Context, roleID, permissionID string) error
-	GetPermissionsByRoleID(ctx context.Context, roleID string) ([]*models.Permission, error)
-}
+// type IRolePermissionRepository interface {
+// 	AttachPermission(ctx context.Context, roleID, permissionID string) error
+// 	DetachPermission(ctx context.Context, roleID, permissionID string) error
+// 	GetPermissionsByRoleID(ctx context.Context, roleID string) ([]*models.Permission, error)
+// }
 
 type IRBACManager interface {
 	AddRoleForUser(userID, roleName string) error

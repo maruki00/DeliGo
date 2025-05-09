@@ -57,6 +57,22 @@ func (_this *RoleRepository) List(ctx context.Context, pagination shared_models.
 	return roles, nil
 }
 
+func (_this *PolicyRepository) AffectPolicy(ctx context.Context, id, role_id, policy_id string) error {
+
+	return _this.db.DB.Transaction(func(tx *gorm.DB) error {
+		sql := `INSERT INTO "roles_policies" ("id", "role_id", "policy_id") VALUES (?, ?, ?)`
+		if err := tx.Exec(sql,
+			id,
+			role_id,
+			policy_id,
+		).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+}
+
 func (_this *RoleRepository) Delete(ctx context.Context, id valueobjects.ID) error {
 
 	err := _this.db.DB.Transaction(func(tx *gorm.DB) error {

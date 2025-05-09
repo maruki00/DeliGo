@@ -14,7 +14,7 @@ type PolicyRepository struct {
 }
 
 func (_this *PolicyRepository) Save(ctx context.Context, entity *models.Policy) error {
-	err := _this.db.DB.Transaction(func(tx *gorm.DB) error {
+	return _this.db.DB.Transaction(func(tx *gorm.DB) error {
 		sql := `INSERT INTO "policies" ("id", "name", "group_id") VALUES (?, ?, ?)`
 		if err := tx.Exec(sql,
 			entity.GetID(),
@@ -26,12 +26,6 @@ func (_this *PolicyRepository) Save(ctx context.Context, entity *models.Policy) 
 
 		return nil
 	})
-
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 func (_this *PolicyRepository) Delete(ctx context.Context, id string) error {
 	err := _this.db.DB.Transaction(func(tx *gorm.DB) error {
@@ -78,6 +72,21 @@ func (_this *PolicyRepository) FindByName(ctx context.Context, name string) (*mo
 	}
 
 	return &policy, nil
+}
+func (_this *PolicyRepository) AffectPermission(ctx context.Context, id, policy_id string, permission_id string) error {
+
+	return _this.db.DB.Transaction(func(tx *gorm.DB) error {
+		sql := `INSERT INTO "policies_permissions" ("id", "policy_id", "permission_id") VALUES (?, ?, ?)`
+		if err := tx.Exec(sql,
+			id,
+			policy_id,
+			permission_id,
+		).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 }
 func (_this *PolicyRepository) ListForTenant(ctx context.Context, id string, pagination shared_models.Pagination) ([]*models.Policy, error) {
 	policies := make([]*models.Policy, pagination.Limit)
