@@ -1,4 +1,4 @@
-package shared_core
+package mem
 
 import (
 	"fmt"

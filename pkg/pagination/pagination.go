@@ -1,4 +1,4 @@
-package shared_models
+package pagination
 
 type Pagination struct {
 	Page  int
