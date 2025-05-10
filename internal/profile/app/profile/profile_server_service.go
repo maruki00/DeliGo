@@ -19,30 +19,18 @@ func NewProfileService(repository contracts.IPorofileRepository) *ProfileServerS
 	}
 }
 
-Save
-Delete
-Upadte
-UpdateAvatar
-func (_this *ProfileServerService) Save(ctx context.Context, in *profile_grpc.CreateProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
-}
+touch save_profile_command.go
+touch delete_profile_command.go
+touch upadte_profile_command.go
+touch updateAvatar_profile_command.go
 
-func (_this *ProfileServerService) Delete(ctx context.Context, in *profile_grpc.DeleteProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
-}
+get_one_profile_query.go
 
-func (_this *ProfileServerService) Update(ctx context.Context, in *profile_grpc.UpdateProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
-}
 
-func (_this *ProfileServerService) UpdateAvatar(ctx context.Context, in *profile_grpc.UpdateProfileAvatareRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
-}
 
-func (_this *ProfileServerService) UpdatePassword(ctx context.Context, in *profile_grpc.UpdateProfilePasswordRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
-}
 
-func (_this *ProfileServerService) GetOne(ctx context.Context, in *profile_grpc.GETRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
-}
+Save(ctx context.Context, in *CreateProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+Disable(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+Update(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+UpdateAvatar(ctx context.Context, in *UpdateProfileAvatareRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+GetOne(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error)

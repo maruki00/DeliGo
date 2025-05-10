@@ -42,8 +42,14 @@ message CreateProfileRequest  {
 		json_name = "bio"]; 
 }
 
-message DeleteProfileRequest {
-	string ID 			= 1 [json_name = "id"]; 
+message DisableProfileRequest {
+	string ID 			= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 32,
+		},
+		json_name = "id"
+	]; 
 }
 
 message GETRequest {
@@ -51,13 +57,31 @@ message GETRequest {
 }
 
 message UpdateProfileRequest {
-	string ID 					= 1 [json_name = "id"];
+	string ID 					= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 32,
+		},
+		json_name = "id"
+	];
 	map<string, string> fields  = 2 [json_name = "fields"];
 }
 
 message UpdateProfileAvatareRequest {
-	string ID 					= 1 [json_name = "id"];
-	string avatar  				= 2 [json_name = "avatar"];
+	string ID 					= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 32,
+		},
+		json_name = "id"
+	];
+	string avatar  				= 2 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 255,
+		},
+		json_name = "avatar"
+	];
 }
 
 
@@ -68,8 +92,14 @@ message ProfileResponse {
 }
 
 message EmptyProfileResponse {
-	int32 Page 		= 1 [json_name="page"];
-	int32 Offset 	= 2 [json_name="offset"];
+	int32 Page 		= 1 [
+		(validate.rules).int32 = true,
+		json_name="page"
+	];
+	int32 Offset 	= 2 [
+		(validate.rules).int32 = true,
+		json_name="offset"
+	];
 }
 
 service ProfileService {
@@ -81,7 +111,7 @@ service ProfileService {
 		};
 	};
 
-	rpc Delete(DeleteProfileRequest) returns (ProfileResponse) {
+	rpc Disable(DisableProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
 			post: "/v1/profile/delete",
 			body: "*"
