@@ -28,8 +28,6 @@ type ProfileServiceClient interface {
 	UpdateAvatar(ctx context.Context, in *UpdateProfileAvatareRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	UpdatePassword(ctx context.Context, in *UpdateProfilePasswordRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	GetOne(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
-	GetMany(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
-	Search(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 }
 
 type profileServiceClient struct {
@@ -94,24 +92,6 @@ func (c *profileServiceClient) GetOne(ctx context.Context, in *GETRequest, opts 
 	return out, nil
 }
 
-func (c *profileServiceClient) GetMany(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
-	out := new(ProfileResponse)
-	err := c.cc.Invoke(ctx, "/ProfileService/GetMany", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *profileServiceClient) Search(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
-	out := new(ProfileResponse)
-	err := c.cc.Invoke(ctx, "/ProfileService/Search", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // ProfileServiceServer is the server API for ProfileService service.
 // All implementations must embed UnimplementedProfileServiceServer
 // for forward compatibility
@@ -122,8 +102,6 @@ type ProfileServiceServer interface {
 	UpdateAvatar(context.Context, *UpdateProfileAvatareRequest) (*ProfileResponse, error)
 	UpdatePassword(context.Context, *UpdateProfilePasswordRequest) (*ProfileResponse, error)
 	GetOne(context.Context, *GETRequest) (*ProfileResponse, error)
-	GetMany(context.Context, *GETRequest) (*ProfileResponse, error)
-	Search(context.Context, *GETRequest) (*ProfileResponse, error)
 	mustEmbedUnimplementedProfileServiceServer()
 }
 
@@ -148,12 +126,6 @@ func (UnimplementedProfileServiceServer) UpdatePassword(context.Context, *Update
 }
 func (UnimplementedProfileServiceServer) GetOne(context.Context, *GETRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
-}
-func (UnimplementedProfileServiceServer) GetMany(context.Context, *GETRequest) (*ProfileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMany not implemented")
-}
-func (UnimplementedProfileServiceServer) Search(context.Context, *GETRequest) (*ProfileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
 }
 func (UnimplementedProfileServiceServer) mustEmbedUnimplementedProfileServiceServer() {}
 
@@ -276,42 +248,6 @@ func _ProfileService_GetOne_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProfileService_GetMany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GETRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProfileServiceServer).GetMany(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/ProfileService/GetMany",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProfileServiceServer).GetMany(ctx, req.(*GETRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProfileService_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GETRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProfileServiceServer).Search(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/ProfileService/Search",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProfileServiceServer).Search(ctx, req.(*GETRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // ProfileService_ServiceDesc is the grpc.ServiceDesc for ProfileService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -342,14 +278,6 @@ var ProfileService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetOne",
 			Handler:    _ProfileService_GetOne_Handler,
-		},
-		{
-			MethodName: "GetMany",
-			Handler:    _ProfileService_GetMany_Handler,
-		},
-		{
-			MethodName: "Search",
-			Handler:    _ProfileService_Search_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
