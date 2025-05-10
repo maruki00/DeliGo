@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProfileServiceClient interface {
 	Save(ctx context.Context, in *CreateProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
-	Delete(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+	Disable(ctx context.Context, in *DisableProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	Update(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	UpdateAvatar(ctx context.Context, in *UpdateProfileAvatareRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	GetOne(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
@@ -46,9 +46,9 @@ func (c *profileServiceClient) Save(ctx context.Context, in *CreateProfileReques
 	return out, nil
 }
 
-func (c *profileServiceClient) Delete(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
+func (c *profileServiceClient) Disable(ctx context.Context, in *DisableProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
 	out := new(ProfileResponse)
-	err := c.cc.Invoke(ctx, "/ProfileService/Delete", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ProfileService/Disable", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (c *profileServiceClient) GetOne(ctx context.Context, in *GETRequest, opts 
 // for forward compatibility
 type ProfileServiceServer interface {
 	Save(context.Context, *CreateProfileRequest) (*ProfileResponse, error)
-	Delete(context.Context, *DeleteProfileRequest) (*ProfileResponse, error)
+	Disable(context.Context, *DisableProfileRequest) (*ProfileResponse, error)
 	Update(context.Context, *UpdateProfileRequest) (*ProfileResponse, error)
 	UpdateAvatar(context.Context, *UpdateProfileAvatareRequest) (*ProfileResponse, error)
 	GetOne(context.Context, *GETRequest) (*ProfileResponse, error)
@@ -101,8 +101,8 @@ type UnimplementedProfileServiceServer struct {
 func (UnimplementedProfileServiceServer) Save(context.Context, *CreateProfileRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Save not implemented")
 }
-func (UnimplementedProfileServiceServer) Delete(context.Context, *DeleteProfileRequest) (*ProfileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+func (UnimplementedProfileServiceServer) Disable(context.Context, *DisableProfileRequest) (*ProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Disable not implemented")
 }
 func (UnimplementedProfileServiceServer) Update(context.Context, *UpdateProfileRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -144,20 +144,20 @@ func _ProfileService_Save_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProfileService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteProfileRequest)
+func _ProfileService_Disable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DisableProfileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProfileServiceServer).Delete(ctx, in)
+		return srv.(ProfileServiceServer).Disable(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ProfileService/Delete",
+		FullMethod: "/ProfileService/Disable",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProfileServiceServer).Delete(ctx, req.(*DeleteProfileRequest))
+		return srv.(ProfileServiceServer).Disable(ctx, req.(*DisableProfileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -228,8 +228,8 @@ var ProfileService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ProfileService_Save_Handler,
 		},
 		{
-			MethodName: "Delete",
-			Handler:    _ProfileService_Delete_Handler,
+			MethodName: "Disable",
+			Handler:    _ProfileService_Disable_Handler,
 		},
 		{
 			MethodName: "Update",

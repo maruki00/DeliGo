@@ -93,11 +93,11 @@ message ProfileResponse {
 
 message EmptyProfileResponse {
 	int32 Page 		= 1 [
-		(validate.rules).int32 = true,
+		(validate.rules).int32.gt = 0,
 		json_name="page"
 	];
 	int32 Offset 	= 2 [
-		(validate.rules).int32 = true,
+		(validate.rules).int32.gt = 0,
 		json_name="offset"
 	];
 }

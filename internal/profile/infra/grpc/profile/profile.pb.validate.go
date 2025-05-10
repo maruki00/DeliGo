@@ -302,44 +302,53 @@ var _ interface {
 
 var _CreateProfileRequest_FullName_Pattern = regexp.MustCompile("^[a-zA-Z0-9_ ]+$")
 
-// Validate checks the field values on DeleteProfileRequest with the rules
+// Validate checks the field values on DisableProfileRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *DeleteProfileRequest) Validate() error {
+func (m *DisableProfileRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on DeleteProfileRequest with the rules
+// ValidateAll checks the field values on DisableProfileRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// DeleteProfileRequestMultiError, or nil if none found.
-func (m *DeleteProfileRequest) ValidateAll() error {
+// DisableProfileRequestMultiError, or nil if none found.
+func (m *DisableProfileRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *DeleteProfileRequest) validate(all bool) error {
+func (m *DisableProfileRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for ID
+	if l := utf8.RuneCountInString(m.GetID()); l < 4 || l > 32 {
+		err := DisableProfileRequestValidationError{
+			field:  "ID",
+			reason: "value length must be between 4 and 32 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
-		return DeleteProfileRequestMultiError(errors)
+		return DisableProfileRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// DeleteProfileRequestMultiError is an error wrapping multiple validation
-// errors returned by DeleteProfileRequest.ValidateAll() if the designated
+// DisableProfileRequestMultiError is an error wrapping multiple validation
+// errors returned by DisableProfileRequest.ValidateAll() if the designated
 // constraints aren't met.
-type DeleteProfileRequestMultiError []error
+type DisableProfileRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m DeleteProfileRequestMultiError) Error() string {
+func (m DisableProfileRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -348,11 +357,11 @@ func (m DeleteProfileRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m DeleteProfileRequestMultiError) AllErrors() []error { return m }
+func (m DisableProfileRequestMultiError) AllErrors() []error { return m }
 
-// DeleteProfileRequestValidationError is the validation error returned by
-// DeleteProfileRequest.Validate if the designated constraints aren't met.
-type DeleteProfileRequestValidationError struct {
+// DisableProfileRequestValidationError is the validation error returned by
+// DisableProfileRequest.Validate if the designated constraints aren't met.
+type DisableProfileRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -360,24 +369,24 @@ type DeleteProfileRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e DeleteProfileRequestValidationError) Field() string { return e.field }
+func (e DisableProfileRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e DeleteProfileRequestValidationError) Reason() string { return e.reason }
+func (e DisableProfileRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e DeleteProfileRequestValidationError) Cause() error { return e.cause }
+func (e DisableProfileRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e DeleteProfileRequestValidationError) Key() bool { return e.key }
+func (e DisableProfileRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e DeleteProfileRequestValidationError) ErrorName() string {
-	return "DeleteProfileRequestValidationError"
+func (e DisableProfileRequestValidationError) ErrorName() string {
+	return "DisableProfileRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e DeleteProfileRequestValidationError) Error() string {
+func (e DisableProfileRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -389,14 +398,14 @@ func (e DeleteProfileRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sDeleteProfileRequest.%s: %s%s",
+		"invalid %sDisableProfileRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = DeleteProfileRequestValidationError{}
+var _ error = DisableProfileRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -404,7 +413,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = DeleteProfileRequestValidationError{}
+} = DisableProfileRequestValidationError{}
 
 // Validate checks the field values on GETRequest with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -556,7 +565,16 @@ func (m *UpdateProfileRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for ID
+	if l := utf8.RuneCountInString(m.GetID()); l < 4 || l > 32 {
+		err := UpdateProfileRequestValidationError{
+			field:  "ID",
+			reason: "value length must be between 4 and 32 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	// no validation rules for Fields
 
@@ -662,9 +680,27 @@ func (m *UpdateProfileAvatareRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for ID
+	if l := utf8.RuneCountInString(m.GetID()); l < 4 || l > 32 {
+		err := UpdateProfileAvatareRequestValidationError{
+			field:  "ID",
+			reason: "value length must be between 4 and 32 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Avatar
+	if l := utf8.RuneCountInString(m.GetAvatar()); l < 4 || l > 255 {
+		err := UpdateProfileAvatareRequestValidationError{
+			field:  "Avatar",
+			reason: "value length must be between 4 and 255 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return UpdateProfileAvatareRequestMultiError(errors)
@@ -907,9 +943,27 @@ func (m *EmptyProfileResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Page
+	if m.GetPage() <= 0 {
+		err := EmptyProfileResponseValidationError{
+			field:  "Page",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Offset
+	if m.GetOffset() <= 0 {
+		err := EmptyProfileResponseValidationError{
+			field:  "Offset",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return EmptyProfileResponseMultiError(errors)
