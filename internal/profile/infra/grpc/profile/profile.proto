@@ -56,7 +56,7 @@ service ProfileService {
 			body: "*"
 		};
 	};
-	
+
 	rpc Delete(DeleteProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
 			post: "/v1/profile/delete",
