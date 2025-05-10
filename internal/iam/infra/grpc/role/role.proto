@@ -67,7 +67,7 @@ service UserService {
 	};
 	rpc Update(UpdateUserRequest) returns (Response) {
 		option (google.api.http) = {
-			put: "/v1/role/update",
+			post: "/v1/role/update",
 			body: "*"
 		};
 	};
@@ -83,3 +83,11 @@ service UserService {
 		};
 	};
 } 
+
+
+// Save(context.Context, entities.RoleEntity) error
+// GetByID(context.Context, string) (entities.RoleEntity, error)
+// GetByName(context.Context, string) (entities.RoleEntity, error)
+// List(context.Context) ([]entities.RoleEntity, error)
+// AffectPolicy(context.Context, string, string, string)
+// Delete(context.Context, string) error
