@@ -94,7 +94,7 @@ message EmptyProfileResponse {
 }
 
 service ProfileService {
-	
+
 	rpc Save(CreateProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
 			post: "/v1/profile/create",
