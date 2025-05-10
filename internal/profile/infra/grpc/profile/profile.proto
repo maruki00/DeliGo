@@ -50,7 +50,7 @@ message EmptyProfileResponse {
 
 service ProfileService {
 	
-	rpc Create(CreateProfileRequest) returns (ProfileResponse) {
+	rpc Save(CreateProfileRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
 			post: "/v1/profile/create",
 			body: "*"
@@ -70,6 +70,14 @@ service ProfileService {
 			body: "*"
 		};
 	};
+
+	rpc UpdateAvatar(UpdateProfileRequest) returns (ProfileResponse) {
+		option (google.api.http) = {
+			put: "/v1/profile/update",
+			body: "*"
+		};
+	};
+	
 
 	rpc GetOne(GETRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
