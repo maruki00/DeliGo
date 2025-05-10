@@ -19,6 +19,10 @@ func NewProfileService(repository contracts.IPorofileRepository) *ProfileServerS
 	}
 }
 
+Save
+Delete
+Upadte
+UpdateAvatar
 func (_this *ProfileServerService) Save(ctx context.Context, in *profile_grpc.CreateProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
 	return nil, nil
 }
@@ -40,13 +44,5 @@ func (_this *ProfileServerService) UpdatePassword(ctx context.Context, in *profi
 }
 
 func (_this *ProfileServerService) GetOne(ctx context.Context, in *profile_grpc.GETRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
-}
-
-func (_this *ProfileServerService) GetMany(ctx context.Context, in *profile_grpc.GETRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
-}
-
-func (_this *ProfileServerService) Search(ctx context.Context, in *profile_grpc.GETRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
 	return nil, nil
 }
