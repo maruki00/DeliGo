@@ -60,11 +60,7 @@ func (m *Profile) validate(all bool) error {
 
 	// no validation rules for UserID
 
-	// no validation rules for UserName
-
 	// no validation rules for FullName
-
-	// no validation rules for Password
 
 	// no validation rules for Avatar
 
@@ -169,17 +165,60 @@ func (m *CreateProfileRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserID
+	if l := utf8.RuneCountInString(m.GetUserID()); l < 4 || l > 32 {
+		err := CreateProfileRequestValidationError{
+			field:  "UserID",
+			reason: "value length must be between 4 and 32 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for UserName
+	if l := utf8.RuneCountInString(m.GetFullName()); l < 4 || l > 56 {
+		err := CreateProfileRequestValidationError{
+			field:  "FullName",
+			reason: "value length must be between 4 and 56 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for FullName
+	if !_CreateProfileRequest_FullName_Pattern.MatchString(m.GetFullName()) {
+		err := CreateProfileRequestValidationError{
+			field:  "FullName",
+			reason: "value does not match regex pattern \"^[a-zA-Z0-9_ ]+$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Password
+	if l := utf8.RuneCountInString(m.GetAvatar()); l < 4 || l > 255 {
+		err := CreateProfileRequestValidationError{
+			field:  "Avatar",
+			reason: "value length must be between 4 and 255 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Avatar
-
-	// no validation rules for Bio
+	if l := utf8.RuneCountInString(m.GetBio()); l < 0 || l > 255 {
+		err := CreateProfileRequestValidationError{
+			field:  "Bio",
+			reason: "value length must be between 0 and 255 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return CreateProfileRequestMultiError(errors)
@@ -260,6 +299,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CreateProfileRequestValidationError{}
+
+var _CreateProfileRequest_FullName_Pattern = regexp.MustCompile("^[a-zA-Z0-9_ ]+$")
 
 // Validate checks the field values on DeleteProfileRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -705,115 +746,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UpdateProfileAvatareRequestValidationError{}
-
-// Validate checks the field values on UpdateProfilePasswordRequest with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *UpdateProfilePasswordRequest) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on UpdateProfilePasswordRequest with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// UpdateProfilePasswordRequestMultiError, or nil if none found.
-func (m *UpdateProfilePasswordRequest) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *UpdateProfilePasswordRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for ID
-
-	// no validation rules for OldPassword
-
-	// no validation rules for Password
-
-	if len(errors) > 0 {
-		return UpdateProfilePasswordRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// UpdateProfilePasswordRequestMultiError is an error wrapping multiple
-// validation errors returned by UpdateProfilePasswordRequest.ValidateAll() if
-// the designated constraints aren't met.
-type UpdateProfilePasswordRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m UpdateProfilePasswordRequestMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m UpdateProfilePasswordRequestMultiError) AllErrors() []error { return m }
-
-// UpdateProfilePasswordRequestValidationError is the validation error returned
-// by UpdateProfilePasswordRequest.Validate if the designated constraints
-// aren't met.
-type UpdateProfilePasswordRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UpdateProfilePasswordRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UpdateProfilePasswordRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UpdateProfilePasswordRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UpdateProfilePasswordRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UpdateProfilePasswordRequestValidationError) ErrorName() string {
-	return "UpdateProfilePasswordRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e UpdateProfilePasswordRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUpdateProfilePasswordRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UpdateProfilePasswordRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UpdateProfilePasswordRequestValidationError{}
 
 // Validate checks the field values on ProfileResponse with the rules defined
 // in the proto definition for this message. If any rules are violated, the

@@ -26,7 +26,6 @@ type ProfileServiceClient interface {
 	Delete(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	Update(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	UpdateAvatar(ctx context.Context, in *UpdateProfileAvatareRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
-	UpdatePassword(ctx context.Context, in *UpdateProfilePasswordRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 	GetOne(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
 }
 
@@ -74,15 +73,6 @@ func (c *profileServiceClient) UpdateAvatar(ctx context.Context, in *UpdateProfi
 	return out, nil
 }
 
-func (c *profileServiceClient) UpdatePassword(ctx context.Context, in *UpdateProfilePasswordRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
-	out := new(ProfileResponse)
-	err := c.cc.Invoke(ctx, "/ProfileService/UpdatePassword", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *profileServiceClient) GetOne(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
 	out := new(ProfileResponse)
 	err := c.cc.Invoke(ctx, "/ProfileService/GetOne", in, out, opts...)
@@ -100,7 +90,6 @@ type ProfileServiceServer interface {
 	Delete(context.Context, *DeleteProfileRequest) (*ProfileResponse, error)
 	Update(context.Context, *UpdateProfileRequest) (*ProfileResponse, error)
 	UpdateAvatar(context.Context, *UpdateProfileAvatareRequest) (*ProfileResponse, error)
-	UpdatePassword(context.Context, *UpdateProfilePasswordRequest) (*ProfileResponse, error)
 	GetOne(context.Context, *GETRequest) (*ProfileResponse, error)
 	mustEmbedUnimplementedProfileServiceServer()
 }
@@ -120,9 +109,6 @@ func (UnimplementedProfileServiceServer) Update(context.Context, *UpdateProfileR
 }
 func (UnimplementedProfileServiceServer) UpdateAvatar(context.Context, *UpdateProfileAvatareRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAvatar not implemented")
-}
-func (UnimplementedProfileServiceServer) UpdatePassword(context.Context, *UpdateProfilePasswordRequest) (*ProfileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdatePassword not implemented")
 }
 func (UnimplementedProfileServiceServer) GetOne(context.Context, *GETRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
@@ -212,24 +198,6 @@ func _ProfileService_UpdateAvatar_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProfileService_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateProfilePasswordRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProfileServiceServer).UpdatePassword(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/ProfileService/UpdatePassword",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProfileServiceServer).UpdatePassword(ctx, req.(*UpdateProfilePasswordRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ProfileService_GetOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GETRequest)
 	if err := dec(in); err != nil {
@@ -270,10 +238,6 @@ var ProfileService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateAvatar",
 			Handler:    _ProfileService_UpdateAvatar_Handler,
-		},
-		{
-			MethodName: "UpdatePassword",
-			Handler:    _ProfileService_UpdatePassword_Handler,
 		},
 		{
 			MethodName: "GetOne",
