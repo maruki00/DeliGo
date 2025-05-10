@@ -13,7 +13,7 @@ user:
     --validate_out=lang=go:./
 
 
-user:
+profile:
 	cd ./internal/profile/infra/grpc/profile/ && protoc -I. -I/../.. \
     -I./../../../../../proto \
     -I/home/user/go/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v1.2.1 \

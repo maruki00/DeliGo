@@ -45,7 +45,7 @@ message UpdateProfileAvatareRequest {
 message UpdateProfilePasswordRequest {
 	string ID 					= 1 [json_name = "id"];
 	string oldPassword  = 2 [json_name = "old_password"];
-	string password  = 2 [json_name = "password"];
+	string password  = 3 [json_name = "password"];
 }
 
 message ProfileResponse {
