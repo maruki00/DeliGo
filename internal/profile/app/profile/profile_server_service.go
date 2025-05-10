@@ -5,18 +5,18 @@ import (
 	profile_grpc "deligo/internal/profile/infra/grpc/profile"
 )
 
-type ProfileService struct {
+type ProfileServerService struct {
 	repository contracts.IPorofileRepository
 	profile_grpc.UnimplementedProfileServiceServer
 }
 
-func NewProfileService(repository contracts.IPorofileRepository) *ProfileService {
-	return &ProfileService{
+func NewProfileService(repository contracts.IPorofileRepository) *ProfileServerService {
+	return &ProfileServerService{
 		repository: repository,
 	}
 }
 
-// func (_this *ProfileService) Create(ctx context.Context, in *profile_grpc.CreateProfileRequest) (*profile_grpc.ProfileResponse, error) {
+// func (_this *ProfileService) Save(ctx context.Context, in *profile_grpc.CreateProfileRequest) (*profile_grpc.ProfileResponse, error) {
 // 	res, err := _this.repository.Create(ctx, &models.Profile{
 // 		UserID:   in.UserID,
 // 		FullName: in.FullName,
