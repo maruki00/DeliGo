@@ -37,6 +37,17 @@ message UpdateProfileRequest {
 	map<string, string> fields  = 2 [json_name = "fields"];
 }
 
+message UpdateProfileAvatareRequest {
+	string ID 					= 1 [json_name = "id"];
+	string avatar  				= 2 [json_name = "avatar"];
+}
+
+message UpdateProfilePasswordRequest {
+	string ID 					= 1 [json_name = "id"];
+	string oldPassword  = 2 [json_name = "old_password"];
+	string password  = 2 [json_name = "password"];
+}
+
 message ProfileResponse {
 	int32 Code 								= 1 [ json_name = "code"];
     string Message 							= 2 [ json_name = "message"];
@@ -71,12 +82,20 @@ service ProfileService {
 		};
 	};
 
-	rpc UpdateAvatar(UpdateProfileRequest) returns (ProfileResponse) {
+	rpc UpdateAvatar(UpdateProfileAvatareRequest) returns (ProfileResponse) {
 		option (google.api.http) = {
-			put: "/v1/profile/update",
+			put: "/v1/profile/update-avatar",
 			body: "*"
 		};
 	};
+
+	rpc UpdatePassword(UpdateProfilePasswordRequest) returns (ProfileResponse) {
+		option (google.api.http) = {
+			put: "/v1/profile/update-password",
+			body: "*"
+		};
+	};
+
 	
 
 	rpc GetOne(GETRequest) returns (ProfileResponse) {
