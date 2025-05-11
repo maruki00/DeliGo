@@ -5,13 +5,10 @@ import (
 	"deligo/internal/profile/infra/models"
 )
 
-type Pagination struct{}
-
 type IPorofileRepository interface {
-	Save(ctx context.Context, policy *models.Profile) error
-	Disable(ctx context.Context, policy *models.Profile) error
-	FindByUserID(ctx context.Context, id string) (*models.Policy, error)
-	FindByName(ctx context.Context, name string) (*models.Policy, error)
-	Delete(ctx context.Context, id string) error
-	ListForTenant(ctx context.Context, tenantID string) ([]*models.Policy, error)
+	Save(context.Context, *models.Profile) error
+	Disable(context.Context, *models.Profile) error
+	FindByUserID(context.Context, string) (*models.Profile, error)
+	Update(context.Context, string, map[string]any) error
+	UpdateAvatar(context.Context, string, string) error
 }
