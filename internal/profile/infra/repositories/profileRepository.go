@@ -3,13 +3,15 @@ package repositories
 import (
 	"context"
 	"deligo/internal/profile/domain/contracts"
+	"deligo/internal/profile/domain/entities"
 	"deligo/internal/profile/infra/models"
+	"deligo/internal/prrofile/domain/entities"
 	pkgPostgres "deligo/pkg/postgres"
-	"sync"
+
+	"gorm.io/gorm"
 )
 
 type ProfileRepository struct {
-	sync.RWMutex
 	db pkgPostgres.DBHandler
 }
 
@@ -19,9 +21,32 @@ func NewProfileRepository(db pkgPostgres.DBHandler) contracts.IPorofileRepositor
 	}
 }
 
-func (_this *ProfileRepository) Save(context.Context, *models.Profile) error {
+func (_this *ProfileRepository) Save(context.Context, entity *entities.ProfileEntity) error {
 
-	sql := `INSERT INTO profiles VALUES (?, ?, ?, ?, ?`
+
+
+	r := _this.db.DB.Transaction(func(tx *gorm.DB) error {
+
+		sql := `INSERT INTO profiles (id, user_name, full_name, avatar, bio) VALUES (?, ?, ?, ?, ?)`
+
+		if err := tx.Exec(sql,
+			entity.GetI(),
+			entity.GetUserI(),
+			entity.GetFullNam(),
+			entity.GetAvata(),
+			entity.GetBio(),	
+		).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 
 	return nil
 }
