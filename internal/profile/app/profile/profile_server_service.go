@@ -19,16 +19,6 @@ func NewProfileService(repository contracts.IPorofileRepository) *ProfileServerS
 	}
 }
 
-touch save_profile_command.go
-touch delete_profile_command.go
-touch upadte_profile_command.go
-touch updateAvatar_profile_command.go
-
-get_one_profile_query.go
-
-
-
-
 func (_this *ProfileServerService) Save(ctx context.Context, in *profile_grpc.CreateProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
 	return nil, nil
 }
