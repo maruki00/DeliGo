@@ -20,6 +20,7 @@ func NewProfileService(repository contracts.IPorofileRepository) *ProfileServerS
 }
 
 func (_this *ProfileServerService) Save(ctx context.Context, in *profile_grpc.CreateProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
+
 	return nil, nil
 }
 func (_this *ProfileServerService) Disable(ctx context.Context, in *profile_grpc.DisableProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {

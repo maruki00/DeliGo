@@ -19,18 +19,21 @@ func NewProfileRepository(db pkgPostgres.DBHandler) contracts.IPorofileRepositor
 	}
 }
 
-func (_this *ProfileRepository) FindByID(ctx context.Context, id string) (*models.Policy, error) {
-	return nil, nil
-}
-func (_this *ProfileRepository) FindByName(ctx context.Context, name string) (*models.Policy, error) {
-	return nil, nil
-}
-func (_this *ProfileRepository) Save(ctx context.Context, policy *models.Policy) error {
+func (_this *ProfileRepository) Save(context.Context, *models.Profile) error {
+
+	sql := `INSERT INTO profiles VALUES (?, ?, ?, ?, ?`
+
 	return nil
 }
-func (_this *ProfileRepository) Delete(ctx context.Context, id string) error {
+func (_this *ProfileRepository) Disable(context.Context, *models.Profile) error {
 	return nil
 }
-func (_this *ProfileRepository) ListForTenant(ctx context.Context, tenantID string) ([]*models.Policy, error) {
-	return nil, nil
+func (_this *ProfileRepository) FindByUserID(context.Context, string) (*models.Profile, error) {
+	return nil
+}
+func (_this *ProfileRepository) Update(context.Context, string, map[string]any) error {
+	return nil
+}
+func (_this *ProfileRepository) UpdateAvatar(context.Context, string, string) error {
+	return nil
 }

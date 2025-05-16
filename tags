@@ -239,19 +239,7 @@ ValueObject	Services/Shared/Domain/ValueObjects/Float32VAlueObject.go	/^package 
 ValueObject	Services/Shared/Domain/ValueObjects/Float64VAlueObject.go	/^package ValueObject$/;"	p
 ValueObject	Services/Shared/Domain/ValueObjects/PasswordValueObject.go	/^package ValueObject$/;"	p
 ValueObject	Services/Shared/Domain/ValueObjects/StringValueObject.go	/^package ValueObject$/;"	p
-ValueObject	Services/Shared/Domain/ValueObjects/valueobject.go	/^type ValueObject interface {$/;"	t
-ViewModel	Services/Shared/Domain/adapters/ViewModel.go	/^type ViewModel interface {$/;"	t
-adapters_viewmodels	app/adapters/ViewModels/JsonViewModel.go	/^package adapters_viewmodels$/;"	p
-app	Services/Shared/infra/App/app.go	/^package app$/;"	p
-auth	main.sql	/^create table auth($/;"	t
-auth.created_at	main.sql	/^    created_at timestamp default now(),$/;"	F
-auth.email	main.sql	/^    email varchar(255) not null unique,$/;"	F
-auth.id	main.sql	/^    id int primary key primary key auto_increment,$/;"	F
-auth.token	main.sql	/^    token text not null unique,$/;"	F
-auth.updated_at	main.sql	/^    updated_at timestamp default now()$/;"	F
-auth.user_id	main.sql	/^    user_id int not null,$/;"	F
-auth.user_level	main.sql	/^    user_level int not null,$/;"	F
-auth.user_type	main.sql	/^    user_type int not null,$/;"	F
+ValueObject	Services/Shared/Domain/ValueObjects/valueobject.got not null,$/;"	F
 auth_adapters	Services/Auth/UserGateway/adapters/loginpresenter.go	/^package auth_adapters$/;"	p
 auth_domain_dtos	Services/Auth/Domain/DTOs/AuthDTO.go	/^package auth_domain_dtos$/;"	p
 auth_domain_dtos	Services/Auth/Domain/DTOs/ForgetPasswordDTO.go	/^package auth_domain_dtos$/;"	p
