@@ -22,13 +22,8 @@ func NewProfileRepository(db pkgPostgres.DBHandler) contracts.IPorofileRepositor
 }
 
 func (_this *ProfileRepository) Save(context.Context, entity *entities.ProfileEntity) error {
-
-
-
 	r := _this.db.DB.Transaction(func(tx *gorm.DB) error {
-
 		sql := `INSERT INTO profiles (id, user_name, full_name, avatar, bio) VALUES (?, ?, ?, ?, ?)`
-
 		if err := tx.Exec(sql,
 			entity.GetI(),
 			entity.GetUserI(),
@@ -38,24 +33,32 @@ func (_this *ProfileRepository) Save(context.Context, entity *entities.ProfileEn
 		).Error; err != nil {
 			return err
 		}
-
 		return nil
 	})
-
 	if err != nil {
 		return err
 	}
-
-	return nil
-
 	return nil
 }
+
 func (_this *ProfileRepository) Disable(context.Context, *models.Profile) error {
-	return nil
+	return _this.db.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(&tx.Model.Profile).Where("id = ?", id).UpdateColumn("is_active", false).Error; err!=nil{
+			tx.Rollback()
+			return err
+		}
+		return nil
+	}
 }
+
 func (_this *ProfileRepository) FindByUserID(context.Context, string) (*models.Profile, error) {
+
+	var profile modmodels.Profile
+	row, err := _this.db.DB.
+
 	return nil
 }
+
 func (_this *ProfileRepository) Update(context.Context, string, map[string]any) error {
 	return nil
 }
