@@ -62,6 +62,7 @@ func (_this *ProfileRepository) Update(context.Context, string, map[string]any) 
 
 	return nil
 }
+
 func (_this *ProfileRepository) UpdateAvatar(ctx context.Context, id string, avatar string) error {
 	return _this.db.GetDB().Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&models.Profile{}).Where("id = ?", id).UpdateColumn("avatar", avatar).Error; err != nil {
