@@ -1,8 +1,6 @@
 package models
 
-import (
-	"time"
-)
+import "time"
 
 type Profile struct {
 	ID        string
@@ -15,52 +13,27 @@ type Profile struct {
 	UpdatedAt *time.Time
 }
 
-func (p *Profile) SetID(ID string) {
-	p.ID = ID
+func (_this *Profile) GetID() string {
+	return _this.ID
 }
-func (p *Profile) SetUserID(UserID string) {
-	p.UserID = UserID
+func (_this *Profile) GetUserID() string {
+	return _this.UserID
 }
-func (p *Profile) SetFullName(FullName string) {
-	p.FullName = FullName
+func (_this *Profile) GetFullName() string {
+	return _this.FullName
 }
-func (p *Profile) SetAvatar(Avatar string) {
-	p.Avatar = Avatar
+func (_this *Profile) GetAvatar() string {
+	return _this.Avatar
 }
-func (p *Profile) SetBio(Bio string) {
-	p.Bio = Bio
+func (_this *Profile) GetBio() string {
+	return _this.Bio
 }
-func (p *Profile) SetDeletedAt(DeletedAt *time.Time) {
-	p.DeletedAt = DeletedAt
+func (_this *Profile) GetDeletedAt() *time.Time {
+	return _this.DeletedAt
 }
-func (p *Profile) SetCreatedAt(CreatedAt *time.Time) {
-	p.CreatedAt = CreatedAt
+func (_this *Profile) GetCreatedAt() *time.Time {
+	return _this.CreatedAt
 }
-func (p *Profile) SetUpdatedAt(UpdatedAt *time.Time) {
-	p.UpdatedAt = UpdatedAt
-}
-
-func (p *Profile) GetID() string {
-	return p.ID
-}
-func (p *Profile) GetUserID() string {
-	return p.UserID
-}
-func (p *Profile) GetFullName() string {
-	return p.FullName
-}
-func (p *Profile) GetAvatar() string {
-	return p.Avatar
-}
-func (p *Profile) GetBio() string {
-	return p.Bio
-}
-func (p *Profile) GetDeletedAt() *time.Time {
-	return p.DeletedAt
-}
-func (p *Profile) GetCreatedAt() *time.Time {
-	return p.CreatedAt
-}
-func (p *Profile) GetUpdatedAt() *time.Time {
-	return p.UpdatedAt
+func (_this *Profile) GetUpdatedAt() *time.Time {
+	return _this.UpdatedAt
 }
