@@ -23,3 +23,11 @@ profile:
     --grpc-gateway_out=./ --grpc-gateway_opt=paths=source_relative \
     --grpc-gateway_opt generate_unbound_methods=true \
     --validate_out=lang=go:./
+
+
+
+
+show:
+	echo "make [target]"
+	echo " -user"
+	echo " -profile"

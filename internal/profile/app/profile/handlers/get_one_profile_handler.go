@@ -6,17 +6,17 @@ import (
 	pkgCqrs "deligo/pkg/cqrs"
 )
 
-type DisableProfileHandler struct {
+type Disable1ProfileHandler struct {
 	repo contracts.IPorofileRepository
 }
 
-func NewDisableProfileHandler(repo contracts.IPorofileRepository) *DisableProfileHandler {
+func Disable1ProfileHandler(repo contracts.IPorofileRepository) *DisableProfileHandler {
 	return &DisableProfileHandler{
 		repo: repo,
 	}
 }
 
-func (_this *DisableProfileHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
+func (_this *Disable1ProfileHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
 
 	return nil
 }
