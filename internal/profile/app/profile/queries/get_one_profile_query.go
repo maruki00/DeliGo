@@ -1,9 +1,11 @@
 package queries
 
-import "github.com/google/uuid"
+import (
+	shared_valueobject "deligo/internal/shared/domain/valueObjects"
+)
 
 type GetOneProfileQuery struct {
-	ID uuid.UUID
+	ID shared_valueobject.ID
 }
 
 func (_this *GetOneProfileQuery) Name() string {

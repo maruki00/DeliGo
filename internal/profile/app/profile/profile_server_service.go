@@ -3,12 +3,15 @@ package grpc_services
 import (
 	"context"
 	"deligo/internal/profile/app/profile/commands"
+	"deligo/internal/profile/app/profile/queries"
 	profile_grpc "deligo/internal/profile/infra/grpc/profile"
 	shared_valueobject "deligo/internal/shared/domain/valueObjects"
 	pkgCqrs "deligo/pkg/cqrs"
+	pkgUtils "deligo/pkg/utils"
 	"net/http"
 
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 type ProfileServerService struct {
@@ -80,5 +83,32 @@ func (_this *ProfileServerService) UpdateAvatar(ctx context.Context, in *profile
 	return CommandCheck(err)
 }
 func (_this *ProfileServerService) GetOne(ctx context.Context, in *profile_grpc.GETRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
-	return nil, nil
+
+	params, err := pkgUtils.ParamsFromGrpc(ctx)
+	if err != nil {
+		return nil, err
+	}
+	id := params["id"][0]
+	res, err := _this.QueryBus.Dispatch(ctx,
+		&queries.GetOneProfileQuery{
+			ID: shared_valueobject.ID(id),
+		})
+
+	if err != nil {
+		return &profile_grpc.ProfileResponse{
+			Code:    http.StatusAccepted,
+			Message: "not found",
+			Result:  nil,
+		}, err
+	}
+
+	profile, _ := structpb.NewValue(res.(any))
+
+	return &profile_grpc.ProfileResponse{
+		Code:    http.StatusAccepted,
+		Message: "success",
+		Result: []*structpb.Value{
+			profile,
+		},
+	}, err
 }
