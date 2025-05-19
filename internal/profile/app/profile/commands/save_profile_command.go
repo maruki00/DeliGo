@@ -1,10 +1,12 @@
 package commands
 
-import "github.com/google/uuid"
+import (
+	shared_valueobject "deligo/internal/shared/domain/valueObjects"
+)
 
 type SaveProfileCommand struct {
-	ID       uuid.UUID
-	UserID   uuid.UUID
+	ID       shared_valueobject.ID
+	UserID   shared_valueobject.ID
 	FullName string
 	Avatar   string
 	Bio      string

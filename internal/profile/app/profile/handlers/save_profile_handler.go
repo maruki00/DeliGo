@@ -2,21 +2,22 @@ package handlers
 
 import (
 	"context"
+	"deligo/internal/iam/infra/models"
 	"deligo/internal/profile/domain/contracts"
 	pkgCqrs "deligo/pkg/cqrs"
 )
 
-type Disable2ProfileHandler struct {
+type SaveProfileHandler struct {
 	repo contracts.IPorofileRepository
 }
 
-func NewDisable2ProfileHandler(repo contracts.IPorofileRepository) *DisableProfileHandler {
+func NewSaveProfileHandler(repo contracts.IPorofileRepository) *DisableProfileHandler {
 	return &DisableProfileHandler{
 		repo: repo,
 	}
 }
 
-func (_this *Disable2ProfileHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
-
+func (_this *SaveProfileHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
+	err := _this.repo.Save(ctx, &models.Profile{})
 	return nil
 }

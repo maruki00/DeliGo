@@ -1,11 +1,11 @@
 package commands
 
 import (
-	valueobjects "deligo/internal/iam/domain/valueobject"
+	shared_valueobject "deligo/internal/shared/domain/valueObjects"
 )
 
 type DiscableProfileCommand struct {
-	ID valueobjects.ID
+	ID shared_valueobject.ID
 }
 
 func (_this *DiscableProfileCommand) Name() string {
