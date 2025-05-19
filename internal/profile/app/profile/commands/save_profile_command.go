@@ -8,8 +8,6 @@ type SaveProfileCommand struct {
 	FullName string
 	Avatar   string
 	Bio      string
-
-	string
 }
 
 func (_this *SaveProfileCommand) Name() string {
