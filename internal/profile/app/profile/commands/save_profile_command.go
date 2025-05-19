@@ -1,8 +1,6 @@
 package commands
 
-import (
-	shared_valueobject "deligo/internal/shared/domain/valueObjects"
-)
+import shared_valueobject "deligo/internal/shared/domain/valueObjects"
 
 type SaveProfileCommand struct {
 	ID       shared_valueobject.ID
@@ -10,6 +8,8 @@ type SaveProfileCommand struct {
 	FullName string
 	Avatar   string
 	Bio      string
+
+	string
 }
 
 func (_this *SaveProfileCommand) Name() string {

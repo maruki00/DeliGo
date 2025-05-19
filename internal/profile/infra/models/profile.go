@@ -1,10 +1,13 @@
 package models
 
-import "time"
+import (
+	shared_valueobject "deligo/internal/shared/domain/valueObjects"
+	"time"
+)
 
 type Profile struct {
-	ID        string
-	UserID    string
+	ID        shared_valueobject.ID
+	UserID    shared_valueobject.ID
 	FullName  string
 	Avatar    string
 	Bio       string
@@ -13,10 +16,10 @@ type Profile struct {
 	UpdatedAt *time.Time
 }
 
-func (_this *Profile) GetID() string {
+func (_this *Profile) GetID() shared_valueobject.ID {
 	return _this.ID
 }
-func (_this *Profile) GetUserID() string {
+func (_this *Profile) GetUserID() shared_valueobject.ID {
 	return _this.UserID
 }
 func (_this *Profile) GetFullName() string {
