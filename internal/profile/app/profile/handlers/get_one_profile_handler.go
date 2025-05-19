@@ -16,7 +16,7 @@ func NewGetOneProfileHandler(repo contracts.IPorofileRepository) *DisableProfile
 	}
 }
 
-func (_this *GetOneProfileHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
+func (_this *GetOneProfileHandler) Handle(ctx context.Context, query pkgCqrs.Query) error {
 
 	return nil
 }

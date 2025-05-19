@@ -3,10 +3,13 @@ package app
 import (
 	"context"
 	"deligo/cmd/user/configs"
+	"deligo/internal/profile/app/profile/commands"
+	"deligo/internal/profile/app/profile/handlers"
 	grpc_services "deligo/internal/profile/app/usecases"
 	"deligo/internal/profile/domain/contracts"
 	"deligo/internal/profile/infra/repositories"
 
+	pkgCqrs "deligo/pkg/cqrs"
 	pkgPostgres "deligo/pkg/postgres"
 	"fmt"
 	"log/slog"
@@ -18,6 +21,8 @@ type App struct {
 	db          *pkgPostgres.PGHandler
 	ProfileRepo contracts.IPorofileRepository
 	ProfileSVC  *grpc_services.ProfileService
+	CommandBus  *pkgCqrs.CommandBus
+	QueryBus    *pkgCqrs.QueryBus
 }
 
 func (app *App) GetDB() any {
@@ -34,6 +39,14 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 
 	profileRepo := repositories.NewProfileRepository(db)
 	profileSVC := grpc_services.NewProfileService(profileRepo)
+
+	commandBus := pkgCqrs.NewCommandBus()
+	queryBus := pkgCqrs.NewQueryBus()
+
+	commandBus.Register(&commands.DiscableProfileCommand{}, handlers.NewDisableProfileHandler(profileRepo))
+	commandBus.Register(&commands.SaveProfileCommand{}, handlers.NewSaveProfileHandler(profileRepo))
+	commandBus.Register(&commands.UpdateProfileAvatarCommand{}, handlers.New(profileRepo))
+	commandBus.Register(&commands.DiscableProfileCommand{}, handlers.NewDisableProfileHandler(profileRepo))
 
 	app := &App{
 		db:          db,

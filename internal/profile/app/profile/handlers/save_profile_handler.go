@@ -5,7 +5,6 @@ import (
 	"deligo/internal/profile/app/profile/commands"
 	"deligo/internal/profile/domain/contracts"
 	"deligo/internal/profile/infra/models"
-	shared_valueobject "deligo/internal/shared/domain/valueObjects"
 	pkgCqrs "deligo/pkg/cqrs"
 )
 
@@ -21,11 +20,10 @@ func NewSaveProfileHandler(repo contracts.IPorofileRepository) *DisableProfileHa
 
 func (_this *SaveProfileHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
 	cmd := command.(*commands.SaveProfileCommand)
-	err := _this.repo.Save(ctx, &models.Profile{
+	return _this.repo.Save(ctx, &models.Profile{
 		ID:       shared_valueobject.NewID(),
 		UserID:   shared_valueobject.ID(cmd.UserID),
 		FullName: cmd.FullName,
 		Avatar:   cmd.Avatar,
 	})
-	return nil
 }

@@ -38,5 +38,5 @@ func (_this *Profile) GetCreatedAt() *time.Time {
 	return _this.CreatedAt
 }
 func (_this *Profile) GetUpdatedAt() *time.Time {
-	return _this.UpdatedAt1
+	return _this.UpdatedAt
 }
