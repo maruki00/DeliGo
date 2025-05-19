@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"deligo/internal/profile/app/profile/commands"
 	"deligo/internal/profile/domain/contracts"
 	pkgCqrs "deligo/pkg/cqrs"
 )
@@ -17,6 +18,7 @@ func NewUpdateProfileHandler(repo contracts.IPorofileRepository) *UpdateProfileH
 }
 
 func (_this *UpdateProfileHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
+	cmd := command.(*commands.UpdateProfileCommand)
+	return _this.repo.Update(ctx, string(cmd.ID), cmd.Fields)
 
-	return nil
 }

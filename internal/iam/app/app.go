@@ -26,8 +26,7 @@ type App struct {
 	UserQuerydBus  *pkgCqrs.QueryBus
 
 	// UserUC         *usecases.UserUseCase
-	// PolicyUC       *usecases.PolicyUseCase
-	// PermissionUC   *usecases.PermissionUseCase
+	// Polshared_valueobject.ID	// PermissionUC   *usecases.PermissionUseCase
 	// GroupUC        *usecases.GroupUseCase
 }
 

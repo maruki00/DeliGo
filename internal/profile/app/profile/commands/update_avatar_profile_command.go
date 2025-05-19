@@ -5,7 +5,8 @@ import (
 )
 
 type UpdateProfileAvatarCommand struct {
-	ID shared_valueobject.ID
+	ID     shared_valueobject.ID
+	Avatar string
 }
 
 func (_this *UpdateProfileAvatarCommand) Name() string {

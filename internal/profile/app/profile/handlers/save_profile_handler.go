@@ -5,6 +5,7 @@ import (
 	"deligo/internal/profile/app/profile/commands"
 	"deligo/internal/profile/domain/contracts"
 	"deligo/internal/profile/infra/models"
+	shared_valueobject "deligo/internal/shared/domain/valueObjects"
 	pkgCqrs "deligo/pkg/cqrs"
 )
 
