@@ -48,10 +48,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	commandBus.Register(&commands.SaveProfileCommand{}, handlers.NewSaveProfileHandler(profileRepo))
 	commandBus.Register(&commands.UpdateProfileAvatarCommand{}, handlers.NewUpdateProfileAvatarHandler(profileRepo))
 	commandBus.Register(&commands.DiscableProfileCommand{}, handlers.NewDisableProfileHandler(profileRepo))
-	queryBus.Register(
-		&queries.GetOneProfileQuery{},
-		handlers.NewGetOneProfileHandler(profileRepo),
-	)
+	queryBus.Register(&queries.GetOneProfileQuery{}, handlers.NewGetOneProfileHandler(profileRepo))
 	app := &App{
 		db:          db,
 		ProfileRepo: profileRepo,
