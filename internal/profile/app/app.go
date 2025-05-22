@@ -5,6 +5,7 @@ import (
 	"deligo/cmd/user/configs"
 	"deligo/internal/profile/app/profile/commands"
 	"deligo/internal/profile/app/profile/handlers"
+	"deligo/internal/profile/app/profile/queries"
 	grpc_services "deligo/internal/profile/app/usecases"
 	"deligo/internal/profile/domain/contracts"
 	"deligo/internal/profile/infra/repositories"
@@ -47,7 +48,10 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	commandBus.Register(&commands.SaveProfileCommand{}, handlers.NewSaveProfileHandler(profileRepo))
 	commandBus.Register(&commands.UpdateProfileAvatarCommand{}, handlers.NewUpdateProfileAvatarHandler(profileRepo))
 	commandBus.Register(&commands.DiscableProfileCommand{}, handlers.NewDisableProfileHandler(profileRepo))
-
+	queryBus.Register(
+		&queries.GetOneProfileQuery{},
+		handlers.NewGetOneProfileHandler(profileRepo),
+	)
 	app := &App{
 		db:          db,
 		ProfileRepo: profileRepo,

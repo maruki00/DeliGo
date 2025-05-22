@@ -10,13 +10,12 @@ type GetOneProfileHandler struct {
 	repo contracts.IPorofileRepository
 }
 
-func NewGetOneProfileHandler(repo contracts.IPorofileRepository) *DisableProfileHandler {
-	return &DisableProfileHandler{
+func NewGetOneProfileHandler(repo contracts.IPorofileRepository) *GetOneProfileHandler {
+	return &GetOneProfileHandler{
 		repo: repo,
 	}
 }
+func (_this *GetOneProfileHandler) Handle(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
 
-func (_this *GetOneProfileHandler) Handle(ctx context.Context, query pkgCqrs.Query) error {
-
-	return nil
+	return nil, nil
 }
