@@ -45,7 +45,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 
 	commandBus.Register(&commands.DiscableProfileCommand{}, handlers.NewDisableProfileHandler(profileRepo))
 	commandBus.Register(&commands.SaveProfileCommand{}, handlers.NewSaveProfileHandler(profileRepo))
-	commandBus.Register(&commands.UpdateProfileAvatarshared_valueobject.IDw(profileRepo))
+	commandBus.Register(&commands.UpdateProfileAvatarCommand{}, handlers.NewUpdateProfileAvatarHandler(profileRepo))
 	commandBus.Register(&commands.DiscableProfileCommand{}, handlers.NewDisableProfileHandler(profileRepo))
 
 	app := &App{
