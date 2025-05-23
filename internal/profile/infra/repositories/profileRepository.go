@@ -51,18 +51,20 @@ func (_this *ProfileRepository) Disable(ctx context.Context, id string) error {
 
 func (_this *ProfileRepository) FindByUserID(ctx context.Context, id string) (*models.Profile, error) {
 	var profile models.Profile
+	err := _this.db.GetDB().Where("user_id = ?", id).First(&profile).Error
+	if err != nil {
+		return nil, err
+	}
+	return &profile, nil
+}
+func (_this *ProfileRepository) FindByID(ctx context.Context, id string) (*models.Profile, error) {
+	var profile models.Profile
 	err := _this.db.GetDB().Where("id = ?", id).First(&profile).Error
 	if err != nil {
 		return nil, err
 	}
 	return &profile, nil
 }
-
-func (_this *ProfileRepository) Update(context.Context, string, map[string]any) error {
-
-	return nil
-}
-
 func (_this *ProfileRepository) UpdateAvatar(ctx context.Context, id string, avatar string) error {
 	return _this.db.GetDB().Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&models.Profile{}).Where("id = ?", id).UpdateColumn("avatar", avatar).Error; err != nil {
@@ -71,4 +73,9 @@ func (_this *ProfileRepository) UpdateAvatar(ctx context.Context, id string, ava
 		}
 		return nil
 	})
+}
+
+func (_this *ProfileRepository) Update(context.Context, string, map[string]any) error {
+
+	return nil
 }
