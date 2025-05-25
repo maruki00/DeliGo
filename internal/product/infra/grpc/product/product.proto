@@ -28,12 +28,12 @@ message SaveProductRequest  {
 		(validate.rules).string = {min_len: 1, max_len: 100},
 		json_name = "label"
 	];       
-	string Price 		= 2 [
-		(validate.rules).float = true,
+	float Price 		= 2 [
+  (validate.rules).float = {gte:0},
 		json_name = "price"
 	];    
-	string Qty 	= 3 [
-		(validate.rules).uint32 = true,
+	uint32 Qty 	= 3 [
+  (validate.rules).uint32 = {gte:0},
 		json_name = "qty"
 	]; 
 }
@@ -48,12 +48,12 @@ string Label		= 2 [
 		(validate.rules).string = {min_len: 1, max_len: 100},
 		json_name = "label"
 	];       
-	string Price 		= 3 [
-		(validate.rules).float = true,
+	float Price 		= 3 [
+  (validate.rules).float = {gte:0},
 		json_name = "price"
 	];    
-	string Qty 	= 4 [
-		(validate.rules).uint32 = true,
+	uint32 Qty 	= 4 [
+  (validate.rules).uint32 = {gte:0},
 		json_name = "qty"
 	]; 
 
