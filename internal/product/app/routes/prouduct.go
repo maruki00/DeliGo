@@ -1,10 +1,10 @@
 package routes
 
 import (
+	"deligo/internal/product/userGetway/controllers"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-
-	"deligo/internal/product/userGetway/controllers"
 )
 
 var ProductRouter = func(router *gin.Engine, db *gorm.DB) {
@@ -19,16 +19,3 @@ var ProductRouter = func(router *gin.Engine, db *gorm.DB) {
 	_ = prefix.POST("/get", controller.GetProduct)
 	_ = prefix.POST("/multiple", controller.MultipleProducts)
 }
-
-// post:"/v0/product/insert",
-// body: "*"
-// post:"/v0/product/update",
-// body: "*"
-// delete:"/v0/product/delete",
-// body: "*"
-// post:"/v0/product/search",
-// body: "*"
-// post:"/v0/product/get",
-// body: "*"
-// post:"/v0/product/multiple",
-// body: "*"

@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+
+option go_package = "grpc.user";
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+import "validate/validate.proto";
+
+ // id uuid primary key ,
+ //    label varchar(255) not null,
+ //    price varchar(10) not null,
+ //    created_at timestamp default now(),
+ //    updated_at timestamp default now(),
+ //    delete_at  timestamp default null
+ //
+
+
+message User {
+	string ID 						= 1 [json_name = "id"];       
+	string Label 				= 2 [json_name = "label"];    
+	float Price 					= 3 [json_name = "price"];    
+	uint32 Qty 				= 4 [json_name = "qty"];   	
+}
+
+message SaveProductRequest  {
+	string Label		= 1 [
+		(validate.rules).string = {min_len: 1, max_len: 100},
+		json_name = "label"
+	];       
+	string Price 		= 2 [
+		(validate.rules).float = true,
+		json_name = "price"
+	];    
+	string Qty 	= 3 [
+		(validate.rules).uint32 = true,
+		json_name = "qty"
+	]; 
+}
+
+message DeleteProductRequest {
+	string ID 			= 1 [json_name = "id"]; 
+}
+
+message UpdateProductRequest{
+	string ID 			= 1 [json_name = "id"];       
+string Label		= 2 [
+		(validate.rules).string = {min_len: 1, max_len: 100},
+		json_name = "label"
+	];       
+	string Price 		= 3 [
+		(validate.rules).float = true,
+		json_name = "price"
+	];    
+	string Qty 	= 4 [
+		(validate.rules).uint32 = true,
+		json_name = "qty"
+	]; 
+
+}
+
+
+message Response {
+    uint32 Code = 1 [ json_name = "code"];
+    string Message = 2 [ json_name = "message"];
+	repeated google.protobuf.Struct  Details = 3 [ json_name = "details"]; 
+}
+
+message GETRequest {
+	google.protobuf.Struct query_params = 1;
+}
+
+service ProductService {
+	rpc Save(SaveProductRequest) returns (Response) {
+		option (google.api.http) = {
+			post: "/v1/product/save",
+			body: "*"
+		};
+	};
+	rpc Delete(DeleteProductRequest) returns (Response) {
+		option (google.api.http) = {
+			post: "/v1/product/delete",
+			body: "*"
+		};
+	};
+	rpc Update(UpdateProductRequest) returns (Response) {
+		option (google.api.http) = {
+			put: "/v1/user/update",
+			body: "*"
+		};
+	};
+	rpc Find(GETRequest) returns (Response) {
+		option (google.api.http) = {
+			get: "/v1/user"
+		};
+	};
+	
+	rpc List(GETRequest) returns (Response) {
+		option (google.api.http) = {
+			get: "/v1/users/tenanat"
+		};
+	};
+} 
+
+
+
