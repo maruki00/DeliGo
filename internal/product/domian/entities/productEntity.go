@@ -1,8 +1,8 @@
 package entities
 
 type ProductEntity interface {
+	GetId() string
 	GetLabel() string
-	GetId() int
 	GetPrice() float32
-	GetType() string
+	GetQty() int
 }

@@ -2,108 +2,64 @@ package repositories
 
 import (
 	"context"
-	"deligo/internal/product/domian/entities"
-	"deligo/internal/product/infrastructure/models"
-	"errors"
-	"fmt"
-	"strings"
+	"deligo/internal/product/infra/models"
+	pkgPostgres "deligo/pkg/postgres"
 
 	"gorm.io/gorm"
 )
 
 type ProductRepository struct {
-	db    *gorm.DB
-	model interface{}
+	db pkgPostgres.PGHandler
 }
 
-func NewProductRepository(db *gorm.DB, model interface{}) *ProductRepository {
+func NewProductRepository(db pkgPostgres.PGHandler) *ProductRepository {
 	return &ProductRepository{
-		db:    db,
-		model: model,
+		db: db,
 	}
 }
 
-func (obj *ProductRepository) Insert(ctx context.Context, product entities.ProductEntity) (entities.ProductEntity, error) {
-	res := obj.db.Model(&models.Product{}).Create(product)
-	fmt.Println("product : ", product)
-	if res.Error != nil {
-		return nil, res.Error
-	}
-	if res.RowsAffected == 0 {
-		return nil, errors.New("record could not be saved")
-	}
-	return product, nil
+func (_this *ProductRepository) Insert(ctx context.Context, product *models.Product) error {
+	return _this.db.GetDB().Transaction(func(tx *gorm.DB) error {
+		if err := _this.db.GetDB().Model(&models.Product{}).Create(product).Error; err != nil {
+			return err
+		}
+		return nil
+	})
 }
 
-func (obj *ProductRepository) GetById(ctx context.Context, id int) (entities.ProductEntity, error) {
-
-	product := &models.Product{}
-	obj.db.Model(&models.Product{}).Where("id = ?", id).Find(&product)
-	if product == nil {
-		return nil, fmt.Errorf("record could not be found")
-	}
-	if product.Id == 0 {
-		return nil, nil
-	}
-
-	return product, nil
-}
-
-func (obj *ProductRepository) Search(ctx context.Context, seasrch string) ([]models.Product, error) {
-	items := []models.Product{}
-	res := obj.db.Model(obj.model).Where("( label like  ?  or price like  ?  or type like  ? )", fmt.Sprintf("%%%s", seasrch), fmt.Sprintf("%%%s%%", seasrch), fmt.Sprintf("%%%s%%", seasrch)).Limit(3).Offset(0).Find(&items)
-	if res.Error != nil {
-		return []models.Product{}, nil
-	}
-	return items, nil
-}
-
-func (obj *ProductRepository) Update(ctx context.Context, id int, data map[string]interface{}) (entities.ProductEntity, error) {
-
-	res := obj.db.Model(&obj.model).Where("id", id).Updates(data)
-	if res.Error != nil {
-		return nil, fmt.Errorf("something happen, %v", res.Error)
-	}
-
-	product, err := obj.GetById(ctx, id)
-	if err != nil {
+func (_this *ProductRepository) GetById(ctx context.Context, id string) (*models.Product, error) {
+	var product models.Product
+	if err := _this.db.GetDB().Where("where = ? ", id).Find(&product).Error; err != nil {
 		return nil, err
 	}
-	return product, nil
+	return &product, nil
 }
 
-func (obj *ProductRepository) Delete(ctx context.Context, id int) (entities.ProductEntity, error) {
-
-	product, err := obj.GetById(ctx, id)
-	if err != nil {
-		return nil, fmt.Errorf("product not found")
+func (_this *ProductRepository) List(ctx context.Context, seasrch string) (*[]*models.Product, error) {
+	var items []*models.Product
+	if err := _this.db.GetDB().Model(&models.Product{}).Find(&items).Error; err != nil {
+		return nil, err
 	}
-	res := obj.db.Model(obj.model).Where("id = ? ", id).Delete(&product)
-	if res.Error != nil {
-		return nil, fmt.Errorf("something happen %v", res.Error)
-	}
-	if res.RowsAffected == 0 {
-		return nil, fmt.Errorf("could not delete the record")
-	}
-	return product, nil
+	return &items, nil
 }
 
-func (obj *ProductRepository) GetProductByMultipleId(ctx context.Context, ids []int) ([]models.Product, error) {
-	products := []models.Product{}
+func (_this *ProductRepository) Update(ctx context.Context, id int, product *models.Product) error {
+	return _this.db.GetDB().Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(&models.Product{}).Where("id = ?", id).Updates(product).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+		tx.Commit()
+		return nil
+	})
+}
 
-	query := ""
-
-	for _, id := range ids {
-		query += fmt.Sprintf(" %d,", id)
-	}
-	query = strings.TrimSuffix(query, ",")
-
-	fmt.Println(query)
-	res := obj.db.Model(obj.model).Where(" id in ( " + query + " )").Find(&products)
-
-	if res.Error != nil {
-		fmt.Println(res.Error.Error())
-		return nil, res.Error
-	}
-	return products, nil
+func (_this *ProductRepository) Delete(ctx context.Context, id int) error {
+	return _this.db.GetDB().Transaction(func(tx *gorm.DB) error {
+		if err := tx.Delete(&models.Product{}, "id = ?", id).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+		return nil
+	})
 }
