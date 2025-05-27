@@ -35,12 +35,12 @@ func (_this *ProductRepository) GetById(ctx context.Context, id string) (*models
 	return &product, nil
 }
 
-func (_this *ProductRepository) List(ctx context.Context, seasrch string) (*[]*models.Product, error) {
+func (_this *ProductRepository) List(ctx context.Context, seasrch string) ([]*models.Product, error) {
 	var items []*models.Product
 	if err := _this.db.GetDB().Model(&models.Product{}).Find(&items).Error; err != nil {
 		return nil, err
 	}
-	return &items, nil
+	return items, nil
 }
 
 func (_this *ProductRepository) Update(ctx context.Context, id int, product *models.Product) error {
@@ -62,4 +62,13 @@ func (_this *ProductRepository) Delete(ctx context.Context, id int) error {
 		}
 		return nil
 	})
+}
+
+func (_this *ProductRepository) GetProductByMultipleId(ctx context.Context, ids []string) ([]*models.Product, error) {
+	var items []*models.Product
+	if err := _this.db.GetDB().Model(&models.Product{}).Where("id in ? ", ids).Find(&items).Error; err != nil {
+		return nil, err
+	}
+	return items, nil
+
 }
