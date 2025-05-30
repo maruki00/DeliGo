@@ -1,6 +1,7 @@
 package pkgValidator
 
 import (
+	"context"
 	pkgValidations "deligo/pkg/validations"
 	"encoding/json"
 	"errors"
@@ -33,6 +34,17 @@ func (r *Request) Validated(req interface{}) error {
 		validationErrors := err.(validator.ValidationErrors)
 		errorMessage := fmt.Sprintf("Validation failed for field: %s", validationErrors[0].Field())
 		return errors.New(errorMessage)
+	}
+	return nil
+}
+
+func Validate(ctx context.Context, Validate *validator.Validate, request interface{}) error {
+
+	if err := Validate.Struct(request); err != nil {
+		validationErrors := err.(validator.ValidationErrors)
+		errorMessage := fmt.Sprintf("Validation failed for field: %s", validationErrors[0].Field())
+
+		return fmt.Errorf(errorMessage)
 	}
 	return nil
 }
