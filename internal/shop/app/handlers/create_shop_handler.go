@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"context"
+	"deligo/internal/shop/app/commands"
 	"deligo/internal/shop/domain/contracts"
+	"deligo/internal/shop/infra/models"
 	pkgCqrs "deligo/pkg/cqrs"
 )
 
@@ -16,7 +18,9 @@ func NewCreateShopHandler(repo contracts.IShopRepository) *CreateShopHHandler {
 	}
 }
 
-func (_this *CreateShopHHandler) handler(ctx context.Context, command *pkgCqrs.Command) error {
+func (_this *CreateShopHHandler) handler(ctx context.Context, command pkgCqrs.Command) error {
+	cmd := command.(*commands.CreateShopCommand)
 
+	return _this.repo.Save(ctx, &models.Shop{})
 	return nil
 }
