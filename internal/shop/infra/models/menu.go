@@ -2,16 +2,14 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Menu struct {
-	gorm.Model
-	Id        int       `json: "id"`
+	Id        string    `json: "id"`
 	LAbel     string    `json: "label"`
 	CreatedAt time.Time `json: "created_at"`
 	UpdatedAt time.Time `json: "updated_at"`
+	DeletedAt DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
 }
 
 func (obj *Menu) GetId() int {
