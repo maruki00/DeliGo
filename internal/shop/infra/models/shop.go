@@ -1,19 +1,16 @@
 package models
 
 import (
+	shared_models "deligo/internal/shared/infra/models"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Shop struct {
-	gorm.Model
-	Id        string    `json: "id"`
-	Name      string    `json: "name"`
-	OpenAt    time.Time `json: "open_at"`
-	ClsoeAt   time.Time `json: "close_at"`
-	CreatedAt time.Time `json: "created_at"`
-	UpdatedAt time.Time `json: "updated_at"`
+	shared_models.BaseModel
+	Id      string    `json: "id"`
+	Name    string    `json: "name"`
+	OpenAt  time.Time `json: "open_at"`
+	ClsoeAt time.Time `json: "close_at"`
 }
 
 func (_this *Shop) GetId() string {
@@ -30,12 +27,4 @@ func (_this *Shop) GetOpenAt() time.Time {
 
 func (_this *Shop) GetClsoeAt() time.Time {
 	return _this.ClsoeAt
-}
-
-func (_this *Shop) GetCreatedAt() time.Time {
-	return _this.CreatedAt
-}
-
-func (_this *Shop) GetUpdatedAt() time.Time {
-	return _this.UpdatedAt
 }
