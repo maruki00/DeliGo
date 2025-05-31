@@ -64,7 +64,8 @@ func (_this *ProductRepository) Delete(ctx context.Context, id int) error {
 	})
 }
 
-func (_this *ProductRepository) GetProductByMultipleId(ctx context.Context, ids []string) ([]*models.Product, error) {
+func (_this *ProductRepository) GetManyProductsByID(ctx context.Context, ids []string) ([]*models.Product, error) {
+unc (_this *ProductRepository) GetProductByMultipleId(ctx context.Context, ids []string) ([]*models.Product, error) {
 	var items []*models.Product
 	if err := _this.db.GetDB().Model(&models.Product{}).Where("id in ? ", ids).Find(&items).Error; err != nil {
 		return nil, err
