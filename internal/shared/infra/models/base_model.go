@@ -14,6 +14,10 @@ type BaseModel struct {
 	DeletedAt DeletedAt             `gorm:"index" json:"deleted_at"`
 }
 
+func (_this *BaseModel) GetID() shared_valueobject.ID {
+	return _this.ID
+}
+
 func (_this *BaseModel) GetCreatedAt() time.Time {
 	return _this.CreatedAt
 }

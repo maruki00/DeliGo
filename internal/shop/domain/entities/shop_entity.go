@@ -7,7 +7,6 @@ type ShopEntity interface {
 	GetName() string
 	GetOpenAt() time.Time
 	GetClsoeAt() time.Time
-	IsOpen() bool
 	GetCreatedAt() time.Time
 	GetUpdatedAt() time.Time
 }

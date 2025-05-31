@@ -1,15 +1,12 @@
 package models
 
 import (
-	"time"
+	shared_models "deligo/internal/shared/infra/models"
 )
 
 type Menu struct {
-	Id        string    `json: "id"`
-	LAbel     string    `json: "label"`
-	CreatedAt time.Time `json: "created_at"`
-	UpdatedAt time.Time `json: "updated_at"`
-	DeletedAt DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+	shared_models.BaseModel
+	Label string `json: "label"`
 }
 
 func (obj *Menu) GetId() int {
