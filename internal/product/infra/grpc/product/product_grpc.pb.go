@@ -25,8 +25,8 @@ type ProductServiceClient interface {
 	Save(ctx context.Context, in *SaveProductRequest, opts ...grpc.CallOption) (*Response, error)
 	Delete(ctx context.Context, in *DeleteProductRequest, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*Response, error)
-	Find(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*Response, error)
-	List(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*Response, error)
+	Find(ctx context.Context, in *FindProductRequest, opts ...grpc.CallOption) (*Response, error)
+	List(ctx context.Context, in *FindManyProductsRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type productServiceClient struct {
@@ -64,7 +64,7 @@ func (c *productServiceClient) Update(ctx context.Context, in *UpdateProductRequ
 	return out, nil
 }
 
-func (c *productServiceClient) Find(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) Find(ctx context.Context, in *FindProductRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, "/ProductService/Find", in, out, opts...)
 	if err != nil {
@@ -73,7 +73,7 @@ func (c *productServiceClient) Find(ctx context.Context, in *GETRequest, opts ..
 	return out, nil
 }
 
-func (c *productServiceClient) List(ctx context.Context, in *GETRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) List(ctx context.Context, in *FindManyProductsRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, "/ProductService/List", in, out, opts...)
 	if err != nil {
@@ -89,8 +89,8 @@ type ProductServiceServer interface {
 	Save(context.Context, *SaveProductRequest) (*Response, error)
 	Delete(context.Context, *DeleteProductRequest) (*Response, error)
 	Update(context.Context, *UpdateProductRequest) (*Response, error)
-	Find(context.Context, *GETRequest) (*Response, error)
-	List(context.Context, *GETRequest) (*Response, error)
+	Find(context.Context, *FindProductRequest) (*Response, error)
+	List(context.Context, *FindManyProductsRequest) (*Response, error)
 	mustEmbedUnimplementedProductServiceServer()
 }
 
@@ -107,10 +107,10 @@ func (UnimplementedProductServiceServer) Delete(context.Context, *DeleteProductR
 func (UnimplementedProductServiceServer) Update(context.Context, *UpdateProductRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedProductServiceServer) Find(context.Context, *GETRequest) (*Response, error) {
+func (UnimplementedProductServiceServer) Find(context.Context, *FindProductRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Find not implemented")
 }
-func (UnimplementedProductServiceServer) List(context.Context, *GETRequest) (*Response, error) {
+func (UnimplementedProductServiceServer) List(context.Context, *FindManyProductsRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (UnimplementedProductServiceServer) mustEmbedUnimplementedProductServiceServer() {}
@@ -181,7 +181,7 @@ func _ProductService_Update_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _ProductService_Find_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GETRequest)
+	in := new(FindProductRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -193,13 +193,13 @@ func _ProductService_Find_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/ProductService/Find",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).Find(ctx, req.(*GETRequest))
+		return srv.(ProductServiceServer).Find(ctx, req.(*FindProductRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ProductService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GETRequest)
+	in := new(FindManyProductsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -211,7 +211,7 @@ func _ProductService_List_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/ProductService/List",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).List(ctx, req.(*GETRequest))
+		return srv.(ProductServiceServer).List(ctx, req.(*FindManyProductsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
