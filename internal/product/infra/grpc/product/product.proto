@@ -66,8 +66,12 @@ message Response {
 	repeated google.protobuf.Struct  Details = 3 [ json_name = "details"]; 
 }
 
-message GETRequest {
-	google.protobuf.Struct query_params = 1;
+message FindProductRequest {
+	int32 query_params = 1;
+}
+
+message FindManyProductsRequest {
+	repeated int32 query_params = 1;
 }
 
 service ProductService {
@@ -89,18 +93,8 @@ service ProductService {
 			body: "*"
 		};
 	};
-	rpc Find(GETRequest) returns (Response) {
-		option (google.api.http) = {
-			get: "/v1/user"
-		};
-	};
-	
-	rpc List(GETRequest) returns (Response) {
-		option (google.api.http) = {
-			get: "/v1/users/tenanat"
-		};
-	};
+	rpc Find(FindProductRequest) returns (Response);	
+	rpc List(FindManyProductsRequest) returns (Response);
+
 } 
-
-
 
