@@ -63,7 +63,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	// PermissionUC := usecases.NewPermissionUseCase(PermissionRepo)
 	// GroupUC := usecases.NewGroupUseCase(GroupRepo)
 
-	app := &App{
+	app := App{
 		db:       db,
 		UserRepo: userRepo,
 		// PermissionRepo: permissionRepo,
@@ -73,7 +73,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		UserQuerydBus:  userQuerydBus,
 	}
 
-	return app, func() {}, nil
+	return &app, func() {}, nil
 }
 
 func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
