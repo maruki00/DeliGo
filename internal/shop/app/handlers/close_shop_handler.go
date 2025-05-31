@@ -7,7 +7,7 @@ import (
 )
 
 type CloseShopHandler struct {
-	repo contracts.IShopRepository
+	repo repo
 }
 
 func NewCloseShopHandler(repo contracts.IShopRepository) *CloseShopHandler {
@@ -17,6 +17,6 @@ func NewCloseShopHandler(repo contracts.IShopRepository) *CloseShopHandler {
 }
 
 func (_this *CloseShopHandler) handler(ctx context.Context, command *pkgCqrs.Command) error {
-
+	return _this.repo.
 	return nil
 }
