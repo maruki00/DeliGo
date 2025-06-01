@@ -1,0 +1,48 @@
+  ~/dev/Go/DeliGo-saas
+    cmd
+    doc
+    docker
+    internal
+   │  iam                           📛 
+   │  menu                          📛 
+   │  order
+   │  product                       📛 
+   │  profile                       📛 
+   │  shared
+   │ │  contracts
+   │ │  entities
+   │ │  exceptions
+   │ │  middlewares
+   │ │  models
+   │ │  value_objects
+   │ │ │  address_value_object.go
+   │ │ │  cordinate.go
+   │ │ │  email_value_object.go
+   │ │ │  float32_value_object.go   👩 
+   │ │ │  float64_value_object.go   👩 
+   │ │ │  id.go
+   │ │ │  password_value_object.go  👩 
+   │ │ │  string_value_object.go    👩 
+   │ │ └  val_obj.go                  
+   │ └  view_models
+       (1 hidden item)
+   └  shop                          📛 
+     (1 hidden item)
+    pkg                             📛 
+    proto
+    Makefile
+   * config.yaml.example
+   * cover.cov
+   󰡨 docker-compose.yaml
+    go.mod                          👎 
+    go.sum
+   * go.work.sum
+    lICENSE
+    mysql.sql
+   * neo-tree filesystem [1]           
+    postgres.sql
+   󰂺 readme
+    saas.sql
+    sqlc.yaml
+   * tags
+   (3 hidden items)

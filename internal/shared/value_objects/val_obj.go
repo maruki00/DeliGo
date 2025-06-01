@@ -1,6 +1,6 @@
 package shared_valueobject
 
-type ValueObject interface {
+type ValObj interface {
 	SetValue(valu any)
 	GetValue() any
 	String() string
