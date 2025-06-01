@@ -1,7 +1,7 @@
 
 syntax = "proto3";
 
-option go_package = "profile.grpc";
+option go_package = "shop.grpc";
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
