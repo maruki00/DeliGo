@@ -63,6 +63,16 @@ string ShopName 	= 2 [
 		json_name = "close_at"];
 	
 }
+message UpdateShopStatusRequest  {
+		string ID 	= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 100,
+		},
+		json_name = "id"];
+bool Status 	= 2 [json_name = "status"];
+
+}
 
 message DeleteShopRequest {
 	string ID 			= 1 [
@@ -100,7 +110,7 @@ message EmptyShopResponse {
 
 service ProfileService {
 
-	rpc Save(CreateShopeRequest) returns (ShopResponse) {
+	rpc Save(CreateShopRequest) returns (ShopResponse) {
 		option (google.api.http) = {
 			post: "/v1/shop/create",
 			body: "*"
@@ -109,14 +119,14 @@ service ProfileService {
 
 		rpc Update(UpdateShopRequest) returns (ShopResponse) {
 		option (google.api.http) = {
-			put: "/v1/shop/update",
+			patch: "/v1/shop/update",
 			body: "*"
 		};
 	};
 
-	rpc Delete(UpdateShopRequest) returns (ShopResponse) {
+	rpc Delete(UpdateShopStatusRequest) returns (ShopResponse) {
 		option (google.api.http) = {
-			put: "/v1/shop/update",
+			patch: "/v1/shop/update/status",
 			body: "*"
 		};
 	};
@@ -128,7 +138,7 @@ rpc GetShopStatus(GETRequest) returns (ShopResponse) {
 
 	rpc GetShop(GETRequest) returns (ShopResponse) {
 		option (google.api.http) = {
-			get: "/v1/shop",
+			get: "/v1/shop/status",
 		};
 	};
 	
