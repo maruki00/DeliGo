@@ -32,6 +32,6 @@ func NewApp(cfg any) (*App, error) {
 	return &app, nil
 }
 
-func (app *App) Worder(ctx context.Context, deligo <-chan amqp091.Delivery) {
+func (app *App) Worder(ctx context.Context, delivery <-chan amqp091.Delivery) {
 
 }
