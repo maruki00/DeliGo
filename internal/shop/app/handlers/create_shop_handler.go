@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	shared_models "deligo/internal/shared/infra/models"
 	"deligo/internal/shop/app/commands"
 	"deligo/internal/shop/domain/contracts"
 	"deligo/internal/shop/infra/models"
@@ -22,10 +23,11 @@ func (_this *CreateShopHHandler) handler(ctx context.Context, command pkgCqrs.Co
 	cmd := command.(*commands.CreateShopCommand)
 
 	return _this.repo.Save(ctx, &models.Shop{
-		ID:      cmd.ID,
+		BaseModel: shared_models.BaseModel{
+			ID: cmd.ID,
+		},
 		Name:    cmd.ShopName,
 		OpenAt:  cmd.OpenAt,
 		CloseAt: cmd.CloseAt,
 	})
-	return nil
 }
