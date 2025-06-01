@@ -1,6 +1,6 @@
 package entities
 
-type MenuProductEntity interface {
+type MenuProductsEntity interface {
 	GetId() int
 	GetMenuId() int
 	GetProductId() int
