@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"deligo/internal/shop/app/queries"
 	"deligo/internal/shop/domain/contracts"
 	pkgCqrs "deligo/pkg/cqrs"
 )
@@ -16,7 +17,7 @@ func NewGetShopStatusHandler(repo contracts.IShopRepository) *GetShopStatusHandl
 	}
 }
 
-func (_this *GetShopStatusHandler) handler(ctx context.Context, query *pkgCqrs.Query) (interface{}, error) {
-
-	return nil, nil
+func (_this *GetShopStatusHandler) handler(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
+	qry := query.(*queries.GetShopStatusQuery)
+	return _this.repo.GetShopStatus(ctx, qry.ID)
 }

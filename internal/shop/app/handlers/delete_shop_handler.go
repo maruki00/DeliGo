@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"deligo/internal/shop/app/commands"
 	"deligo/internal/shop/domain/contracts"
 	pkgCqrs "deligo/pkg/cqrs"
 )
@@ -16,7 +17,8 @@ func NewDeleteShopHandler(repo contracts.IShopRepository) *DeleteShopHandler {
 	}
 }
 
-func (_this *DeleteShopHandler) handler(ctx context.Context, command *pkgCqrs.Command) error {
+func (_this *DeleteShopHandler) handler(ctx context.Context, command pkgCqrs.Command) error {
 
-	return nil
+	cmd := command.(*commands.DeleteShopCommand)
+	return _this.repo.Delete(ctx, cmd.ID)
 }
