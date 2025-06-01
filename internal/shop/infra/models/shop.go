@@ -7,14 +7,9 @@ import (
 
 type Shop struct {
 	shared_models.BaseModel
-	Id      string    `json: "id"`
-	Name    string    `json: "name"`
-	OpenAt  time.Time `json: "open_at"`
-	ClsoeAt time.Time `json: "close_at"`
-}
-
-func (_this *Shop) GetId() string {
-	return _this.Id
+	Name    string    `json:"name,omitempty"`
+	OpenAt  time.Time `json:"open_at,omitempty"`
+	CloseAt time.Time `json:"clsoe_at,omitempty"`
 }
 
 func (_this *Shop) GetName() string {
@@ -25,6 +20,6 @@ func (_this *Shop) GetOpenAt() time.Time {
 	return _this.OpenAt
 }
 
-func (_this *Shop) GetClsoeAt() time.Time {
-	return _this.ClsoeAt
+func (_this *Shop) GetCloseAt() time.Time {
+	return _this.CloseAt
 }

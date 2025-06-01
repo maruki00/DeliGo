@@ -21,6 +21,11 @@ func NewCreateShopHandler(repo contracts.IShopRepository) *CreateShopHHandler {
 func (_this *CreateShopHHandler) handler(ctx context.Context, command pkgCqrs.Command) error {
 	cmd := command.(*commands.CreateShopCommand)
 
-	return _this.repo.Save(ctx, &models.Shop{})
+	return _this.repo.Save(ctx, &models.Shop{
+		ID:      cmd.ID,
+		Name:    cmd.ShopName,
+		OpenAt:  cmd.OpenAt,
+		CloseAt: cmd.CloseAt,
+	})
 	return nil
 }
