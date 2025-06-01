@@ -100,33 +100,33 @@ message EmptyShopResponse {
 
 service ProfileService {
 
-	rpc Save(CreateShopeRequest) returns (ProfileResponse) {
+	rpc Save(CreateShopeRequest) returns (ShopResponse) {
 		option (google.api.http) = {
 			post: "/v1/shop/create",
 			body: "*"
 		};
 	};
 
-		rpc Update(UpdateShopRequest) returns (ProfileResponse) {
+		rpc Update(UpdateShopRequest) returns (ShopResponse) {
 		option (google.api.http) = {
 			put: "/v1/shop/update",
 			body: "*"
 		};
 	};
 
-	rpc Delete(UpdateShopRequest) returns (ProfileResponse) {
+	rpc Delete(UpdateShopRequest) returns (ShopResponse) {
 		option (google.api.http) = {
 			put: "/v1/shop/update",
 			body: "*"
 		};
 	};
-rpc GetShopStatus(GETRequest) returns (ProfileResponse) {
+rpc GetShopStatus(GETRequest) returns (ShopResponse) {
 		option (google.api.http) = {
 			get: "/v1/shop",
 		};
 	};
 
-	rpc GetShop(GETRequest) returns (ProfileResponse) {
+	rpc GetShop(GETRequest) returns (ShopResponse) {
 		option (google.api.http) = {
 			get: "/v1/shop",
 		};
