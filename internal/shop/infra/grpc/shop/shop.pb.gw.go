@@ -2,11 +2,11 @@
 // source: shop.proto
 
 /*
-Package profile_grpc is a reverse proxy.
+Package shop_grpc is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package profile_grpc
+package shop_grpc
 
 import (
 	"context"

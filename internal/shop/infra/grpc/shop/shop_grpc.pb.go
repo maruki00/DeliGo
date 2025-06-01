@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: shop.proto
 
-package profile_grpc
+package shop_grpc
 
 import (
 	context "context"
