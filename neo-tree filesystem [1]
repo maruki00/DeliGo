@@ -25,8 +25,8 @@
    │ └  infra
    │   │  factories                 📛 
    │   │  models
-   │   │ │  order.go            📛  󰄱 
-   │   │ └  order_product.go        👎 
+   │   │ │  order.go                📛 
+   │   │ └  order_items.go            
    │   └  repositories
    │  product                       📛 
    │  profile                       📛 
@@ -44,8 +44,8 @@
    * go.work.sum
     lICENSE
     mysql.sql
-   * neo-tree filesystem [1]
-    postgres.sql
+   * neo-tree filesystem [1]        [+] 
+    postgres.sql                    󰄱 
    󰂺 readme
     saas.sql
     sqlc.yaml

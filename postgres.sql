@@ -208,9 +208,5 @@ CREATE TABLE IF NOT EXISTS order_items (
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_order_items_order_id
-        FOREIGN KEY (order_id)
-        REFERENCES orders (order_id)
-        ON DELETE CASCADE -- If an order is deleted, its items are also deleted
 );
 
