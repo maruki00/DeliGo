@@ -172,3 +172,45 @@ create table notifications(
     updated_at timestamp default now(),
     delete_at  timestamp default null
 );
+
+
+
+
+
+
+
+---- order tables 
+
+
+CREATE TABLE IF NOT EXISTS orders (
+    id VARCHAR(36) PRIMARY KEY NOT NULL,
+    customer_id VARCHAR(36) NOT NULL,
+    order_status VARCHAR(50) NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    currency VARCHAR(3) NOT NULL,
+    order_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    shipping_address JSONB NULL,
+    billing_address JSONB NULL,
+    payment_id VARCHAR(36) NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    id VARCHAR(36) PRIMARY KEY NOT NULL,
+    order_id VARCHAR(36) NOT NULL,
+    product_id VARCHAR(36) NOT NULL,
+    product_name VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10, 2) NOT NULL CHECK (unit_price >= 0),
+    sub_total DECIMAL(10, 2) NOT NULL CHECK (sub_total >= 0),
+    sku VARCHAR(50) NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_order_items_order_id
+        FOREIGN KEY (order_id)
+        REFERENCES orders (order_id)
+        ON DELETE CASCADE -- If an order is deleted, its items are also deleted
+);
+

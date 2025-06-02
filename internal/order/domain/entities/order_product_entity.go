@@ -1,20 +1,10 @@
-package models
+package entities
 
-import (
-	valueobjects "deligo/internal/iam/domain/valueobject"
-	shared_models "deligo/internal/shared/infra/models"
-	shared_valueobject "deligo/internal/shared/value_objects"
-	"time"
-)
-
-type Order struct {
-	shared_models.BaseModel
-	CostumerId  int     `json:"costumer_id"`
-	OrderStatus int     `json:"status"`
-	TotalAmount float32 `json:"cost"`
-	Currency    valueobjects.Currency
-	OrderDate   time.Time
-	PayementID  shared_valueobject.ID
+type OrderProductEntity interface {
+	GetId() int
+	GetOrderId() int
+	GetProductId() int
+	GetQty() int
 }
 
 // id VARCHAR(36) PRIMARY KEY NOT NULL,
