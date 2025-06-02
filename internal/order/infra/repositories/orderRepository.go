@@ -5,6 +5,7 @@ import (
 	aggrigate "deligo/internal/order/domain/aggrigates"
 	"deligo/internal/order/domain/entities"
 	"deligo/internal/order/infra/models"
+	pkgPostgres "deligo/pkg/postgres"
 
 	"errors"
 	"fmt"
@@ -13,8 +14,7 @@ import (
 )
 
 type OrderRepository struct {
-	db    *gorm.DB
-	model interface{}
+	db *pkgPostgres.PGHandler
 }
 
 func NewOrderRepository(db *gorm.DB, model interface{}) *OrderRepository {
@@ -24,7 +24,7 @@ func NewOrderRepository(db *gorm.DB, model interface{}) *OrderRepository {
 	}
 }
 
-func (obj *OrderRepository) Make(ctx context.Context, order *aggrigate.OrderAggrigate) (*aggrigate.OrderAggrigate, error) {
+func (obj *OrderRepository) Save(ctx context.Context, order *aggrigate.OrderAggrigate) (*aggrigate.OrderAggrigate, error) {
 
 	obj.db.Begin()
 	res := obj.db.WithContext(ctx).Model(obj.model).Create(order.Order)
