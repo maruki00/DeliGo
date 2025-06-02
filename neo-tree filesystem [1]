@@ -5,27 +5,32 @@
     internal
    │  iam                           📛 
    │  menu                          📛 
-   │  order
+   │  order
+   │ │  app
+   │ │ │  enums
+   │ │ │  routes
+   │ │ │  services
+   │ │ └  app.go
+   │ │  domain
+   │ │ │  aggrigates
+   │ │ │  contracts
+   │ │ │  dtos
+   │ │ │  entities
+   │ │ │  enums
+   │ │ │ │  currency_code.go          
+   │ │ │ │  currency_exchange.go      
+   │ │ │ └  order_statuses.go
+   │ │ └  value_objects
+   │ │   └  currency.go         📛  󰄱 
+   │ └  infra
+   │   │  factories                 📛 
+   │   │  models
+   │   │ │  order.go                📛 
+   │   │ └  order_product.go        👎 
+   │   └  repositories
    │  product                       📛 
    │  profile                       📛 
-   │  shared
-   │ │  contracts
-   │ │  entities
-   │ │  exceptions
-   │ │  middlewares
-   │ │  models
-   │ │  value_objects
-   │ │ │  address_value_object.go
-   │ │ │  cordinate.go
-   │ │ │  email_value_object.go
-   │ │ │  float32_value_object.go   👩 
-   │ │ │  float64_value_object.go   👩 
-   │ │ │  id.go
-   │ │ │  password_value_object.go  👩 
-   │ │ │  string_value_object.go    👩 
-   │ │ └  val_obj.go                  
-   │ └  view_models
-       (1 hidden item)
+   │  shared
    └  shop                          📛 
      (1 hidden item)
     pkg                             📛 
@@ -39,7 +44,7 @@
    * go.work.sum
     lICENSE
     mysql.sql
-   * neo-tree filesystem [1]           
+   * neo-tree filesystem [1]
     postgres.sql
    󰂺 readme
     saas.sql
