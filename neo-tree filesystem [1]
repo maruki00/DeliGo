@@ -7,25 +7,25 @@
    │  menu                          📛 
    │  order
    │ │  app
-   │ │ │  enums
-   │ │ │  routes
    │ │ │  services
    │ │ └  app.go
    │ │  domain
-   │ │ │  aggrigates
+   │ │ │  aggrigates
+   │ │ │ └  order_aggrigate.go
    │ │ │  contracts
-   │ │ │  dtos
-   │ │ │  entities
+   │ │ │  entities
+   │ │ │ │  order_entity.go
+   │ │ │ └  order_product_entity.go
    │ │ │  enums
-   │ │ │ │  currency_code.go          
-   │ │ │ │  currency_exchange.go      
+   │ │ │ │  currency_code.go
+   │ │ │ │  currency_exchange.go
    │ │ │ └  order_statuses.go
    │ │ └  value_objects
-   │ │   └  currency.go         📛  󰄱 
+   │ │   └  currency.go
    │ └  infra
    │   │  factories                 📛 
    │   │  models
-   │   │ │  order.go                📛 
+   │   │ │  order.go            📛  󰄱 
    │   │ └  order_product.go        👎 
    │   └  repositories
    │  product                       📛 
