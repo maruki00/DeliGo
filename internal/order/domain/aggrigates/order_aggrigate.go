@@ -4,6 +4,6 @@ import "deligo/internal/order/domain/entities"
 
 type OrderAggrigate struct {
 	Order entities.OrderEntity
-	Items []interface{}
+	Items []entities.OrderProductEntity
 	Price float32
 }
