@@ -8,7 +8,7 @@ import (
 	"deligo/internal/profile/app/profile/queries"
 	grpc_services "deligo/internal/profile/app/usecases"
 	"deligo/internal/profile/domain/contracts"
-	"deligo/internal/profile/infra/repositories"
+	"deligo/internal/profile/infra/repository"
 
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgPostgres "deligo/pkg/postgres"
@@ -38,7 +38,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		return nil, func() {}, err
 	}
 
-	profileRepo := repositories.NewProfileRepository(db)
+	profileRepo := repository.NewProfileRepository(db)
 	profileSVC := grpc_services.NewProfileService(profileRepo)
 
 	commandBus := pkgCqrs.NewCommandBus()

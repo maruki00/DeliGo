@@ -4,11 +4,11 @@ import (
 	"context"
 	"deligo/cmd/iam/configs"
 	userServerServices "deligo/internal/iam/app/user"
-	userCommands "deligo/internal/iam/app/user/commands"
-	userHandlers "deligo/internal/iam/app/user/handlers"
+	userCommand "deligo/internal/iam/app/user/commands"
+	userHandler "deligo/internal/iam/app/user/handlers"
 	userQueries "deligo/internal/iam/app/user/queries"
 	"deligo/internal/iam/domain/contracts"
-	"deligo/internal/iam/infra/repositories"
+	"deligo/internal/iam/infra/repository"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgPostgres "deligo/pkg/postgres"
 	"log/slog"
@@ -23,7 +23,7 @@ type App struct {
 	PolicyRepo     contracts.IPolicyRepository
 	UserServerSvc  *userServerServices.UserServerService
 	UserCommandBus *pkgCqrs.CommandBus
-	UserQuerydBus  *pkgCqrs.QueryBus
+	userQuerydBus  *pkgCqrs.QueryBus
 
 	// UserUC         *usecases.UserUseCase
 	// Polshared_valueobject.ID	// PermissionUC   *usecases.PermissionUseCase
@@ -43,20 +43,20 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	userCommandBus := pkgCqrs.NewCommandBus()
 	userQuerydBus := pkgCqrs.NewQueryBus()
 
-	userRepo := repositories.NewUserRepository(db)
+	userRepo := repository.NewUserRepository(db)
 
-	//permissionRepo := repositories.NewPermissionRepository()
+	//permissionRepo := repository.NewPermissionRepository()
 
 	userServiceSvc := userServerServices.NewUserUseCase(userCommandBus, userQuerydBus)
 
-	userCommandBus.Register(&userCommands.CreateUserCommand{}, userHandlers.NewCreateUserHandler(userRepo))
-	userCommandBus.Register(&userCommands.DeleteUserCommand{}, userHandlers.NewDeleteUserHandler(userRepo))
-	userCommandBus.Register(&userCommands.UpdateUserCommand{}, userHandlers.NewUpdateUserHandler(userRepo))
+	userCommandBus.Register(&userCommand.CreateUserCommand{}, userHandler.NewCreateUserHandler(userRepo))
+	userCommandBus.Register(&userCommand.DeleteUserCommand{}, userHandler.NewDeleteUserHandler(userRepo))
+	userCommandBus.Register(&userCommand.UpdateUserCommand{}, userHandler.NewUpdateUserHandler(userRepo))
 
-	userQuerydBus.Register(&userQueries.FindUserByIdQuery{}, userHandlers.NewFindUserByIdHandler(userRepo))
-	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandlers.NewFindUserByEmailHandler(userRepo))
-	userQuerydBus.Register(&userQueries.FindUserByUsernameQuery{}, userHandlers.NewFindUserByUsernameHandler(userRepo))
-	userQuerydBus.Register(&userQueries.ListUsersByTenantQuery{}, userHandlers.NewListUsersByTenantHandler(userRepo))
+	userQuerydBus.Register(&userQueries.FindUserByIdQuery{}, userHandler.NewFindUserByIdHandler(userRepo))
+	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandler.NewFindUserByEmailHandler(userRepo))
+	userQuerydBus.Register(&userQueries.FindUserByUsernameQuery{}, userHandler.NewFindUserByUsernameHandler(userRepo))
+	userQuerydBus.Register(&userQueries.ListUsersByTenantQuery{}, userHandler.NewListUsersByTenantHandler(userRepo))
 
 	// UserUC := usecases.NewUserUseCase(UserRepo)
 	// PolicyUC := usecases.NewPolicyUseCase(PolicyRepo)
@@ -70,7 +70,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 		// PolicyRepo:     policyRepo,
 		UserServerSvc:  userServiceSvc,
 		UserCommandBus: userCommandBus,
-		UserQuerydBus:  userQuerydBus,
+		userQuerydBus:  userQuerydBus,
 	}
 
 	return &app, func() {}, nil

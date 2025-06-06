@@ -85,9 +85,9 @@ service UserService {
 } 
 
 
-// Save(context.Context, entities.RoleEntity) error
-// GetByID(context.Context, string) (entities.RoleEntity, error)
-// GetByName(context.Context, string) (entities.RoleEntity, error)
-// List(context.Context) ([]entities.RoleEntity, error)
+// Save(context.Context, entity.RoleEntity) error
+// GetByID(context.Context, string) (entity.RoleEntity, error)
+// GetByName(context.Context, string) (entity.RoleEntity, error)
+// List(context.Context) ([]entity.RoleEntity, error)
 // AffectPolicy(context.Context, string, string, string)
 // Delete(context.Context, string) error
