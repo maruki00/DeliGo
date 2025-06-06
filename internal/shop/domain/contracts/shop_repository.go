@@ -2,7 +2,7 @@ package contracts
 
 import (
 	"context"
-	shared_valueobject "deligo/internal/shared/domain/valueObjects"
+	shared_valueobject "deligo/internal/shared/value_objects"
 	"deligo/internal/shop/domain/entities"
 	"deligo/internal/shop/infra/models"
 )
