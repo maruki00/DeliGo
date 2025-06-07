@@ -4,12 +4,12 @@ import shared_model "deligo/internal/shared/model"
 
 type Menu struct {
 	shared_model.BaseModel
-	Label string `json: "label"`
+	Label string `json:"label"`
 }
 
-func (obj *Menu) GetId() int {
-	return obj.ID
+func (_this *Menu) GetId() int {
+	return _this.ID
 }
-func (obj *Menu) GetLAbel() string {
-	return obj.Label
+func (_this *Menu) GetLAbel() string {
+	return _this.Label
 }

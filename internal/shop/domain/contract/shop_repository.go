@@ -8,10 +8,10 @@ import (
 )
 
 type IShopRepository interface {
-	Save(context.Context, entity.ShopEntity) error
-	Delete(context.Context, sharedvo.ID) error
-	Update(context.Context, sharedvo.ID, map[string]any) error
-	UpdateStatus(context.Context, sharedvo.ID, bool) error
-	GetByID(context.Context, sharedvo.ID) (*model.Shop, error)
-	GetShopStatus(context.Context, sharedvo.ID) (bool, error)
+	Save(ctx context.Context, shop entity.ShopEntity)
+	Delete(ctx context.Context, id sharedvo.ID) error
+	Update(ctx context.Context, id sharedvo.ID, fields map[string]any) error
+	UpdateStatus(ctx context.Context, id sharedvo.ID, status bool) error
+	GetByID(ctx context.Context, id sharedvo.ID) (*model.Shop, error)
+	GetShopStatus(ctx context.Context, id sharedvo.ID) (bool, error)
 }
