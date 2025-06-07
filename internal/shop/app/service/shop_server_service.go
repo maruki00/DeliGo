@@ -14,7 +14,6 @@ type ShopServerService struct {
 }
 
 func NewShopServerService(cmdBus *pkgCqrs.CommandBus, qryBus *pkgCqrs.QueryBus) *ShopServerService {
-
 	srv := ShopServerService{
 		cmdBus: cmdBus,
 		qryBus: qryBus,
@@ -39,6 +38,5 @@ func (_this *ShopServerService) GetShopStatus(ctx context.Context, in *shop_grpc
 }
 
 func (_this *ShopServerService) GetShop(ctx context.Context, in *shop_grpc.GETRequest, opts ...grpc.CallOption) (*shop_grpc.ShopResponse, error) {
-
 	return nil, nil
 }

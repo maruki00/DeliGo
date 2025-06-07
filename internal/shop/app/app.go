@@ -2,6 +2,9 @@ package app
 
 import (
 	"context"
+	"deligo/internal/shop/app/command"
+	"deligo/internal/shop/app/handler"
+	"deligo/internal/shop/infra/repository"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgPostgres "deligo/pkg/postgres"
 
