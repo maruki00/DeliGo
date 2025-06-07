@@ -1,4 +1,4 @@
-package shared_valueobject
+package sharedvo
 
 type FloafVAlueObject64 struct {
 	value float64

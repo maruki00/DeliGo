@@ -1,4 +1,4 @@
-package queries
+package query
 
 import shared_valueobject "deligo/internal/shared/domain/valueObjects"
 

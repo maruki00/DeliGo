@@ -1,17 +1,17 @@
-package contracts
+package contract
 
 import (
 	"context"
-	shared_valueobject "deligo/internal/shared/value_objects"
+	sharedvo "deligo/internal/shared/valueobject"
 	"deligo/internal/shop/domain/entity"
 	"deligo/internal/shop/infra/model"
 )
 
 type IShopRepository interface {
 	Save(context.Context, entity.ShopEntity) error
-	Delete(context.Context, shared_valueobject.ID) error
-	Update(context.Context, shared_valueobject.ID, map[string]any) error
-	UpdateStatus(context.Context, shared_valueobject.ID, bool) error
-	GetByID(context.Context, shared_valueobject.ID) (*model.Shop, error)
-	GetShopStatus(context.Context, shared_valueobject.ID) (bool, error)
+	Delete(context.Context, sharedvo.ID) error
+	Update(context.Context, sharedvo.ID, map[string]any) error
+	UpdateStatus(context.Context, sharedvo.ID, bool) error
+	GetByID(context.Context, sharedvo.ID) (*model.Shop, error)
+	GetShopStatus(context.Context, sharedvo.ID) (bool, error)
 }

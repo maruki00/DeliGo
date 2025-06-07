@@ -1,4 +1,4 @@
-package shared_valueobject
+package sharedvo
 
 type StringValeObject struct {
 	value string

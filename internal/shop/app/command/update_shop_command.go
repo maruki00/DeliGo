@@ -1,12 +1,12 @@
-package commands
+package command
 
 import (
-	shared_valueobject "deligo/internal/shared/domain/valueObjects"
+	sharedvo "deligo/internal/shared/valueobject"
 	"time"
 )
 
 type UpdateShopCommand struct {
-	ID       shared_valueobject.ID
+	ID       sharedvo.ID
 	ShopName string
 	OpenAt   time.Time
 	CloseAt  time.Time

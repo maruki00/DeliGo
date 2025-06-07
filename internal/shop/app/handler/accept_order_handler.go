@@ -7,17 +7,17 @@ import (
 	pkgCqrs "deligo/pkg/cqrs"
 )
 
-type OpenShopHandler struct {
+type AcceptOrderHandler struct {
 	repo contracts.IShopRepository
 }
 
-func NewOpenShopHandler(repo contracts.IShopRepository) *OpenShopHandler {
-	return &OpenShopHandler{
+func NewAcceptOrderHandler(repo contracts.IShopRepository) *AcceptOrderHandler {
+	return &AcceptOrderHandler{
 		repo: repo,
 	}
 }
 
-func (_this *OpenShopHandler) handler(ctx context.Context, command pkgCqrs.Command) error {
+func (_this *AcceptOrderHandler) handler(ctx context.Context, command pkgCqrs.Command) error {
 	cmd := command.(*commands.CloseShopCommand)
 	return _this.repo.UpdateStatus(ctx, cmd.ID)
 }

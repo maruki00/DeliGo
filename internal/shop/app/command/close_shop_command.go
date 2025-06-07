@@ -1,9 +1,9 @@
-package commands
+package command
 
-import shared_valueobject "deligo/internal/shared/domain/valueObjects"
+import sharedvo "deligo/internal/shared/valueobject"
 
 type CloseShopCommand struct {
-	ID shared_valueobject.ID
+	ID sharedvo.ID
 }
 
 func (_this *CloseShopCommand) Name() string {

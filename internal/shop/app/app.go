@@ -2,9 +2,6 @@ package app
 
 import (
 	"context"
-	"deligo/internal/shop/app/commands"
-	"deligo/internal/shop/app/handlers"
-	repository "deligo/internal/shop/infra/respositories"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgPostgres "deligo/pkg/postgres"
 
@@ -29,8 +26,8 @@ func NewApp(cfg any) (*App, error) {
 
 	shopRepo := repository.NewShopRepository(db)
 
-	cmdBus.Register(&commands.CloseShopCommand{}, handlers.NewCloseShopHandler(shopRepo))
-	cmdBus.Register(&commands.CreateShopCommand{}, handlers.NewCreateShopHandler(shopRepo))
+	cmdBus.Register(&command.CloseShopCommand{}, handler.NewCloseShopHandler(shopRepo))
+	cmdBus.Register(&command.CreateShopCommand{}, handler.NewCreateShopHandler(shopRepo))
 
 	app := App{
 		DB:     db,

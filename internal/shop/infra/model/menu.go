@@ -1,8 +1,6 @@
 package model
 
-import (
-	shared_model "deligo/internal/shared/infra/model"
-)
+import shared_model "deligo/internal/shared/model"
 
 type Menu struct {
 	shared_model.BaseModel
@@ -10,8 +8,8 @@ type Menu struct {
 }
 
 func (obj *Menu) GetId() int {
-	return obj.Id
+	return obj.ID
 }
 func (obj *Menu) GetLAbel() string {
-	return obj.LAbel
+	return obj.Label
 }

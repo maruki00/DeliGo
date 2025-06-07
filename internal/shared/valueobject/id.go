@@ -1,4 +1,4 @@
-package shared_valueobject
+package sharedvo
 
 import "github.com/google/uuid"
 
