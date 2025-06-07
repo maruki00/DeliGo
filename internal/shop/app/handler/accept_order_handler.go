@@ -2,22 +2,22 @@ package handler
 
 import (
 	"context"
-	"deligo/internal/shop/app/commands"
-	"deligo/internal/shop/domain/contracts"
+	"deligo/internal/shop/app/command"
+	"deligo/internal/shop/domain/contract"
 	pkgCqrs "deligo/pkg/cqrs"
 )
 
 type AcceptOrderHandler struct {
-	repo contracts.IShopRepository
+	repo contract.IShopRepository
 }
 
-func NewAcceptOrderHandler(repo contracts.IShopRepository) *AcceptOrderHandler {
+func NewAcceptOrderHandler(repo contract.IShopRepository) *AcceptOrderHandler {
 	return &AcceptOrderHandler{
 		repo: repo,
 	}
 }
 
-func (_this *AcceptOrderHandler) handler(ctx context.Context, command pkgCqrs.Command) error {
-	cmd := command.(*commands.CloseShopCommand)
+func (_this *AcceptOrderHandler) handler(ctx context.Context, c pkgCqrs.Command) error {
+	cmd := c.(*command.CloseShopCommand)
 	return _this.repo.UpdateStatus(ctx, cmd.ID)
 }
