@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"deligo/internal/shop/app/command"
 	"deligo/internal/shop/domain/contract"
 	pkgCqrs "deligo/pkg/cqrs"
 )
@@ -18,6 +17,6 @@ func NewAcceptOrderHandler(repo contract.IShopRepository) *AcceptOrderHandler {
 }
 
 func (_this *AcceptOrderHandler) handler(ctx context.Context, c pkgCqrs.Command) error {
-	cmd := c.(*command.CloseShopCommand)
-	return _this.repo.UpdateStatus(ctx, cmd.ID)
+	// cmd := c.(*command.AcceptOrderCommand)
+	return nil
 }

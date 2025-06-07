@@ -2,23 +2,25 @@ package handler
 
 import (
 	"context"
-	"deligo/internal/shop/app/queries"
-	"deligo/internal/shop/domain/contracts"
+	"deligo/internal/shop/app/command"
+	"deligo/internal/shop/domain/contract"
 	pkgCqrs "deligo/pkg/cqrs"
 )
 
+const CLOSE = false
+
 type CloseShopHandler struct {
-	repo contracts.IShopRepository
+	repo contract.IShopRepository
 }
 
-func NewCloseShopHandler(repo contracts.IShopRepository) *CloseShopHandler {
+func NewCloseShopHandler(repo contract.IShopRepository) *CloseShopHandler {
 	return &CloseShopHandler{
 		repo: repo,
 	}
 }
 
-func (_this *CloseShopHandler) handler(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
+func (_this *CloseShopHandler) handler(ctx context.Context, cmd pkgCqrs.Command) error {
 
-	qry := query.(*queries.GetShopSquery)
-	return _this.repo.GetByID(ctx, qry.ID)
+	c := cmd.(*command.CloseShopCommand)
+	return _this.repo.UpdateStatus(ctx, c.ID, CLOSE)
 }
