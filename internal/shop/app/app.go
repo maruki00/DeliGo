@@ -29,7 +29,7 @@ func NewApp(cfg any) (*App, error) {
 
 	shopRepo := repository.NewShopRepository(db)
 
-	cmdBus.Register(&command.CloseShopCommand{}, handler.NewCloseShopHandler())
+	cmdBus.Register(&command.CloseShopCommand{}, handler.NewCloseShopHandler(shopRepo))
 	cmdBus.Register(&command.AcceptOrderCommand{}, handler.NewAcceptOrderHandler(shopRepo))
 	cmdBus.Register(&command.OpenShopCommand{}, handler.NewOpenShopHandler(shopRepo))
 	cmdBus.Register(&command.UpdateShopCommand{}, handler.NewUpdateShopHandler(shopRepo))

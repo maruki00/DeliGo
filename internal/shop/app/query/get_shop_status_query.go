@@ -1,9 +1,9 @@
 package query
 
-import shared_valueobject "deligo/internal/shared/domain/valueObjects"
+import sharedvo "deligo/internal/shared/valueobject"
 
 type GetShopStatusQuery struct {
-	ID shared_valueobject.ID
+	ID sharedvo.ID
 }
 
 func (_this *GetShopStatusQuery) Name() string {
