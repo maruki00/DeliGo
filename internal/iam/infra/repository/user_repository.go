@@ -144,8 +144,8 @@ func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID sharedvo.ID
 	return users, nil
 }
 
-func (_this *PolicyRepository) AffectRole(ctx context.Context, id sharedvo.ID, role_id string) error {
-	return _this.db.DB.Transaction(func(tx *gorm.DB) error {
+func (ur *UserRepository) AffectRole(ctx context.Context, id sharedvo.ID, role_id string) error {
+	return ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		sql := `INSERT INTO "roles_policies" ("id", "role_id", "policy_id") VALUES (?, ?, ?)`
 		if err := tx.Exec(sql,
 			id,
