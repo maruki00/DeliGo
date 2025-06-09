@@ -3,11 +3,7 @@ package app
 import (
 	"context"
 	"deligo/cmd/iam/configs"
-	userServerServices "deligo/internal/iam/app/user"
-	userCommand "deligo/internal/iam/app/user/commands"
-	userHandler "deligo/internal/iam/app/user/handlers"
-	userQueries "deligo/internal/iam/app/user/queries"
-	"deligo/internal/iam/domain/contracts"
+	contract "deligo/internal/iam/domain/contract"
 	"deligo/internal/iam/infra/repository"
 	pkgCqrs "deligo/pkg/cqrs"
 	pkgPostgres "deligo/pkg/postgres"
@@ -18,16 +14,12 @@ import (
 
 type App struct {
 	db             *pkgPostgres.PGHandler
-	UserRepo       contracts.IUserRepository
-	PermissionRepo contracts.IPermissionRepository
-	PolicyRepo     contracts.IPolicyRepository
-	UserServerSvc  *userServerServices.UserServerService
+	UserRepo       contract.IUserRepository
+	PermissionRepo contract.IPermissionRepository
+	PolicyRepo     contract.IPolicyRepository
+	UserServerSvc  *UserServerService.UserServerService
 	UserCommandBus *pkgCqrs.CommandBus
 	userQuerydBus  *pkgCqrs.QueryBus
-
-	// UserUC         *usecases.UserUseCase
-	// Polshared_valueobject.ID	// PermissionUC   *usecases.PermissionUseCase
-	// GroupUC        *usecases.GroupUseCase
 }
 
 func (app *App) GetDB() any {

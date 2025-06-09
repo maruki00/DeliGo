@@ -5,7 +5,7 @@ import (
 	"deligo/internal/iam/domain/entity"
 	valueobjects "deligo/internal/iam/domain/valueobject"
 	"deligo/internal/iam/infra/model"
-	shared_model "deligo/internal/shared/infra/model"
+	shared_model "deligo/internal/shared/model"
 	pkgPostgres "deligo/pkg/postgres"
 
 	"gorm.io/gorm"
