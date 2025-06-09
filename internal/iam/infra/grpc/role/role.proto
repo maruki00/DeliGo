@@ -1,14 +1,14 @@
 syntax = "proto3";
 
 
-option go_package = "grpc.user";
+option go_package = "grpc.role";
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "validate/validate.proto";
 
 
-message User {
+message Role {
 	string ID 						= 1 [json_name = "id"];       
 	string Name 				= 2 [json_name = "name"];    
 	string Description 					= 3 [json_name = "description"];    	
@@ -52,20 +52,20 @@ message GETRequest {
 	google.protobuf.Struct query_params = 1;
 }
 
-service UserService {
-	rpc Save(CreateUserRequest) returns (Response) {
+service RoleService {
+	rpc Save(CreateRoleRequest) returns (Response) {
 		option (google.api.http) = {
 			post: "/v1/role/save",
 			body: "*"
 		};
 	};
-	rpc Delete(DeleteUserRequest) returns (Response) {
+	rpc Delete(DeleteRoleRequest) returns (Response) {
 		option (google.api.http) = {
 			post: "/v1/role/delete",
 			body: "*"
 		};
 	};
-	rpc Update(UpdateUserRequest) returns (Response) {
+	rpc Update(UpdateRoleRequest) returns (Response) {
 		option (google.api.http) = {
 			post: "/v1/role/update",
 			body: "*"
@@ -73,13 +73,13 @@ service UserService {
 	};
 	rpc Find(GETRequest) returns (Response) {
 		option (google.api.http) = {
-			get: "/v1/user"
+			get: "/v1/role"
 		};
 	};
 	
 	rpc ListByTenant(GETRequest) returns (Response) {
 		option (google.api.http) = {
-			get: "/v1/users/tenanat"
+			get: "/v1/roles/tenanat"
 		};
 	};
 } 
