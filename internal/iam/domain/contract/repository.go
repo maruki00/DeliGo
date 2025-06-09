@@ -16,7 +16,7 @@ type IUserRepository interface {
 	FindByEmail(context.Context, string) (*model.User, error)
 	FindByUsername(context.Context, string) (*model.User, error)
 	ListByTenant(context.Context, sharedvo.ID, pagination.Pagination) ([]*model.User, error)
-	AffectRole(context.Context, string) error
+	AffectRole(ctx context.Context, id sharedvo.ID, role_id string) error
 }
 
 type IRoleRepositoty interface {

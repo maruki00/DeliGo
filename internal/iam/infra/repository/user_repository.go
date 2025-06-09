@@ -21,17 +21,6 @@ func NewUserRepository(db *pkgPostgres.PGHandler) *UserRepository {
 	}
 }
 
-// type IUserRepository interface {
-// 	Save(context.Context, entity.UserEntity) error
-// 	Delete(context.Context, sharedvo.ID) error
-// 	Update(context.Context, sharedvo.ID, map[string]interface{}) error
-// 	FindByID(context.Context, sharedvo.ID) (*model.User, error)
-// 	FindByEmail(context.Context, string) (*model.User, error)
-// 	FindByUsername(context.Context, string) (*model.User, error)
-// 	ListByTenant(context.Context, sharedvo.ID, pagination.Pagination) ([]*model.User, error)
-// 	AffectRole(context.Context, string) error
-// }
-
 func (ur *UserRepository) Save(ctx context.Context, entity entity.UserEntity) error {
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		sql := `INSERT INTO "users" 
@@ -152,12 +141,10 @@ func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID sharedvo.ID
 	if err != nil {
 		return nil, err
 	}
-
 	return users, nil
 }
 
-func (_this *PolicyRepository) AffectRole(ctx context.Context, id, role_id string) error {
-
+func (_this *PolicyRepository) AffectRole(ctx context.Context, id sharedvo.ID, role_id string) error {
 	return _this.db.DB.Transaction(func(tx *gorm.DB) error {
 		sql := `INSERT INTO "roles_policies" ("id", "role_id", "policy_id") VALUES (?, ?, ?)`
 		if err := tx.Exec(sql,
@@ -167,7 +154,6 @@ func (_this *PolicyRepository) AffectRole(ctx context.Context, id, role_id strin
 		).Error; err != nil {
 			return err
 		}
-
 		return nil
 	})
 }
