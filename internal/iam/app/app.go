@@ -3,6 +3,10 @@ package app
 import (
 	"context"
 	"deligo/cmd/iam/configs"
+	userCommand "deligo/internal/iam/app/user/command"
+	userHandler "deligo/internal/iam/app/user/handler"
+	userQuery "deligo/internal/iam/app/user/query"
+	"deligo/internal/iam/app/user/service"
 	contract "deligo/internal/iam/domain/contract"
 	"deligo/internal/iam/infra/repository"
 	pkgCqrs "deligo/pkg/cqrs"
@@ -17,7 +21,7 @@ type App struct {
 	UserRepo       contract.IUserRepository
 	PermissionRepo contract.IPermissionRepository
 	PolicyRepo     contract.IPolicyRepository
-	UserServerSvc  *UserServerService.UserServerService
+	UserServerSvc  *service.UserServerService
 	UserCommandBus *pkgCqrs.CommandBus
 	userQuerydBus  *pkgCqrs.QueryBus
 }
@@ -39,16 +43,16 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 
 	//permissionRepo := repository.NewPermissionRepository()
 
-	userServiceSvc := userServerServices.NewUserUseCase(userCommandBus, userQuerydBus)
+	userServiceSvc := service.NewUserUseCase(userCommandBus, userQuerydBus)
 
 	userCommandBus.Register(&userCommand.CreateUserCommand{}, userHandler.NewCreateUserHandler(userRepo))
 	userCommandBus.Register(&userCommand.DeleteUserCommand{}, userHandler.NewDeleteUserHandler(userRepo))
 	userCommandBus.Register(&userCommand.UpdateUserCommand{}, userHandler.NewUpdateUserHandler(userRepo))
 
-	userQuerydBus.Register(&userQueries.FindUserByIdQuery{}, userHandler.NewFindUserByIdHandler(userRepo))
-	userQuerydBus.Register(&userQueries.FindUserByEmailQuery{}, userHandler.NewFindUserByEmailHandler(userRepo))
-	userQuerydBus.Register(&userQueries.FindUserByUsernameQuery{}, userHandler.NewFindUserByUsernameHandler(userRepo))
-	userQuerydBus.Register(&userQueries.ListUsersByTenantQuery{}, userHandler.NewListUsersByTenantHandler(userRepo))
+	userQuerydBus.Register(&userQuery.FindUserByIdQuery{}, userHandler.NewFindUserByIdHandler(userRepo))
+	userQuerydBus.Register(&userQuery.FindUserByEmailQuery{}, userHandler.NewFindUserByEmailHandler(userRepo))
+	userQuerydBus.Register(&userQuery.FindUserByUsernameQuery{}, userHandler.NewFindUserByUsernameHandler(userRepo))
+	userQuerydBus.Register(&userQuery.ListUsersByTenantQuery{}, userHandler.NewListUsersByTenantHandler(userRepo))
 
 	// UserUC := usecases.NewUserUseCase(UserRepo)
 	// PolicyUC := usecases.NewPolicyUseCase(PolicyRepo)

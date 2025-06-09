@@ -37,7 +37,7 @@ type IPolicyRepository interface {
 	ListForTenant(context.Context, string, pagination.Pagination) ([]*model.Policy, error)
 }
 
-type IPermessionRepository interface {
+type IPermissionRepository interface {
 	Save(context.Context, entity.PermissionEntity) error
 	FindByID(context.Context, string) (*model.Permission, error)
 	FindByPolicyID(context.Context, string, pagination.Pagination) ([]*model.Permission, error)

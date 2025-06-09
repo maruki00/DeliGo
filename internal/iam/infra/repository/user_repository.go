@@ -3,9 +3,9 @@ package repository
 import (
 	"context"
 	"deligo/internal/iam/domain/entity"
-	valueobjects "deligo/internal/iam/domain/valueobject"
 	"deligo/internal/iam/infra/model"
-	shared_model "deligo/internal/shared/model"
+	sharedvo "deligo/internal/shared/valueobject"
+	"deligo/pkg/pagination"
 	pkgPostgres "deligo/pkg/postgres"
 
 	"gorm.io/gorm"
@@ -20,6 +20,17 @@ func NewUserRepository(db *pkgPostgres.PGHandler) *UserRepository {
 		db: db,
 	}
 }
+
+// type IUserRepository interface {
+// 	Save(context.Context, entity.UserEntity) error
+// 	Delete(context.Context, sharedvo.ID) error
+// 	Update(context.Context, sharedvo.ID, map[string]interface{}) error
+// 	FindByID(context.Context, sharedvo.ID) (*model.User, error)
+// 	FindByEmail(context.Context, string) (*model.User, error)
+// 	FindByUsername(context.Context, string) (*model.User, error)
+// 	ListByTenant(context.Context, sharedvo.ID, pagination.Pagination) ([]*model.User, error)
+// 	AffectRole(context.Context, string) error
+// }
 
 func (ur *UserRepository) Save(ctx context.Context, entity entity.UserEntity) error {
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
@@ -53,7 +64,7 @@ func (ur *UserRepository) Save(ctx context.Context, entity entity.UserEntity) er
 	return nil
 }
 
-func (ur *UserRepository) Delete(ctx context.Context, id valueobjects.ID) error {
+func (ur *UserRepository) Delete(ctx context.Context, id sharedvo.ID) error {
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("id = ?", id).Delete(&model.User{}).Error; err != nil {
 			tx.Rollback()
@@ -69,7 +80,7 @@ func (ur *UserRepository) Delete(ctx context.Context, id valueobjects.ID) error 
 	return nil
 }
 
-func (ur *UserRepository) Update(ctx context.Context, id valueobjects.ID, fields map[string]interface{}) error {
+func (ur *UserRepository) Update(ctx context.Context, id sharedvo.ID, fields map[string]interface{}) error {
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		err := tx.Model(&model.User{}).Where("id = ?", string(id)).Updates(fields).Error
 		if err != nil {
@@ -83,7 +94,7 @@ func (ur *UserRepository) Update(ctx context.Context, id valueobjects.ID, fields
 	return nil
 }
 
-func (ur *UserRepository) FindByID(ctx context.Context, id valueobjects.ID) (*model.User, error) {
+func (ur *UserRepository) FindByID(ctx context.Context, id sharedvo.ID) (*model.User, error) {
 	var user model.User
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("id = ?", id).First(&user).Error; err != nil {
@@ -128,7 +139,7 @@ func (ur *UserRepository) FindByUsername(ctx context.Context, username string) (
 	return &user, nil
 }
 
-func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID valueobjects.ID, pagination shared_model.Pagination) ([]*model.User, error) {
+func (ur *UserRepository) ListByTenant(ctx context.Context, tenantID sharedvo.ID, pagination pagination.Pagination) ([]*model.User, error) {
 	users := make([]*model.User, pagination.Limit)
 	err := ur.db.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&model.User{}).Where("tenant_id = ?", tenantID).Limit(pagination.GetLimit()).Offset(pagination.GetOffset()).Find(&users).Error; err != nil {

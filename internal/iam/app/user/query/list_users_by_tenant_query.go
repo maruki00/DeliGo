@@ -1,4 +1,4 @@
-package userQueries
+package userQuery
 
 import (
 	shared_model "deligo/internal/shared/infra/model"

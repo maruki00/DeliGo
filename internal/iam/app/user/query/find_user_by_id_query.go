@@ -1,4 +1,4 @@
-package userQueries
+package userQuery
 
 import "github.com/google/uuid"
 
