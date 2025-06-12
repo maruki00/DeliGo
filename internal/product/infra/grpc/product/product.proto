@@ -48,9 +48,7 @@ string Label		= 2 [
   (validate.rules).uint32 = {gte:0},
 		json_name = "qty"
 	]; 
-
 }
-
 
 message Response {
     uint32 Code = 1 [ json_name = "code"];
