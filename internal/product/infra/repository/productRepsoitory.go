@@ -18,7 +18,7 @@ func NewProductRepository(db pkgPostgres.PGHandler) *ProductRepository {
 	}
 }
 
-func (_this *ProductRepository) Insert(ctx context.Context, product *model.Product) error {
+func (_this *ProductRepository) Save(ctx context.Context, product *model.Product) error {
 	return _this.db.GetDB().Transaction(func(tx *gorm.DB) error {
 		if err := _this.db.GetDB().Model(&model.Product{}).Create(product).Error; err != nil {
 			return err
@@ -71,5 +71,4 @@ unc (_this *ProductRepository) GetProductByMultipleId(ctx context.Context, ids [
 		return nil, err
 	}
 	return items, nil
-
 }

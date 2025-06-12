@@ -7,14 +7,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "validate/validate.proto";
 
- // id uuid primary key ,
- //    label varchar(255) not null,
- //    price varchar(10) not null,
- //    created_at timestamp default now(),
- //    updated_at timestamp default now(),
- //    delete_at  timestamp default null
- //
-
 
 message User {
 	string ID 						= 1 [json_name = "id"];       
