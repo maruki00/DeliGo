@@ -2,14 +2,15 @@ package contract
 
 import (
 	"context"
-	"deligo/internal/product/domian/entity"
+	"deligo/internal/product/infra/model"
 )
 
 type IProductRepository interface {
-	Save(context.Context, entity.ProductEntity) error
-	Find(context.Context, string) (entity.ProductEntity, error)
-	Update(context.Context, string, map[string]any) error
-	Delete(context.Context, string) error
-	List(context.Context) ([]entity.ProductEntity, error)
-	GetProductByMultipleId(context.Context, []string) ([]entity.ProductEntity, error)
+	Save(ctx context.Context, product *model.Product) error
+	GetById(ctx context.Context, id string) (*model.Product, error)
+	List(ctx context.Context, seasrch string) ([]*model.Product, error)
+	Update(ctx context.Context, id int, product *model.Product) error
+	Delete(ctx context.Context, id int) error
+	GetManyProductsByID(ctx context.Context, ids []string) ([]*model.Product, error)
+	GetProductByMultipleId(ctx context.Context, ids []string) ([]*model.Product, error)
 }
