@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/maruki00/deligo/internal/iam/infra/models"
 	"fmt"
 
 	"gorm.io/driver/postgres"

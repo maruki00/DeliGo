@@ -2,7 +2,8 @@ package contracts
 
 import (
 	"context"
-	aggrigate "github.com/maruki00/deligo/internal/order/domain/aggrigates"
+
+	aggrigate "github.com/maruki00/deligo/internal/order/domain/aggrigate"
 	"github.com/maruki00/deligo/internal/order/domain/entity"
 )
 

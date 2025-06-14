@@ -2,7 +2,8 @@ package respositories
 
 import (
 	"context"
-	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/valueObjects"
+
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/sharedvo"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 )
 

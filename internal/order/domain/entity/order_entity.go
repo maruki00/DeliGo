@@ -1,9 +1,10 @@
 package entity
 
 import (
-	valueobjects "github.com/maruki00/deligo/internal/order/domain/value_objects"
-	shared_valueobject "github.com/maruki00/deligo/internal/shared/value_objects"
 	"time"
+
+	valueobjects "github.com/maruki00/deligo/internal/order/domain/value_objects"
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/value_object"
 )
 
 type OrderEntity interface {

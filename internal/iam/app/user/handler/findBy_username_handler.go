@@ -2,10 +2,11 @@ package userHandler
 
 import (
 	"context"
-	userQueries "github.com/maruki00/deligo/internal/iam/app/user/queries"
+	"fmt"
+
+	userQueries "github.com/maruki00/deligo/internal/iam/app/user/query"
 	"github.com/maruki00/deligo/internal/iam/domain/contracts"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
-	"fmt"
 )
 
 type FindUserByUsernameHandler struct {

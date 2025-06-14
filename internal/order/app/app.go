@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	"github.com/maruki00/deligo/internal/order/domain/contracts"
+	"github.com/maruki00/deligo/internal/order/domain/contract"
 
 	"github.com/rabbitmq/amqp091-go"
 )

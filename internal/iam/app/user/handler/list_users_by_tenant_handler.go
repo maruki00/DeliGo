@@ -2,7 +2,8 @@ package userHandler
 
 import (
 	"context"
-	userQueries "github.com/maruki00/deligo/internal/iam/app/user/queries"
+
+	userQueries "github.com/maruki00/deligo/internal/iam/app/user/query"
 	"github.com/maruki00/deligo/internal/iam/domain/contracts"
 	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"

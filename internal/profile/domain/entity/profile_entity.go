@@ -1,8 +1,9 @@
 package entity
 
 import (
-	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/valueObjects"
 	"time"
+
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/sharedvo"
 )
 
 type ProfileEntity interface {

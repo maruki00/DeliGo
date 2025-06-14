@@ -2,13 +2,14 @@ package grpc_services
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
 	"github.com/maruki00/deligo/internal/profile/app/profile/queries"
 	profile_grpc "github.com/maruki00/deligo/internal/profile/infra/grpc/profile"
-	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/valueObjects"
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/sharedvo"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 	pkgUtils "github.com/maruki00/deligo/pkg/utils"
-	"net/http"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/structpb"

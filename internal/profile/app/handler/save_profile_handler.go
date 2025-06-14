@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"context"
+
 	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
 	"github.com/maruki00/deligo/internal/profile/domain/contracts"
 	"github.com/maruki00/deligo/internal/profile/infra/model"
-	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/valueObjects"
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/sharedvo"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
