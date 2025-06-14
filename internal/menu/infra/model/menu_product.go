@@ -1,6 +1,6 @@
 package model
 
-import shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/sharedvo"
+import shared_valueobject "github.com/maruki00/deligo/internal/shared/valueobject"
 
 type MenuProduct struct {
 	MenuId    shared_valueobject.ID `json: "menu_id"`

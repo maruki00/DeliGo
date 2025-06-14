@@ -2,11 +2,12 @@ package userHandler
 
 import (
 	"context"
+	"fmt"
+
 	userCommand "github.com/maruki00/deligo/internal/iam/app/user/command"
 	"github.com/maruki00/deligo/internal/iam/domain/contracts"
 	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
-	"fmt"
 )
 
 type DeleteUserHandler struct {

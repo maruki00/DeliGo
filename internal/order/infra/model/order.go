@@ -4,7 +4,7 @@ import (
 	"time"
 
 	valueobjects "github.com/maruki00/deligo/internal/order/domain/value_objects"
-	shared_model "github.com/maruki00/deligo/internal/shared/infra/model"
+	shared_model "github.com/maruki00/deligo/internal/shared/model"
 	shared_valueobject "github.com/maruki00/deligo/internal/shared/value_object"
 )
 

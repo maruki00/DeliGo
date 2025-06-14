@@ -1,8 +1,9 @@
 package shared_viewmodel
 
 import (
-	shared_model "github.com/maruki00/deligo/internal/shared/infra/model"
 	"encoding/json"
+
+	shared_model "github.com/maruki00/deligo/internal/shared/model"
 )
 
 type JsonViewModel struct {

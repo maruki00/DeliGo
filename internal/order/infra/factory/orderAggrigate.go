@@ -14,7 +14,7 @@ import (
 	aggrigate "github.com/maruki00/deligo/internal/order/domain/aggrigate"
 	"github.com/maruki00/deligo/internal/order/infra/model"
 	product_infra_model "github.com/maruki00/deligo/internal/product/infrastructure/model"
-	shared_model "github.com/maruki00/deligo/internal/shared/infra/model"
+	shared_model "github.com/maruki00/deligo/internal/shared/model"
 
 	"github.com/google/uuid"
 	"github.com/mitchellh/mapstructure"

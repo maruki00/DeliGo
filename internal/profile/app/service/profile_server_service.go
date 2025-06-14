@@ -7,7 +7,7 @@ import (
 	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
 	"github.com/maruki00/deligo/internal/profile/app/profile/queries"
 	profile_grpc "github.com/maruki00/deligo/internal/profile/infra/grpc/profile"
-	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/sharedvo"
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/valueobject"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 	pkgUtils "github.com/maruki00/deligo/pkg/utils"
 
