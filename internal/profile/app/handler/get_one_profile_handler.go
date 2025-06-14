@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"context"
-	"deligo/internal/profile/domain/contracts"
-	pkgCqrs "deligo/pkg/cqrs"
+	"github.com/maruki00/deligo/internal/profile/domain/contracts"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type GetOneProfileHandler struct {

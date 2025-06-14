@@ -2,11 +2,11 @@ package app
 
 import (
 	"context"
-	"deligo/internal/shop/app/command"
-	"deligo/internal/shop/app/handler"
-	"deligo/internal/shop/infra/repository"
-	pkgCqrs "deligo/pkg/cqrs"
-	pkgPostgres "deligo/pkg/postgres"
+	"github.com/maruki00/deligo/internal/shop/app/command"
+	"github.com/maruki00/deligo/internal/shop/app/handler"
+	"github.com/maruki00/deligo/internal/shop/infra/repository"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 
 	"github.com/rabbitmq/amqp091-go"
 )

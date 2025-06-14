@@ -2,11 +2,11 @@ package handlers
 
 import (
 	"context"
-	"deligo/internal/profile/app/profile/commands"
-	"deligo/internal/profile/domain/contracts"
-	"deligo/internal/profile/infra/model"
-	shared_valueobject "deligo/internal/shared/domain/valueObjects"
-	pkgCqrs "deligo/pkg/cqrs"
+	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
+	"github.com/maruki00/deligo/internal/profile/domain/contracts"
+	"github.com/maruki00/deligo/internal/profile/infra/model"
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/valueObjects"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type SaveProfileHandler struct {

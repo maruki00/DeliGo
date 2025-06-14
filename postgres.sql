@@ -134,7 +134,7 @@ create table analytics_order(
     id uuid primary key ,
     order_id int not null,
     user_id int not null,
-    deligo_id int not null,
+    github.com/maruki00/deligo_id int not null,
     rate int not null,
     comment text not null,
     created_at timestamp default now(),

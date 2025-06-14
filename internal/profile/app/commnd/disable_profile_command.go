@@ -1,7 +1,7 @@
 package commands
 
 import (
-	shared_valueobject "deligo/internal/shared/domain/valueObjects"
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/valueObjects"
 )
 
 type DiscableProfileCommand struct {

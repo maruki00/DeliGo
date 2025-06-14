@@ -1,6 +1,6 @@
 package entity
 
-import valueobjects "deligo/internal/iam/domain/valueobject"
+import valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 
 type RoleEntity interface {
 	GetID() valueobjects.ID

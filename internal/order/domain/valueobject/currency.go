@@ -1,7 +1,7 @@
 package valueobjects
 
 import (
-	"deligo/internal/order/domain/enums"
+	"github.com/maruki00/deligo/internal/order/domain/enums"
 	"fmt"
 	"strings"
 )

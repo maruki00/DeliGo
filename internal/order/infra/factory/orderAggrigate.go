@@ -2,11 +2,11 @@ package factories
 
 import (
 	"bytes"
-	"deligo/internal/order/app/enums"
-	aggrigate "deligo/internal/order/domain/aggrigates"
-	"deligo/internal/order/infra/model"
-	product_infra_model "deligo/internal/product/infrastructure/model"
-	shared_model "deligo/internal/shared/infra/model"
+	"github.com/maruki00/deligo/internal/order/app/enums"
+	aggrigate "github.com/maruki00/deligo/internal/order/domain/aggrigates"
+	"github.com/maruki00/deligo/internal/order/infra/model"
+	product_infra_model "github.com/maruki00/deligo/internal/product/infrastructure/model"
+	shared_model "github.com/maruki00/deligo/internal/shared/infra/model"
 	"encoding/json"
 	"errors"
 	"fmt"

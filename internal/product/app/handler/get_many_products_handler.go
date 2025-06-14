@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
-	"deligo/internal/product/domian/contract"
-	pkgCqrs "deligo/pkg/cqrs"
+	"github.com/maruki00/deligo/internal/product/domian/contract"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type GetManyProductsHandler struct {

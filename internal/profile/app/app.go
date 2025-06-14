@@ -2,16 +2,16 @@ package app
 
 import (
 	"context"
-	"deligo/cmd/user/configs"
-	"deligo/internal/profile/app/profile/commands"
-	"deligo/internal/profile/app/profile/handlers"
-	"deligo/internal/profile/app/profile/queries"
-	grpc_services "deligo/internal/profile/app/usecases"
-	"deligo/internal/profile/domain/contracts"
-	"deligo/internal/profile/infra/repository"
+	"github.com/maruki00/deligo/cmd/user/configs"
+	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
+	"github.com/maruki00/deligo/internal/profile/app/profile/handlers"
+	"github.com/maruki00/deligo/internal/profile/app/profile/queries"
+	grpc_services "github.com/maruki00/deligo/internal/profile/app/usecases"
+	"github.com/maruki00/deligo/internal/profile/domain/contracts"
+	"github.com/maruki00/deligo/internal/profile/infra/repository"
 
-	pkgCqrs "deligo/pkg/cqrs"
-	pkgPostgres "deligo/pkg/postgres"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 	"fmt"
 	"log/slog"
 

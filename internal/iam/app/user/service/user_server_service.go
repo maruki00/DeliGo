@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"deligo/internal/iam/domain/entity"
-	"deligo/internal/iam/infra/model"
-	pkgCqrs "deligo/pkg/cqrs"
-	pkgUtils "deligo/pkg/utils"
+	"github.com/maruki00/deligo/internal/iam/domain/entity"
+	"github.com/maruki00/deligo/internal/iam/infra/model"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
+	pkgUtils "github.com/maruki00/deligo/pkg/utils"
 	"fmt"
 	"strconv"
 

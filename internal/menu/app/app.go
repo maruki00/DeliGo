@@ -2,8 +2,8 @@ package app
 
 import (
 	"context"
-	pkgCqrs "deligo/pkg/cqrs"
-	pkgPostgres "deligo/pkg/postgres"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -32,6 +32,6 @@ func NewApp(cfg any) (*App, error) {
 	return &app, nil
 }
 
-func (app *App) Worder(ctx context.Context, deligo <-chan amqp091.Delivery) {
+func (app *App) Worder(ctx context.Context, github.com/maruki00/deligo <-chan amqp091.Delivery) {
 
 }

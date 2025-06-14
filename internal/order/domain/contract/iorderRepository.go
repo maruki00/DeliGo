@@ -2,8 +2,8 @@ package contracts
 
 import (
 	"context"
-	aggrigate "deligo/internal/order/domain/aggrigates"
-	"deligo/internal/order/domain/entity"
+	aggrigate "github.com/maruki00/deligo/internal/order/domain/aggrigates"
+	"github.com/maruki00/deligo/internal/order/domain/entity"
 )
 
 type IOrderRepository interface {

@@ -12,6 +12,6 @@ type App struct {
 func Init() *App {
 	return &App{}
 }
-func (app *App) Worder(ctx context.Context, deligo <-chan amqp091.Delivery) {
+func (app *App) Worder(ctx context.Context, github.com/maruki00/deligo <-chan amqp091.Delivery) {
 
 }

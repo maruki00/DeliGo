@@ -2,7 +2,7 @@ package shared_model
 
 import (
 	"database/sql"
-	shared_valueobject "deligo/internal/shared/domain/valueObjects"
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/valueObjects"
 	"time"
 )
 

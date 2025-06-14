@@ -2,10 +2,10 @@ package contracts
 
 import (
 	"context"
-	"deligo/internal/iam/domain/entity"
-	"deligo/internal/iam/infra/model"
-	sharedvo "deligo/internal/shared/valueobject"
-	"deligo/pkg/pagination"
+	"github.com/maruki00/deligo/internal/iam/domain/entity"
+	"github.com/maruki00/deligo/internal/iam/infra/model"
+	sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
+	"github.com/maruki00/deligo/pkg/pagination"
 )
 
 type IUserRepository interface {

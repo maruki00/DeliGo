@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"context"
-	"deligo/internal/profile/app/profile/commands"
-	"deligo/internal/profile/domain/contracts"
-	pkgCqrs "deligo/pkg/cqrs"
+	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
+	"github.com/maruki00/deligo/internal/profile/domain/contracts"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type UpdateProfileAvatarHandler struct {

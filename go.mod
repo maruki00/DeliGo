@@ -1,4 +1,4 @@
-module deligo
+module github.com/maruki00/github.com/maruki00/deligo
 
 go 1.24.0
 

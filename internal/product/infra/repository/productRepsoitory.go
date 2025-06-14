@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"deligo/internal/product/infra/model"
-	pkgPostgres "deligo/pkg/postgres"
+	"github.com/maruki00/deligo/internal/product/infra/model"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 
 	"gorm.io/gorm"
 )

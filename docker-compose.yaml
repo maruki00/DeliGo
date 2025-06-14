@@ -3,7 +3,7 @@ version: "3.8"
 services:
   rabbitmq:
     image: rabbitmq:4-management-alpine
-    container_name: rabbitmq_DeliGo
+    container_name: rabbitmq_github.com/maruki00/deligo
     restart: 'no'
     environment:
       RABBITMQ_DEFAULT_USER: admin
@@ -17,10 +17,10 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks: 
-      - DeliGo_network
+      - github.com/maruki00/deligo_network
   postgres:
     image: postgres:17-alpine
-    container_name: postgres_DeliGo
+    container_name: postgres_github.com/maruki00/deligo
     restart: 'no'
     ports:
       - "5432:5432"
@@ -29,25 +29,25 @@ services:
     environment:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
-      POSTGRES_DB: deligo
+      POSTGRES_DB: github.com/maruki00/deligo
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d deligo"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d github.com/maruki00/deligo"]
       interval: 30s
       timeout: 30s
       retries: 3
     networks:
-      - DeliGo_network
+      - github.com/maruki00/deligo_network
   adminer:
     image: adminer
-    container_name: adminer_DeliGo
+    container_name: adminer_github.com/maruki00/deligo
     restart: always
     ports:
       - "8080:8080"
     networks:
-      - DeliGo_network
+      - github.com/maruki00/deligo_network
   
   # pgadmin:
-  #   container_name: pgadmin_DeliGo
+  #   container_name: pgadmin_github.com/maruki00/deligo
   #   image: dpage/pgadmin4
   #   restart: 'no'
   #   environment:
@@ -60,11 +60,11 @@ services:
   #   ports:
   #     - "5050:80"
   #   networks:
-  #     - DeliGo_network
+  #     - github.com/maruki00/deligo_network
 
 
 networks:
-  DeliGo_network:
+  github.com/maruki00/deligo_network:
     driver: bridge
 
 volumes:

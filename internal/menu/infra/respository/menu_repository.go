@@ -2,8 +2,8 @@ package respositories
 
 import (
 	"context"
-	shared_valueobject "deligo/internal/shared/domain/valueObjects"
-	pkgPostgres "deligo/pkg/postgres"
+	shared_valueobject "github.com/maruki00/deligo/internal/shared/domain/valueObjects"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 )
 
 type MenuRepository struct {

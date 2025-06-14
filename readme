@@ -26,7 +26,7 @@
 	|-> Track Order
 	|-> Report For Something wrong
 	|-> Chat  
-	|-> Rate deligo Service
+	|-> Rate github.com/maruki00/deligo Service
 	|-> Rate Product 
 
 //Restorant Service
@@ -39,10 +39,10 @@
 //Courier Service
 	|-> Accept Order
 	|-> Cancel Order
-	|-> Start deligo
-	|-> Complete deligo
+	|-> Start github.com/maruki00/deligo
+	|-> Complete github.com/maruki00/deligo
 
-//deligo Integration
+//github.com/maruki00/deligo Integration
 	|-> Integrator
 
 
@@ -50,7 +50,7 @@
 //Domains
 	|-> Auth
 	|-> Costumer
-	|-> deligo
+	|-> github.com/maruki00/deligo
 	|-> Order
 	|-> Payment
 	|-> Notifications
@@ -85,4 +85,4 @@
 
 
 
-Auth,Costumer,deligo,Order,Payment,Notifications,Rate,Users,Product
+Auth,Costumer,github.com/maruki00/deligo,Order,Payment,Notifications,Rate,Users,Product

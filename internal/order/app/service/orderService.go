@@ -1,13 +1,13 @@
 package service
 
 import (
-	aggrigate "deligo/internal/order/domain/aggrigates"
-	"deligo/internal/order/domain/contracts"
-	order_domain_contracts "deligo/internal/order/domain/contracts"
-	"deligo/internal/order/domain/dtos"
-	"deligo/internal/order/domain/ports"
-	order_domain_ports "deligo/internal/order/domain/ports"
-	shared_contracts "deligo/internal/shared/domain/contracts"
+	aggrigate "github.com/maruki00/deligo/internal/order/domain/aggrigates"
+	"github.com/maruki00/deligo/internal/order/domain/contracts"
+	order_domain_contracts "github.com/maruki00/deligo/internal/order/domain/contracts"
+	"github.com/maruki00/deligo/internal/order/domain/dtos"
+	"github.com/maruki00/deligo/internal/order/domain/ports"
+	order_domain_ports "github.com/maruki00/deligo/internal/order/domain/ports"
+	shared_contracts "github.com/maruki00/deligo/internal/shared/domain/contracts"
 )
 
 type OrderService struct {

@@ -1,6 +1,6 @@
 package handler
 
-import "deligo/internal/product/domian/contract"
+import "github.com/maruki00/deligo/internal/product/domian/contract"
 
 type ListProductHandler struct {
 	repo contract.IProductRepository

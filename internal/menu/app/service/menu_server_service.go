@@ -1,7 +1,7 @@
 package service
 
 import (
-	pkgCqrs "deligo/pkg/cqrs"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type MenuServerService struct {

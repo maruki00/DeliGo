@@ -1,7 +1,7 @@
 package model
 
 import (
-	valueobjects "deligo/internal/iam/domain/valueobject"
+	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	"time"
 
 	"gorm.io/gorm"

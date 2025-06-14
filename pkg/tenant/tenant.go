@@ -1,7 +1,7 @@
 package pkgTenant
 
 import (
-	pkgPostgres "deligo/pkg/postgres"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 	"encoding/json"
 	"errors"
 	"fmt"

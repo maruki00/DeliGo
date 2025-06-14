@@ -2,9 +2,6 @@ package main
 
 import (
 	"context"
-	"deligo/cmd/iam/configs"
-	"deligo/internal/iam/app"
-	grpc_user "deligo/internal/iam/infra/grpc/user"
 	"fmt"
 	"log/slog"
 	"net"
@@ -12,6 +9,10 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/maruki00/github.com/maruki00/deligo/cmd/iam/configs"
+	"github.com/maruki00/github.com/maruki00/deligo/internal/iam/app"
+	grpc_user "github.com/maruki00/github.com/maruki00/deligo/internal/iam/infra/grpc/user"
 
 	"go.uber.org/automaxprocs/maxprocs"
 	"google.golang.org/grpc"

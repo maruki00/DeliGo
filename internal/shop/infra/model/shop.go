@@ -1,7 +1,7 @@
 package model
 
 import (
-	shared_model "deligo/internal/shared/model"
+	shared_model "github.com/maruki00/deligo/internal/shared/model"
 	"time"
 )
 

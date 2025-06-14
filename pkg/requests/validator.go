@@ -2,7 +2,7 @@ package pkgValidator
 
 import (
 	"context"
-	pkgValidations "deligo/pkg/validations"
+	pkgValidations "github.com/maruki00/deligo/pkg/validations"
 	"encoding/json"
 	"errors"
 	"fmt"

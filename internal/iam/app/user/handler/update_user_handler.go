@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	userCommand "deligo/internal/iam/app/user/commands"
-	"deligo/internal/iam/domain/contracts"
-	valueobjects "deligo/internal/iam/domain/valueobject"
-	pkgCqrs "deligo/pkg/cqrs"
+	userCommand "github.com/maruki00/deligo/internal/iam/app/user/commands"
+	"github.com/maruki00/deligo/internal/iam/domain/contracts"
+	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type UpdateUserHandler struct {

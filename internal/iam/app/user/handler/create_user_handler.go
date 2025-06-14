@@ -2,11 +2,11 @@ package userHandler
 
 import (
 	"context"
-	userCommand "deligo/internal/iam/app/user/commands"
-	"deligo/internal/iam/domain/contracts"
-	valueobjects "deligo/internal/iam/domain/valueobject"
-	"deligo/internal/iam/infra/model"
-	pkgCqrs "deligo/pkg/cqrs"
+	userCommand "github.com/maruki00/deligo/internal/iam/app/user/commands"
+	"github.com/maruki00/deligo/internal/iam/domain/contracts"
+	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
+	"github.com/maruki00/deligo/internal/iam/infra/model"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type CreateUserHandler struct {

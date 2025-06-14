@@ -2,9 +2,9 @@ package contract
 
 import (
 	"context"
-	sharedvo "deligo/internal/shared/valueobject"
-	"deligo/internal/shop/domain/entity"
-	"deligo/internal/shop/infra/model"
+	sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
+	"github.com/maruki00/deligo/internal/shop/domain/entity"
+	"github.com/maruki00/deligo/internal/shop/infra/model"
 )
 
 type IShopRepository interface {

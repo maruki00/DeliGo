@@ -2,10 +2,10 @@ package userHandler
 
 import (
 	"context"
-	userQueries "deligo/internal/iam/app/user/queries"
-	"deligo/internal/iam/domain/contracts"
-	valueobjects "deligo/internal/iam/domain/valueobject"
-	pkgCqrs "deligo/pkg/cqrs"
+	userQueries "github.com/maruki00/deligo/internal/iam/app/user/queries"
+	"github.com/maruki00/deligo/internal/iam/domain/contracts"
+	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type FindUserByIdHandler struct {

@@ -1,6 +1,6 @@
 package model
 
-import valueobjects "deligo/internal/iam/domain/valueobject"
+import valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 
 type Role struct {
 	ID          valueobjects.ID

@@ -2,7 +2,7 @@ package contract
 
 import (
 	"context"
-	"deligo/internal/product/infra/model"
+	"github.com/maruki00/deligo/internal/product/infra/model"
 )
 
 type IProductRepository interface {

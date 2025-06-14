@@ -1,7 +1,7 @@
 package model
 
 import (
-	valueobject "deligo/internal/iam/domain/valueobject"
+	valueobject "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 )
 
 type Permission struct {

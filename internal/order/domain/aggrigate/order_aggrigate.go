@@ -1,6 +1,6 @@
 package aggrigate
 
-import "deligo/internal/order/domain/entity"
+import "github.com/maruki00/deligo/internal/order/domain/entity"
 
 type OrderAggrigate struct {
 	Order entity.OrderEntity

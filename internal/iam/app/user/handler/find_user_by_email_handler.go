@@ -2,9 +2,9 @@ package userHandler
 
 import (
 	"context"
-	userQueries "deligo/internal/iam/app/user/queries"
-	"deligo/internal/iam/domain/contracts"
-	pkgCqrs "deligo/pkg/cqrs"
+	userQueries "github.com/maruki00/deligo/internal/iam/app/user/queries"
+	"github.com/maruki00/deligo/internal/iam/domain/contracts"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type FindUserByEmailHandler struct {

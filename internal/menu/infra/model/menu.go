@@ -1,7 +1,7 @@
 package model
 
 import (
-	shared_model "deligo/internal/shared/infra/model"
+	shared_model "github.com/maruki00/deligo/internal/shared/infra/model"
 )
 
 type Menu struct {

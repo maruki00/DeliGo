@@ -2,11 +2,11 @@ package repository
 
 import (
 	"context"
-	"deligo/internal/iam/domain/entity"
-	valueobjects "deligo/internal/iam/domain/valueobject"
-	"deligo/internal/iam/infra/model"
-	shared_model "deligo/internal/shared/infra/model"
-	pkgPostgres "deligo/pkg/postgres"
+	"github.com/maruki00/deligo/internal/iam/domain/entity"
+	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
+	"github.com/maruki00/deligo/internal/iam/infra/model"
+	shared_model "github.com/maruki00/deligo/internal/shared/infra/model"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 
 	"gorm.io/gorm"
 )

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"deligo/internal/iam/infra/models"
+	"github.com/maruki00/deligo/internal/iam/infra/models"
 	"fmt"
 
 	"gorm.io/driver/postgres"
@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	db, err := gorm.Open(postgres.Open("host=172.18.0.3 port=5432 user=admin password=admin dbname=deligo sslmode=disable"), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open("host=172.18.0.3 port=5432 user=admin password=admin dbname=github.com/maruki00/deligo sslmode=disable"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

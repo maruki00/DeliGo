@@ -1,8 +1,8 @@
 package entity
 
 import (
-	valueobjects "deligo/internal/iam/domain/valueobject"
-	"deligo/internal/iam/infra/model"
+	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
+	"github.com/maruki00/deligo/internal/iam/infra/model"
 	"time"
 )
 

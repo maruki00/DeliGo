@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	"deligo/internal/order/domain/contracts"
+	"github.com/maruki00/deligo/internal/order/domain/contracts"
 
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -15,6 +15,6 @@ func NewApp() *App {
 	return &App{}
 }
 
-func (app *App) Worder(ctx context.Context, deligo <-chan amqp091.Delivery) {
+func (app *App) Worder(ctx context.Context, github.com/maruki00/deligo <-chan amqp091.Delivery) {
 
 }

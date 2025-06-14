@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
-	"deligo/internal/shop/domain/contract"
-	pkgCqrs "deligo/pkg/cqrs"
+	"github.com/maruki00/deligo/internal/shop/domain/contract"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type AcceptOrderHandler struct {

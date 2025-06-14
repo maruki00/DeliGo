@@ -2,8 +2,8 @@ package contracts
 
 import (
 	"context"
-	"deligo/internal/profile/domain/entity"
-	"deligo/internal/profile/infra/model"
+	"github.com/maruki00/deligo/internal/profile/domain/entity"
+	"github.com/maruki00/deligo/internal/profile/infra/model"
 )
 
 type IPorofileRepository interface {

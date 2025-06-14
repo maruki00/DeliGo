@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	aggrigate "deligo/internal/order/domain/aggrigate"
-	pkgPostgres "deligo/pkg/postgres"
+	aggrigate "github.com/maruki00/deligo/internal/order/domain/aggrigate"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 
 	"gorm.io/gorm"
 )

@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	shop_grpc "deligo/internal/shop/infra/grpc/shop"
-	pkgCqrs "deligo/pkg/cqrs"
+	shop_grpc "github.com/maruki00/deligo/internal/shop/infra/grpc/shop"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 
 	"google.golang.org/grpc"
 )

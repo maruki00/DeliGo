@@ -1,7 +1,7 @@
 package command
 
 import (
-	sharedvo "deligo/internal/shared/valueobject"
+	sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
 	"time"
 )
 
