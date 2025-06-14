@@ -3,7 +3,7 @@ package handler
 type ListProductHandler struct {
 }
 
-func (_this *ListProductHandler) Handler() error {
+func (_this *ListProductHandler) Handler() (interface{}, error) {
 
-	return nil
+	return nil, nil
 }

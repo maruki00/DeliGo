@@ -1,11 +1,14 @@
 package handler
 
-import pkgCqrs "deligo/pkg/cqrs"
+import (
+	"context"
+	pkgCqrs "deligo/pkg/cqrs"
+)
 
 type UpdateProductHandler struct {
 }
 
-func (_this *UpdateProductHandler) handler(c pkgCqrs.Command) error {
+func (_this *UpdateProductHandler) handler(ctx context.Conte, c pkgCqrs.Command) error {
 
 	return nil
 }
