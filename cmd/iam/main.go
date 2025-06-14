@@ -10,9 +10,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/maruki00/github.com/maruki00/deligo/cmd/iam/configs"
-	"github.com/maruki00/github.com/maruki00/deligo/internal/iam/app"
-	grpc_user "github.com/maruki00/github.com/maruki00/deligo/internal/iam/infra/grpc/user"
+	"github.com/maruki00/deligo/cmd/iam/configs"
+	"github.com/maruki00/deligo/internal/iam/app"
+	grpc_user "github.com/maruki00/deligo/internal/iam/infra/grpc/user"
 
 	"go.uber.org/automaxprocs/maxprocs"
 	"google.golang.org/grpc"

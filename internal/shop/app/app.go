@@ -2,12 +2,12 @@ package app
 
 import (
 	"context"
+
 	"github.com/maruki00/deligo/internal/shop/app/command"
 	"github.com/maruki00/deligo/internal/shop/app/handler"
 	"github.com/maruki00/deligo/internal/shop/infra/repository"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
-
 	"github.com/rabbitmq/amqp091-go"
 )
 
@@ -29,7 +29,10 @@ func NewApp(cfg any) (*App, error) {
 
 	shopRepo := repository.NewShopRepository(db)
 
-	cmdBus.Register(&command.CloseShopCommand{}, handler.NewCloseShopHandler(shopRepo))
+	cmdBus.Register(
+		&command.CloseShopCommand{},
+		handler.NewCloseShopHandler(shopRepo),
+	)
 	cmdBus.Register(&command.AcceptOrderCommand{}, handler.NewAcceptOrderHandler(shopRepo))
 	cmdBus.Register(&command.OpenShopCommand{}, handler.NewOpenShopHandler(shopRepo))
 	cmdBus.Register(&command.UpdateShopCommand{}, handler.NewUpdateShopHandler(shopRepo))

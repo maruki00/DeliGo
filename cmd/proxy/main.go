@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/maruki00/github.com/maruki00/deligo/cmd/proxy/configs"
-	grpc_user "github.com/maruki00/github.com/maruki00/deligo/internal/iam/infra/grpc/user"
+	"github.com/maruki00/deligo/cmd/proxy/configs"
+	grpc_user "github.com/maruki00/deligo/internal/iam/infra/grpc/user"
 
 	gruntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"

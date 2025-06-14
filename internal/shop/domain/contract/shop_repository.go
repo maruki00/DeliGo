@@ -2,6 +2,7 @@ package contract
 
 import (
 	"context"
+
 	sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
 	"github.com/maruki00/deligo/internal/shop/domain/entity"
 	"github.com/maruki00/deligo/internal/shop/infra/model"

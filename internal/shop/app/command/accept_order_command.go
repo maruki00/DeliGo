@@ -1,8 +1,6 @@
 package command
 
-import (
-	sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
-)
+import sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
 
 type AcceptOrderCommand struct {
 	ID sharedvo.ID
