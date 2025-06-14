@@ -1,6 +1,6 @@
 package query
 
-import sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
+import sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 
 type GetShopStatusQuery struct {
 	ID sharedvo.ID

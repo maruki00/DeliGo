@@ -1,6 +1,6 @@
 package command
 
-import sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
+import sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 
 type CloseShopCommand struct {
 	ID sharedvo.ID

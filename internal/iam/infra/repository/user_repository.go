@@ -2,9 +2,10 @@ package repository
 
 import (
 	"context"
+
 	"github.com/maruki00/deligo/internal/iam/domain/entity"
 	"github.com/maruki00/deligo/internal/iam/infra/model"
-	sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
+	sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 	"github.com/maruki00/deligo/pkg/pagination"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 

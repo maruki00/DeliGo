@@ -1,8 +1,9 @@
 package command
 
 import (
-	sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
 	"time"
+
+	sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 )
 
 type UpdateShopCommand struct {

@@ -1,6 +1,6 @@
 package queries
 
-import sharedvo "github.com/maruki00/deligo/internal/shared/valueobject"
+import sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 
 type GetOneProfileQuery struct {
 	ID sharedvo.ID
