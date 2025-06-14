@@ -2,14 +2,14 @@ package service
 
 import (
 	"context"
-	"github.com/maruki00/deligo/internal/iam/domain/entity"
-	"github.com/maruki00/deligo/internal/iam/infra/model"
-	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
-	pkgUtils "github.com/maruki00/deligo/pkg/utils"
 	"fmt"
 	"strconv"
 
 	"github.com/google/uuid"
+	userCommand "github.com/maruki00/deligo/internal/iam/app/user/command"
+	"github.com/maruki00/deligo/internal/iam/domain/entity"
+	"github.com/maruki00/deligo/internal/iam/infra/model"
+	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 

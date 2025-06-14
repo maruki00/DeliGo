@@ -2,11 +2,12 @@ package repository
 
 import (
 	"context"
+
 	"github.com/maruki00/deligo/internal/iam/domain/entity"
 	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	"github.com/maruki00/deligo/internal/iam/infra/model"
+	"github.com/maruki00/deligo/pkg/pagination"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
-
 	"gorm.io/gorm"
 )
 
@@ -48,7 +49,7 @@ func (_this *PermissionRepository) FindByID(ctx context.Context, id string) (*mo
 	return nil, nil
 }
 
-func (_this *PermissionRepository) FindByPolicyID(ctx context.Context, policyID string, pagination model.Pagination) ([]*model.Permission, error) {
+func (_this *PermissionRepository) FindByPolicyID(ctx context.Context, policyID string, pagination pagination.Pagination) ([]*model.Permission, error) {
 	res, err := _this.db.DB.Raw(`
 			SELECT * from permissions pr 
 			LEFT JOIN policies_permissions pp ON pr.id = pp.permission_id 
