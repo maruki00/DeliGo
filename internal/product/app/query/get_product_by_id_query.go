@@ -1,0 +1,13 @@
+package query
+
+import sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
+
+type GetProductByIDQuery struct {
+	IDs    []*sharedvo.ID
+	Page   int
+	Offest int
+}
+
+func (_this *GetProductByIDQuery) Name() string {
+	return "GetProductByIDQuery"
+}
