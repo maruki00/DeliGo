@@ -19,7 +19,7 @@ func NewAcceptOrderHandler(repo contract.IShopRepository) *AcceptOrderHandler {
 	}
 }
 
-func (_this *AcceptOrderHandler) handler(ctx context.Context, c pkgCqrs.Command) error {
+func (_this *AcceptOrderHandler) handle(ctx context.Context, c pkgCqrs.Command) error {
 	//TODO:
 	// Call Accept Order By Grpc to accept the order
 	cmd := c.(*command.AcceptOrderCommand)

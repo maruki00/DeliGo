@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"context"
+
+	"github.com/maruki00/deligo/internal/product/app/command"
 	"github.com/maruki00/deligo/internal/product/domian/contract"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
@@ -15,7 +18,9 @@ func NewDeleteProductHandler(repo contract.IProductRepository) *DeleteProductHan
 	}
 }
 
-func (_this *DeleteProductHandler) handler(ctx, c pkgCqrs.Command) error {
+func (_this *DeleteProductHandler) handle(ctx context.Context, c pkgCqrs.Command) error {
 
+	cmd := c.(*command.DeleteProductCommand)
+	return _this.repo.Delete(ctx, cmd.ID)
 	return nil
 }
