@@ -2,6 +2,8 @@ package handler
 
 import (
 	"context"
+
+	"github.com/maruki00/deligo/internal/product/app/query"
 	"github.com/maruki00/deligo/internal/product/domian/contract"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
@@ -16,7 +18,10 @@ func NewGetManyProductsHandler(repo contract.IProductRepository) GetManyProducts
 	}
 }
 
-func (_this *GetManyProductsHandler) handler(ctx context.Context, q pkgCqrs.Query) (interface{}, error) {
+func (_this *GetManyProductsHandler) handle(ctx context.Context, q pkgCqrs.Query) (interface{}, error) {
 
+	qry := q.(*query.GetManyProductQuery)
+
+	res, err := _this.repo.Get
 	return nil, nil
 }
