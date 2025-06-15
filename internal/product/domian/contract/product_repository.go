@@ -8,11 +8,11 @@ import (
 )
 
 type IProductRepository interface {
-	Save(ctx context.Context, product *model.Product) error
-	GetById(ctx context.Context, id sharedvo.ID) (*model.Product, error)
-	List(ctx context.Context, seasrch string) ([]*model.Product, error)
-	Update(ctx context.Context, id sharedvo.ID, product *model.Product) error
-	Delete(ctx context.Context, id sharedvo.ID) error
-	GetManyProductsByID(ctx context.Context, ids []sharedvo.ID) ([]*model.Product, error)
-	GetProductByMultipleId(ctx context.Context, ids []sharedvo.ID) ([]*model.Product, error)
+	Save(context.Context, *model.Product) error
+	GetById(context.Context, sharedvo.ID) (*model.Product, error)
+	List(context.Context, string) ([]*model.Product, error)
+	Update(context.Context, sharedvo.ID, *model.Product) error
+	Delete(context.Context, sharedvo.ID) error
+	GetManyProductsByID(context.Context, []sharedvo.ID) ([]*model.Product, error)
+	GetProductByMultipleId(context.Context, []sharedvo.ID) ([]*model.Product, error)
 }

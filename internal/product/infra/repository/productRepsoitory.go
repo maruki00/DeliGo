@@ -2,7 +2,9 @@ package repository
 
 import (
 	"context"
+
 	"github.com/maruki00/deligo/internal/product/infra/model"
+	sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 
 	"gorm.io/gorm"
@@ -27,7 +29,7 @@ func (_this *ProductRepository) Save(ctx context.Context, product *model.Product
 	})
 }
 
-func (_this *ProductRepository) GetById(ctx context.Context, id string) (*model.Product, error) {
+func (_this *ProductRepository) GetById(ctx context.Context, id sharedvo.ID) (*model.Product, error) {
 	var product model.Product
 	if err := _this.db.GetDB().Where("where = ? ", id).Find(&product).Error; err != nil {
 		return nil, err
@@ -35,7 +37,7 @@ func (_this *ProductRepository) GetById(ctx context.Context, id string) (*model.
 	return &product, nil
 }
 
-func (_this *ProductRepository) List(ctx context.Context, seasrch string) ([]*model.Product, error) {
+func (_this *ProductRepository) List(ctx context.Context, search string) ([]*model.Product, error) {
 	var items []*model.Product
 	if err := _this.db.GetDB().Model(&model.Product{}).Find(&items).Error; err != nil {
 		return nil, err
@@ -43,7 +45,7 @@ func (_this *ProductRepository) List(ctx context.Context, seasrch string) ([]*mo
 	return items, nil
 }
 
-func (_this *ProductRepository) Update(ctx context.Context, id int, product *model.Product) error {
+func (_this *ProductRepository) Update(ctx context.Context, id sharedvo.ID, product *model.Product) error {
 	return _this.db.GetDB().Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&model.Product{}).Where("id = ?", id).Updates(product).Error; err != nil {
 			tx.Rollback()
@@ -54,7 +56,7 @@ func (_this *ProductRepository) Update(ctx context.Context, id int, product *mod
 	})
 }
 
-func (_this *ProductRepository) Delete(ctx context.Context, id int) error {
+func (_this *ProductRepository) Delete(ctx context.Context, id sharedvo.ID) error {
 	return _this.db.GetDB().Transaction(func(tx *gorm.DB) error {
 		if err := tx.Delete(&model.Product{}, "id = ?", id).Error; err != nil {
 			tx.Rollback()
@@ -64,8 +66,7 @@ func (_this *ProductRepository) Delete(ctx context.Context, id int) error {
 	})
 }
 
-func (_this *ProductRepository) GetManyProductsByID(ctx context.Context, ids []string) ([]*model.Product, error) {
-unc (_this *ProductRepository) GetProductByMultipleId(ctx context.Context, ids []string) ([]*model.Product, error) {
+func (_this *ProductRepository) GetManyProductsByID(ctx context.Context, ids []sharedvo.ID) ([]*model.Product, error) {
 	var items []*model.Product
 	if err := _this.db.GetDB().Model(&model.Product{}).Where("id in ? ", ids).Find(&items).Error; err != nil {
 		return nil, err
