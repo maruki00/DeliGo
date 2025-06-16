@@ -8,7 +8,7 @@ import "google/protobuf/struct.proto";
 import "validate/validate.proto";
 
 
-message User {
+message Product {
 	string ID 						= 1 [json_name = "id"];       
 	string Label 				= 2 [json_name = "label"];    
 	float Price 					= 3 [json_name = "price"];    
@@ -64,6 +64,20 @@ message FindManyProductsRequest {
 	repeated int32 query_params = 1;
 }
 
+message ProductsResponse {
+  repeated Product = 1;
+}
+message GetProductByIdRequest {
+  id string = 1;
+}
+message GetManyProductsRequest {
+  qry string = 1;
+}
+message GetProductsByIdsProductsRequest {
+  repeated ids string = 1;
+}
+
+
 service ProductService {
 	rpc Save(SaveProductRequest) returns (Response) {
 		option (google.api.http) = {
@@ -83,8 +97,8 @@ service ProductService {
 			body: "*"
 		};
 	};
-	rpc Find(FindProductRequest) returns (Response);	
-	rpc List(FindManyProductsRequest) returns (Response);
+  rpc	GetById(  GetProductByIdRequest) returns (ProductsResponse);
+  rpc	GetMany(  GetManyProductsRequest) returns (ProductsResponse);
+  rpc	GetByIds( GetProductsByIdsRequest) returns (ProductsResponse);
 
-} 
-
+}
