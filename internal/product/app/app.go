@@ -9,17 +9,14 @@ import (
 )
 
 type App struct {
-
-	DB *pkgPostgres.DBHandler
+	DB *pkgPostgres.PGHandler
 
 	CmdBus *pkgCqrs.CommandBus
 	QryBus *pkgCqrs.QueryBus
-
-
 }
 
 func Init(cgfPath string) *App {
-	
+
 	db, err := pkgPostgres.NewDB("")
 	if err != nil {
 		panic(err)
@@ -28,13 +25,13 @@ func Init(cgfPath string) *App {
 	cmdBus := pkgCqrs.NewCommandBus()
 	qryBus := pkgCqrs.NewQueryBus()
 
-
 	return &App{
-		DB: db,
+		DB:     db,
 		CmdBus: cmdBus,
 		QryBus: qryBus,
 	}
 }
-func (app *App) Worder(ctx context.Context, github.com/maruki00/deligo <-chan amqp091.Delivery) {
+
+func (app *App) Worder(ctx context.Context, delivery <-chan amqp091.Delivery) {
 
 }
