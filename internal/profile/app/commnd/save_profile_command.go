@@ -1,10 +1,12 @@
 package command
 
-import shared_valueobject "github.com/maruki00/deligo/internal/shared/value_object"
+import (
+	sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
+)
 
 type SaveProfileCommand struct {
-	ID       shared_valueobject.ID
-	UserID   shared_valueobject.ID
+	ID       sharedvo.ID
+	UserID   sharedvo.ID
 	FullName string
 	Avatar   string
 	Bio      string

@@ -2,15 +2,16 @@ package handler
 
 import (
 	"context"
-	"github.com/maruki00/deligo/internal/profile/domain/contracts"
+
+	"github.com/maruki00/deligo/internal/profile/domain/contract"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type GetOneProfileHandler struct {
-	repo contracts.IPorofileRepository
+	repo contract.IPorofileRepository
 }
 
-func NewGetOneProfileHandler(repo contracts.IPorofileRepository) *GetOneProfileHandler {
+func NewGetOneProfileHandler(repo contract.IPorofileRepository) *GetOneProfileHandler {
 	return &GetOneProfileHandler{
 		repo: repo,
 	}

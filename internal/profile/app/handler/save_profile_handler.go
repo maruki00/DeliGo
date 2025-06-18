@@ -3,28 +3,28 @@ package handler
 import (
 	"context"
 
-	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
-	"github.com/maruki00/deligo/internal/profile/domain/contracts"
+	command "github.com/maruki00/deligo/internal/profile/app/commnd"
+	"github.com/maruki00/deligo/internal/profile/domain/contract"
 	"github.com/maruki00/deligo/internal/profile/infra/model"
-	shared_valueobject "github.com/maruki00/deligo/internal/shared/value_object"
+	sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type SaveProfileHandler struct {
-	repo contracts.IPorofileRepository
+	repo contract.IPorofileRepository
 }
 
-func NewSaveProfileHandler(repo contracts.IPorofileRepository) *DisableProfileHandler {
+func NewSaveProfileHandler(repo contract.IPorofileRepository) *DisableProfileHandler {
 	return &DisableProfileHandler{
 		repo: repo,
 	}
 }
 
-func (_this *SaveProfileHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
-	cmd := command.(*commands.SaveProfileCommand)
+func (_this *SaveProfileHandler) Handle(ctx context.Context, c pkgCqrs.Command) error {
+	cmd := c.(*command.SaveProfileCommand)
 	return _this.repo.Save(ctx, &model.Profile{
-		ID:       shared_valueobject.NewID(),
-		UserID:   shared_valueobject.ID(cmd.UserID),
+		ID:       sharedvo.NewID(),
+		UserID:   sharedvo.ID(cmd.UserID),
 		FullName: cmd.FullName,
 		Avatar:   cmd.Avatar,
 	})
