@@ -1,10 +1,11 @@
 package jwt
 
 import (
-	shared_entities "github.com/maruki00/deligo/internal/shared/domain/entities"
 	"errors"
 	"net/http"
 	"time"
+
+	shared_entities "github.com/maruki00/deligo/internal/shared/entity"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
