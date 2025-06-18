@@ -3,8 +3,9 @@ package service
 import (
 	"context"
 	"net/http"
-	"github.com/maruki00/deligo/internal/profile/app/profile/command"
-	"github.com/maruki00/deligo/internal/profile/app/profile/query"
+
+	command "github.com/maruki00/deligo/internal/profile/app/commnd"
+	"github.com/maruki00/deligo/internal/profile/app/query"
 	profile_grpc "github.com/maruki00/deligo/internal/profile/infra/grpc/profile"
 	shared_valueobject "github.com/maruki00/deligo/internal/shared/value_object"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
@@ -18,12 +19,14 @@ type ProfileServerService struct {
 	CommandBus *pkgCqrs.CommandBus
 	QueryBus   *pkgCqrs.QueryBus
 }
+
 func NewProfileService(cmdBus *pkgCqrs.CommandBus, qryBus *pkgCqrs.QueryBus) *ProfileServerService {
 	return &ProfileServerService{
 		CommandBus: cmdBus,
 		QueryBus:   qryBus,
 	}
 }
+
 func CommandCheck(err error) (*profile_grpc.ProfileResponse, error) {
 	if err != nil {
 		return &profile_grpc.ProfileResponse{
@@ -38,6 +41,7 @@ func CommandCheck(err error) (*profile_grpc.ProfileResponse, error) {
 		Result:  nil,
 	}, err
 }
+
 func (_this *ProfileServerService) Save(ctx context.Context, in *profile_grpc.CreateProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
 	err := _this.CommandBus.Dispatch(ctx, &command.SaveProfileCommand{
 		ID:       shared_valueobject.NewID(),
@@ -48,12 +52,14 @@ func (_this *ProfileServerService) Save(ctx context.Context, in *profile_grpc.Cr
 	})
 	return CommandCheck(err)
 }
+
 func (_this *ProfileServerService) Disable(ctx context.Context, in *profile_grpc.DisableProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
 	err := _this.CommandBus.Dispatch(ctx, &command.DiscableProfileCommand{
 		ID: shared_valueobject.ID(in.ID),
 	})
 	return CommandCheck(err)
 }
+
 func (_this *ProfileServerService) Update(ctx context.Context, in *profile_grpc.UpdateProfileRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
 	fields := make(map[string]any)
 	for k, v := range in.Fields {
@@ -65,6 +71,7 @@ func (_this *ProfileServerService) Update(ctx context.Context, in *profile_grpc.
 	})
 	return CommandCheck(err)
 }
+
 func (_this *ProfileServerService) UpdateAvatar(ctx context.Context, in *profile_grpc.UpdateProfileAvatareRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
 	err := _this.CommandBus.Dispatch(ctx, &command.UpdateProfileAvatarCommand{
 		ID:     shared_valueobject.ID(in.ID),
@@ -72,6 +79,7 @@ func (_this *ProfileServerService) UpdateAvatar(ctx context.Context, in *profile
 	})
 	return CommandCheck(err)
 }
+
 func (_this *ProfileServerService) GetOne(ctx context.Context, in *profile_grpc.GETRequest, opts ...grpc.CallOption) (*profile_grpc.ProfileResponse, error) {
 	params, err := pkgUtils.ParamsFromGrpc(ctx)
 	if err != nil {
