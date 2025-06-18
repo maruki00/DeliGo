@@ -4,15 +4,15 @@ import (
 	"context"
 
 	userQueries "github.com/maruki00/deligo/internal/iam/app/user/query"
-	"github.com/maruki00/deligo/internal/iam/domain/contracts"
+	"github.com/maruki00/deligo/internal/iam/domain/contract"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type FindUserByEmailHandler struct {
-	userRepo contracts.IUserRepository
+	userRepo contract.IUserRepository
 }
 
-func NewFindUserByEmailHandler(userRepo contracts.IUserRepository) *FindUserByEmailHandler {
+func NewFindUserByEmailHandler(userRepo contract.IUserRepository) *FindUserByEmailHandler {
 	return &FindUserByEmailHandler{
 		userRepo: userRepo,
 	}

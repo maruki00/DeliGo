@@ -4,16 +4,16 @@ import (
 	"context"
 
 	userQueries "github.com/maruki00/deligo/internal/iam/app/user/query"
-	"github.com/maruki00/deligo/internal/iam/domain/contracts"
-	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
+	"github.com/maruki00/deligo/internal/iam/domain/contract"
+	sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type ListUsersByTenantHandler struct {
-	userRepo contracts.IUserRepository
+	userRepo contract.IUserRepository
 }
 
-func NewListUsersByTenantHandler(userRepo contracts.IUserRepository) *ListUsersByTenantHandler {
+func NewListUsersByTenantHandler(userRepo contract.IUserRepository) *ListUsersByTenantHandler {
 	return &ListUsersByTenantHandler{
 		userRepo: userRepo,
 	}
@@ -21,7 +21,7 @@ func NewListUsersByTenantHandler(userRepo contracts.IUserRepository) *ListUsersB
 
 func (_this *ListUsersByTenantHandler) Handle(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
 	qry := query.(*userQueries.ListUsersByTenantQuery)
-	users, err := _this.userRepo.ListByTenant(ctx, valueobjects.ID(qry.TenantID.String()), qry.Pagination)
+	users, err := _this.userRepo.ListByTenant(ctx, sharedvo.ID(qry.TenantID.String()), qry.Pagination)
 	if err != nil {
 		return nil, err
 	}

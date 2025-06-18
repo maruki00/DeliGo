@@ -4,16 +4,17 @@ import (
 	"context"
 
 	userQueries "github.com/maruki00/deligo/internal/iam/app/user/query"
-	"github.com/maruki00/deligo/internal/iam/domain/contracts"
+	"github.com/maruki00/deligo/internal/iam/domain/contract"
 	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
+	sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type FindUserByIdHandler struct {
-	userRepo contracts.IUserRepository
+	userRepo contract.IUserRepository
 }
 
-func NewFindUserByIdHandler(userRepo contracts.IUserRepository) *FindUserByIdHandler {
+func NewFindUserByIdHandler(userRepo contract.IUserRepository) *FindUserByIdHandler {
 	return &FindUserByIdHandler{
 		userRepo: userRepo,
 	}
@@ -21,7 +22,7 @@ func NewFindUserByIdHandler(userRepo contracts.IUserRepository) *FindUserByIdHan
 
 func (_this *FindUserByIdHandler) Handle(ctx context.Context, query pkgCqrs.Query) (interface{}, error) {
 	qry := query.(*userQueries.FindUserByIdQuery)
-	user, err := _this.userRepo.FindByID(ctx, valueobjects.ID(qry.ID.String()))
+	user, err := _this.userRepo.FindByID(ctx, sharedvo.ID(qry.ID.String()))
 	if err != nil {
 		return nil, err
 	}

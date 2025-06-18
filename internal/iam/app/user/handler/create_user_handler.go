@@ -4,17 +4,17 @@ import (
 	"context"
 
 	userCommand "github.com/maruki00/deligo/internal/iam/app/user/command"
-	"github.com/maruki00/deligo/internal/iam/domain/contracts"
+	"github.com/maruki00/deligo/internal/iam/domain/contract"
 	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	"github.com/maruki00/deligo/internal/iam/infra/model"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type CreateUserHandler struct {
-	userRepo contracts.IUserRepository
+	userRepo contract.IUserRepository
 }
 
-func NewCreateUserHandler(userRepo contracts.IUserRepository) *CreateUserHandler {
+func NewCreateUserHandler(userRepo contract.IUserRepository) *CreateUserHandler {
 	return &CreateUserHandler{
 		userRepo: userRepo,
 	}

@@ -5,15 +5,15 @@ import (
 	"fmt"
 
 	userQueries "github.com/maruki00/deligo/internal/iam/app/user/query"
-	"github.com/maruki00/deligo/internal/iam/domain/contracts"
+	"github.com/maruki00/deligo/internal/iam/domain/contract"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type FindUserByUsernameHandler struct {
-	userRepo contracts.IUserRepository
+	userRepo contract.IUserRepository
 }
 
-func NewFindUserByUsernameHandler(userRepo contracts.IUserRepository) *FindUserByUsernameHandler {
+func NewFindUserByUsernameHandler(userRepo contract.IUserRepository) *FindUserByUsernameHandler {
 	return &FindUserByUsernameHandler{
 		userRepo: userRepo,
 	}
