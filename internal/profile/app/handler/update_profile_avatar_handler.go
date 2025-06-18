@@ -2,22 +2,23 @@ package handler
 
 import (
 	"context"
-	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
-	"github.com/maruki00/deligo/internal/profile/domain/contracts"
+
+	command "github.com/maruki00/deligo/internal/profile/app/commnd"
+	"github.com/maruki00/deligo/internal/profile/domain/contract"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
 
 type UpdateProfileAvatarHandler struct {
-	repo contracts.IPorofileRepository
+	repo contract.IPorofileRepository
 }
 
-func NewUpdateProfileAvatarHandler(repo contracts.IPorofileRepository) *UpdateProfileAvatarHandler {
+func NewUpdateProfileAvatarHandler(repo contract.IPorofileRepository) *UpdateProfileAvatarHandler {
 	return &UpdateProfileAvatarHandler{
 		repo: repo,
 	}
 }
 
-func (_this *UpdateProfileAvatarHandler) Handle(ctx context.Context, command pkgCqrs.Command) error {
-	cmd := command.(*commands.UpdateProfileAvatarCommand)
+func (_this *UpdateProfileAvatarHandler) Handle(ctx context.Context, c pkgCqrs.Command) error {
+	cmd := c.(*command.UpdateProfileAvatarCommand)
 	return _this.repo.UpdateAvatar(ctx, string(cmd.ID), cmd.Avatar)
 }
