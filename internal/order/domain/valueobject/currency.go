@@ -1,9 +1,10 @@
-package valueobjects
+package valueobject
 
 import (
-	"github.com/maruki00/deligo/internal/order/domain/enums"
 	"fmt"
 	"strings"
+
+	enums "github.com/maruki00/deligo/internal/order/domain/enum"
 )
 
 type Currency struct {

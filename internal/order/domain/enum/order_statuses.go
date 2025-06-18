@@ -1,4 +1,4 @@
-package enums
+package enum
 
 type OrderStatus int
 
