@@ -1,14 +1,14 @@
 package userQuery
 
 import (
-	shared_model "github.com/maruki00/deligo/internal/shared/model"
+	"github.com/maruki00/deligo/pkg/pagination"
 
 	"github.com/google/uuid"
 )
 
 type ListUsersByTenantQuery struct {
 	TenantID   uuid.UUID
-	Pagination shared_model.Pagination
+	Pagination pagination.Pagination
 }
 
 func (_this *ListUsersByTenantQuery) Name() string {
