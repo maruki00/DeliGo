@@ -158,3 +158,4 @@ func (ur *UserRepository) AffectRole(ctx context.Context, id sharedvo.ID, role_i
 		return nil
 	})
 }
+

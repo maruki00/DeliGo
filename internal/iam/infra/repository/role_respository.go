@@ -7,6 +7,7 @@ import (
 	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	"github.com/maruki00/deligo/internal/iam/infra/model"
 	shared_model "github.com/maruki00/deligo/internal/shared/model"
+	"github.com/maruki00/deligo/pkg/pagination"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 
 	"gorm.io/gorm"
@@ -49,7 +50,7 @@ func (_this *RoleRepository) FindByName(ctx context.Context, name string) (entit
 	return &role, nil
 }
 
-func (_this *RoleRepository) List(ctx context.Context, pagination shared_model.Pagination) ([]*model.Role, error) {
+func (_this *RoleRepository) List(ctx context.Context, pagination pagination.Pagination) ([]*model.Role, error) {
 
 	roles := make([]*model.Role, pagination.Limit)
 	if err := _this.db.DB.Model(&model.Role{}).Limit(pagination.GetLimit()).Offset(pagination.GetOffset()).Find(&roles).Error; err != nil {
