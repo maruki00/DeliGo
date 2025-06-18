@@ -2,28 +2,20 @@ package app
 
 import (
 	"context"
-	"github.com/maruki00/deligo/cmd/user/configs"
-	"github.com/maruki00/deligo/internal/profile/app/profile/commands"
-	"github.com/maruki00/deligo/internal/profile/app/profile/handlers"
-	"github.com/maruki00/deligo/internal/profile/app/profile/queries"
-	grpc_services "github.com/maruki00/deligo/internal/profile/app/usecases"
-	"github.com/maruki00/deligo/internal/profile/domain/contracts"
-	"github.com/maruki00/deligo/internal/profile/infra/repository"
 
+	grpc_services "github.com/maruki00/deligo/internal/profile/app/service"
+	contracts "github.com/maruki00/deligo/internal/profile/domain/contract"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
-	"fmt"
-	"log/slog"
-
-	"github.com/rabbitmq/amqp091-go"
 )
 
 type App struct {
 	db          *pkgPostgres.PGHandler
-	ProfileRepo contracts.IPorofileRepository
 	ProfileSVC  *grpc_services.ProfileService
 	CommandBus  *pkgCqrs.CommandBus
 	QueryBus    *pkgCqrs.QueryBus
+
+	ProfileRepo contracts.IPorofileRepository
 }
 
 func (app *App) GetDB() any {

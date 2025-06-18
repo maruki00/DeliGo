@@ -1,4 +1,4 @@
-package queries
+package query
 
 import sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 

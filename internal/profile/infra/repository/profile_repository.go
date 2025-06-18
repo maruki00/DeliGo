@@ -5,7 +5,6 @@ import (
 	"github.com/maruki00/deligo/internal/profile/domain/entity"
 	"github.com/maruki00/deligo/internal/profile/infra/model"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
-
 	"gorm.io/gorm"
 )
 
