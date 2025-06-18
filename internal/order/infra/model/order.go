@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	valueobjects "github.com/maruki00/deligo/internal/order/domain/value_objects"
+	"github.com/maruki00/deligo/internal/order/domain/valueobject"
 	shared_model "github.com/maruki00/deligo/internal/shared/model"
 	shared_valueobject "github.com/maruki00/deligo/internal/shared/value_object"
 )
@@ -13,7 +13,7 @@ type Order struct {
 	CostumerId      int                   `json:"costumer_id"`
 	OrderStatus     int                   `json:"order_status"`
 	TotalAmount     float32               `json:"total_amount"`
-	Currency        valueobjects.Currency `json:"currency"`
+	Currency        valueobject.Currency `json:"currency"`
 	ShippingAddress string                `json:"shipping_address"`
 	BillingAddress  string                `json:"billing_address"`
 	OrderDate       time.Time             `json:"order_date"`
@@ -29,7 +29,7 @@ func (_this *Order) GetOrderStatus() int {
 func (_this *Order) GetTotalAmount() float32 {
 	return _this.TotalAmount
 }
-func (_this *Order) GetCurrency() valueobjects.Currency {
+func (_this *Order) GetCurrency() valueobject.Currency {
 	return _this.Currency
 }
 func (_this *Order) GetShippingAddress() string {

@@ -1,7 +1,8 @@
-package factories
+package factory
 
-import "github.com/maruki00/deligo/internal/order/app/services"
+import "github.com/maruki00/deligo/internal/order/app/service"
 
-func NewOrderService() *services.OrderService {
-	return &services.OrderService{}
+
+func NewOrderService() *service.OrderService {
+	return &service.OrderService{}
 }
