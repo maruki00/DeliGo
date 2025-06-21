@@ -4,7 +4,7 @@ import "github.com/google/uuid"
 
 type ID string
 
-func Parse(id string) ID {
+func ParseID(id string) ID {
 	_id, err := uuid.Parse(id)
 	if err != nil {
 		return ID("")

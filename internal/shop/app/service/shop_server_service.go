@@ -35,17 +35,17 @@ func (_this *ShopServerService) Save(ctx context.Context, in *shop_grpc.CreateSh
 
 func (_this *ShopServerService) Update(ctx context.Context, in *shop_grpc.UpdateShopRequest, opts ...grpc.CallOption) (*shop_grpc.ShopResponse, error) {
 
-	id := sharedvo.Parse(in.ID)
+	id := sharedvo.ParseID(in.ID)
 	if id == "" {
 		return nil, errors.New("invalid id")
 	}
 
-	openAt, err := time.Parse("2025-05-14", in.OpenAt)
+	openAt, err := time.Parse("2006-01-02", in.OpenAt)
 	if err != nil {
 		return nil, errors.New("invalid time on open_at")
 	}
 
-	closeAt, err := time.Parse("2025-05-14", in.CloseAt)
+	closeAt, err := time.Parse("2006-01-02", in.CloseAt)
 	if err != nil {
 		return nil, errors.New("invalid time on close_at")
 	}
@@ -68,7 +68,7 @@ func (_this *ShopServerService) Update(ctx context.Context, in *shop_grpc.Update
 }
 
 func (_this *ShopServerService) Delete(ctx context.Context, in *shop_grpc.UpdateShopStatusRequest, opts ...grpc.CallOption) (*shop_grpc.ShopResponse, error) {
-	id := sharedvo.Parse(in.ID)
+	id := sharedvo.ParseID(in.ID)
 	if id == "" {
 		return nil, errors.New("invalid id")
 	}
