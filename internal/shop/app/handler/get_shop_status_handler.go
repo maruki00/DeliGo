@@ -17,7 +17,7 @@ func NewGetShopStatusHandler(repo contract.IShopRepository) *GetShopStatusHandle
 	}
 }
 
-func (_this *GetShopStatusHandler) handler(ctx context.Context, qry pkgCqrs.Query) (interface{}, error) {
+func (_this *GetShopStatusHandler) handle(ctx context.Context, qry pkgCqrs.Query) (interface{}, error) {
 	q := qry.(*query.GetShopStatusQuery)
 	return _this.repo.GetShopStatus(ctx, q.ID)
 }

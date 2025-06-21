@@ -20,7 +20,7 @@ func NewCloseShopHandler(repo contract.IShopRepository) *CloseShopHandler {
 	}
 }
 
-func (_this *CloseShopHandler) handler(ctx context.Context, cmd pkgCqrs.Command) error {
+func (_this *CloseShopHandler) handle(ctx context.Context, cmd pkgCqrs.Command) error {
 
 	c := cmd.(*command.CloseShopCommand)
 	return _this.repo.UpdateStatus(ctx, c.ID, CLOSE)

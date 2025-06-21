@@ -17,7 +17,7 @@ func NewGetShopHandler(repo contract.IShopRepository) *GetShopHandler {
 	}
 }
 
-func (_this *GetShopHandler) handler(ctx context.Context, qry pkgCqrs.Query) (interface{}, error) {
+func (_this *GetShopHandler) handle(ctx context.Context, qry pkgCqrs.Query) (interface{}, error) {
 	q := qry.(*query.GetShopSquery)
 	return _this.repo.GetByID(ctx, q.ID)
 }

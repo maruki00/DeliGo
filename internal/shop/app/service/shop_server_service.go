@@ -69,7 +69,9 @@ func (_this *ShopServerService) Delete(ctx context.Context, in *shop_grpc.Update
 	if id == "" {
 		return nil, errors.New("invalid id")
 	}
-	if err := _this.cmdBus.Dispatch(ctx, cmd) 
+	if err := _this.cmdBus.Dispatch(ctx, nil); err != nil {
+		return nil, err
+	} 
 
 	return nil, nil
 }

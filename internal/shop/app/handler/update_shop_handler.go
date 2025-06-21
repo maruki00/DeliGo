@@ -17,7 +17,7 @@ func NewUpdateShopHandler(repo contract.IShopRepository) *UpdateShopHandler {
 	}
 }
 
-func (_this *UpdateShopHandler) handler(ctx context.Context, cmd pkgCqrs.Command) error {
+func (_this *UpdateShopHandler) handle(ctx context.Context, cmd pkgCqrs.Command) error {
 	c := cmd.(*command.UpdateShopCommand)
 	return _this.repo.Update(ctx, c.ID, map[string]any{
 		"name":     c.ShopName,
