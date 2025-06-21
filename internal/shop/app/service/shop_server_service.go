@@ -27,6 +27,9 @@ func NewShopServerService(cmdBus *pkgCqrs.CommandBus, qryBus *pkgCqrs.QueryBus) 
 }
 
 func (_this *ShopServerService) Save(ctx context.Context, in *shop_grpc.CreateShopRequest, opts ...grpc.CallOption) (*shop_grpc.ShopResponse, error) {
+	
+	//TODO: this function no need to be implemented 
+	//cuz the shop will be added by seeds
 	return nil, nil
 }
 
