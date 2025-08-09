@@ -1,26 +1,26 @@
 version: "3.8"
 
 services:
-  rabbitmq:
-    image: rabbitmq:4-management-alpine
-    container_name: rabbitmq_github.com/maruki00/deligo
-    restart: 'no'
-    environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks: 
-      - github.com/maruki00/deligo_network
+  # rabbitmq:
+  #   image: rabbitmq:4-management-alpine
+  #   container_name: rabbitmq_github.com/maruki00/deligo
+  #   restart: 'no'
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: admin
+  #     RABBITMQ_DEFAULT_PASS: admin
+  #   healthcheck:
+  #     test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+  #     interval: 30s
+  #     timeout: 30s
+  #     retries: 3
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   networks: 
+  #     - github.com/maruki00/deligo_network
   postgres:
-    image: postgres:17-alpine
-    container_name: postgres_github.com/maruki00/deligo
+    image: postgres:latest #postgres:17-alpine
+    container_name: postgres_deligo
     restart: 'no'
     ports:
       - "5432:5432"
@@ -31,20 +31,20 @@ services:
       POSTGRES_USER: admin
       POSTGRES_DB: github.com/maruki00/deligo
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d github.com/maruki00/deligo"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d deligo"]
       interval: 30s
       timeout: 30s
       retries: 3
     networks:
       - github.com/maruki00/deligo_network
-  adminer:
-    image: adminer
-    container_name: adminer_github.com/maruki00/deligo
-    restart: always
-    ports:
-      - "8080:8080"
-    networks:
-      - github.com/maruki00/deligo_network
+  # adminer:
+  #   image: adminer
+  #   container_name: adminer_github.com/maruki00/deligo
+  #   restart: always
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - github.com/maruki00/deligo_network
   
   # pgadmin:
   #   container_name: pgadmin_github.com/maruki00/deligo
@@ -69,3 +69,4 @@ networks:
 
 volumes:
   data:
+
