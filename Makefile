@@ -1,5 +1,6 @@
 # Makefile
-# 
+# Proto files.
+#
 user:
 	cd ./internal/iam/infra/grpc/user/ && protoc -I. -I/../.. \
     -I./../../../../../proto \
