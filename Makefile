@@ -57,9 +57,6 @@ shop:
     --grpc-gateway_opt generate_unbound_methods=true \
     --validate_out=lang=go:./
 
-
-
-
 show:
 	@echo "make [target]"
 	@echo "targets:"
@@ -68,6 +65,7 @@ show:
 	@echo " product"
 	@echo " shop"
 	@echo " role"
+
 help:
 	@echo "make [target]"
 	@echo "targets:"
