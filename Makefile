@@ -1,6 +1,5 @@
 # Makefile
-
-
+# 
 user:
 	cd ./internal/iam/infra/grpc/user/ && protoc -I. -I/../.. \
     -I./../../../../../proto \
@@ -22,7 +21,6 @@ role:
     --grpc-gateway_out=./ --grpc-gateway_opt=paths=source_relative \
     --grpc-gateway_opt generate_unbound_methods=true \
     --validate_out=lang=go:./
-
 
 profile:
 	cd ./internal/profile/infra/grpc/profile/ && protoc -I. -I/../.. \
