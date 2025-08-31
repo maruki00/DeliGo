@@ -16,3 +16,4 @@ func NewShopServerService(cmdBus *pkgCqrs.CommandBus, qryBus *pkgCqrs.QueryBus) 
 	}
 	return &srv
 }
+
