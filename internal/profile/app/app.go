@@ -22,6 +22,8 @@ func (app *App) GetDB() any {
 	return app.db
 }
 
+
+
 func InitApp(cfg *configs.Config) (*App, func(), error) {
 
 	fmt.Println("dsn : ", cfg.Postgres.Dsn)
@@ -29,6 +31,8 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 	if err != nil {
 		return nil, func() {}, err
 	}
+
+
 
 	profileRepo := repository.NewProfileRepository(db)
 	profileSVC := grpc_services.NewProfileService(profileRepo)
@@ -49,6 +53,7 @@ func InitApp(cfg *configs.Config) (*App, func(), error) {
 
 	return app, func() {}, nil
 }
+
 
 func (a *App) Worker(ctx context.Context, deivery <-chan amqp091.Delivery) {
 
