@@ -1,0 +1,148 @@
+
+syntax = "proto3";
+
+option go_package = "shop.grpc";
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+import "validate/validate.proto";
+
+message Profile {
+	string ID 		= 1 [json_name = "id"];
+	string ShopName 	= 2 [json_name = "shop_name"];
+	string OpenAt = 3 [json_name = "open_at"];
+	string CloseAt 	= 4 [json_name = "close_at"];
+}
+
+message CreateShopRequest  {
+	string ShopName 	= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 100,
+		},
+		json_name = "shop_name"];
+	string OpenAt = 2 [
+		(validate.rules).string = {
+			min_len: 1,  
+			max_len: 56,
+		},
+		json_name = "open_at"];
+	string CloseAt 	= 3 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 56,
+		},
+		json_name = "close_at"];
+	
+}
+
+message UpdateShopRequest  {
+		string ID 	= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 100,
+		},
+		json_name = "id"];
+string ShopName 	= 2 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 100,
+		},
+		json_name = "shop_name"];
+	string OpenAt = 3 [
+		(validate.rules).string = {
+			min_len: 1,  
+			max_len: 56,
+		},
+		json_name = "open_at"];
+	string CloseAt 	= 4 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 56,
+		},
+		json_name = "close_at"];
+	
+}
+message UpdateShopStatusRequest  {
+		string ID 	= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 100,
+		},
+		json_name = "id"];
+bool Status 	= 2 [json_name = "status"];
+
+}
+
+message DeleteShopRequest {
+	string ID 			= 1 [
+		(validate.rules).string = {
+			min_len: 4,  
+			max_len: 32,
+		},
+		json_name = "id"
+	]; 
+}
+
+message GETRequest {
+	google.protobuf.Struct query_params = 1;
+}
+
+
+
+
+message ShopResponse {
+	int32 Code 								= 1 [ json_name = "code"];
+    string Message 							= 2 [ json_name = "message"];
+	repeated google.protobuf.Value  Result 	= 3 [ json_name = "result"]; 
+}
+
+message EmptyShopResponse {
+	int32 Page 		= 1 [
+		(validate.rules).int32.gt = 0,
+		json_name="page"
+	];
+	int32 Offset 	= 2 [
+		(validate.rules).int32.gt = 0,
+		json_name="offset"
+	];
+}
+
+service ProfileService {
+
+	rpc Save(CreateShopRequest) returns (ShopResponse) {
+		option (google.api.http) = {
+			post: "/v1/shop/create",
+			body: "*"
+		};
+	};
+
+		rpc Update(UpdateShopRequest) returns (ShopResponse) {
+		option (google.api.http) = {
+			patch: "/v1/shop/update",
+			body: "*"
+		};
+	};
+
+	rpc Delete(UpdateShopStatusRequest) returns (ShopResponse) {
+		option (google.api.http) = {
+			patch: "/v1/shop/update/status",
+			body: "*"
+		};
+	};
+rpc GetShopStatus(GETRequest) returns (ShopResponse) {
+		option (google.api.http) = {
+			get: "/v1/shop",
+		};
+	};
+
+	rpc GetShop(GETRequest) returns (ShopResponse) {
+		option (google.api.http) = {
+			get: "/v1/shop/status",
+		};
+	};
+	
+} 
+
+
+
