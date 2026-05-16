@@ -12,7 +12,7 @@ func (_this *CreateGroupPolicy) Name() string {
 	return "CreateGroupPolicy"
 }
 
-func (_this *CreateGroupPolicy) MapToModel() *model.GroupPolicy {
+func (_this *CreateGroupPolicy) MapToGroupPolicy() *model.GroupPolicy {
 	return &model.GroupPolicy{
 		User:   _this.User,
 		Group:  _this.Group,
