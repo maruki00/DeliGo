@@ -17,7 +17,7 @@ func (_this *CreatePolicy) Name() string {
 	return "CreatePolicy"
 }
 
-func (_this *CreatePolicy) MapToModel() *model.Policy {
+func (_this *CreatePolicy) MapToPolicy() *model.Policy {
 	return &model.Policy{
 		Role:       _this.Role,
 		Resource:   _this.Resource,
