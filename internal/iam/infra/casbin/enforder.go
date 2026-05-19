@@ -1,29 +1,37 @@
-package casbin
+package PkgAuth
 
 import (
 	"context"
 
 	"github.com/casbin/casbin/v3"
+	gormadapter "github.com/casbin/gorm-adapter/v3"
+	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 )
 
-type Enforcer struct {
-	engine *casbin.Enforcer
+type Authz struct {
+	adapter *gormadapter.Adapter
+	engine  *casbin.Enforcer
 }
 
-func New(
-	engine *casbin.Enforcer,
-) *Enforcer {
-	return &Enforcer{
+func NewEnforcer(
+	db *pkgPostgres.PGHandler,
+	cfg string,
+) *Authz {
+	return &Authz{
 		engine: engine,
 	}
 }
 
-func (e *Enforcer) AddPolicy(
+func (authz *Authz) GetEngine() *casbin.Enforcer {
+	return e.engine
+}
+
+func (authz *Authz) AddPolicy(
 	ctx context.Context,
-	values ...interface{},
+	values ...string,
 ) error {
 
-	_, err := e.engine.AddPolicy(values...)
+	_, err := e.engine.AddPolicy(values)
 
 	if err != nil {
 		return err
@@ -32,12 +40,12 @@ func (e *Enforcer) AddPolicy(
 	return e.engine.SavePolicy()
 }
 
-func (e *Enforcer) AddGroupingPolicy(
+func (authz *Authz) AddGroupingPolicy(
 	ctx context.Context,
-	values ...interface{},
+	values ...string,
 ) error {
 
-	_, err := e.engine.AddGroupingPolicy(values...)
+	_, err := e.engine.AddGroupingPolicy(values)
 
 	if err != nil {
 		return err
@@ -46,7 +54,7 @@ func (e *Enforcer) AddGroupingPolicy(
 	return e.engine.SavePolicy()
 }
 
-func (e *Enforcer) Check(
+func (authz *Authz) Check(
 	ctx context.Context,
 	sub string,
 	obj string,
