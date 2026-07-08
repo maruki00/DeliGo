@@ -54,6 +54,7 @@ func main() {
 	app, clean, err := app.InitApp(cfg)
 	if err != nil {
 		clean()
+		cancel()
 		panic(err)
 
 	}
