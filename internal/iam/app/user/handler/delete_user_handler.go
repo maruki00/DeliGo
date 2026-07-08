@@ -6,7 +6,6 @@ import (
 
 	userCommand "github.com/maruki00/deligo/internal/iam/app/user/command"
 	"github.com/maruki00/deligo/internal/iam/domain/contract"
-	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	sharedvo "github.com/maruki00/deligo/internal/shared/value_object"
 	pkgCqrs "github.com/maruki00/deligo/pkg/cqrs"
 )
