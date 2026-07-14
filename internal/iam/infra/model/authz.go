@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type AUTHZ struct {
+type Authz struct {
 	ID          string
 	Name        string
 	Action      string
@@ -13,41 +13,41 @@ type AUTHZ struct {
 	UpdatedAt   time.Time
 }
 
-func (_this *AUTHZ) GetID() string {
+func (_this *Authz) GetID() string {
 	return _this.ID
 }
-func (_this *AUTHZ) GetName() string {
+func (_this *Authz) GetName() string {
 	return _this.Name
 }
-func (_this *AUTHZ) GetAction() string {
+func (_this *Authz) GetAction() string {
 	return _this.Action
 }
-func (_this *AUTHZ) GetDescription() string {
+func (_this *Authz) GetDescription() string {
 	return _this.Description
 }
 
-func (_this *AUTHZ) SetID(ID string) {
+func (_this *Authz) SetID(ID string) {
 	_this.ID = ID
 }
-func (_this *AUTHZ) SetName(Name string) {
+func (_this *Authz) SetName(Name string) {
 	_this.Name = Name
 }
-func (_this *AUTHZ) SetAction(Action string) {
+func (_this *Authz) SetAction(Action string) {
 	_this.Action = Action
 }
-func (_this *AUTHZ) SetDescription(Description string) {
+func (_this *Authz) SetDescription(Description string) {
 	_this.Description = Description
 }
-func (_this *AUTHZ) GetCreatedAt() time.Time {
+func (_this *Authz) GetCreatedAt() time.Time {
 	return _this.CreatedAt
 }
-func (_this *AUTHZ) GetUpdatedAt() time.Time {
+func (_this *Authz) GetUpdatedAt() time.Time {
 	return _this.UpdatedAt
 }
 
-func (_this *AUTHZ) SetCreatedAt(CreatedAt time.Time) {
+func (_this *Authz) SetCreatedAt(CreatedAt time.Time) {
 	_this.CreatedAt = CreatedAt
 }
-func (_this *AUTHZ) SetUpdatedAt(UpdatedAt time.Time) {
+func (_this *Authz) SetUpdatedAt(UpdatedAt time.Time) {
 	_this.UpdatedAt = UpdatedAt
 }
