@@ -40,7 +40,7 @@ func NewAuthzRepo(db *pkgPostgres.PGHandler, config string) (*AuthzRepo, error) 
 	return &authz, nil
 }
 
-func (_this *AuthzRepo) SavePolicy(ctx context.Context, policy model.Policy) error {
+func (_this *AuthzRepo) SavePolicy(ctx context.Context, policy *model.Policy) error {
 	mapped := policy.Map2Casbin()
 
 	ok, err := _this.enforcer.AddPolicy(mapped.V0, mapped.V1, mapped.V2, mapped.V3, mapped.V4, mapped.V5)
@@ -56,7 +56,7 @@ func (_this *AuthzRepo) SavePolicy(ctx context.Context, policy model.Policy) err
 	return nil
 }
 
-func (_this *AuthzRepo) SaveGoupPolicy(ctx context.Context, group model.GroupPolicy) error {
+func (_this *AuthzRepo) SaveGoupPolicy(ctx context.Context, group *model.GroupPolicy) error {
 	mapped := group.Map2Casbin()
 	ok, err := _this.enforcer.AddGroupingPolicy(mapped.V0, mapped.V1, mapped.V2)
 	if err != nil {
