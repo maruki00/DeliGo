@@ -1,10 +1,9 @@
 package entity
 
 import (
-	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
-	"github.com/maruki00/deligo/internal/iam/infra/model"
 	"time"
 
+	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +12,7 @@ type UserEntity interface {
 	SetUsername(Username string)
 	SetEmail(Email string)
 	SetTenantID(TenantID valueobjects.ID)
-	SetPassword(Password valueobjects.Password)
+	SetPassword(Password valueobjects.PWD)
 	SetPasswordChangedAt(PasswordChangedAt *time.Time)
 	SetIsActive(IsActive bool)
 	SetLastLogin(LastLogin *time.Time)
@@ -27,7 +26,7 @@ type UserEntity interface {
 	GetUsername() string
 	GetEmail() string
 	GetTenantID() valueobjects.ID
-	GetPassword() valueobjects.Password
+	GetPassword() valueobjects.PWD
 	GetPasswordChangedAt() *time.Time
 	GetIsActive() bool
 	GetLastLogin() *time.Time
@@ -36,5 +35,4 @@ type UserEntity interface {
 	GetDeletedAt() gorm.DeletedAt
 	GetCreatedAt() time.Time
 	GetUpdatedAt() time.Time
-	GetPolicies() []*model.Policy
 }
