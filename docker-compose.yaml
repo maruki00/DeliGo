@@ -1,4 +1,4 @@
-version: "3.8"
+# version: "3.8"
 
 services:
   # rabbitmq:
@@ -19,7 +19,7 @@ services:
   #   networks: 
   #     - deligo_network
   postgres:
-    image: postgres:latest #postgres:17-alpine
+    image: postgres:18 #postgres:17-alpine
     container_name: postgres_deligo
     restart: 'no'
     ports:
@@ -37,15 +37,14 @@ services:
       retries: 3
     networks:
       - deligo_network
-  # adminer:
-  #   image: adminer
-  #   container_name: adminer_deligo
-  #   restart: always
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - deligo_network
-  
+  adminer:
+    image: adminer
+    container_name: adminer_deligo
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - deligo_network
   # pgadmin:
   #   container_name: pgadmin_deligo
   #   image: dpage/pgadmin4
@@ -55,13 +54,13 @@ services:
   #     PGADMIN_DEFAULT_PASSWORD: admin
   #     PGADMIN_CONFIG_SERVER_MODE: 'False'
   #   volumes:
-  #      - ./.data/pgadmin:/var/lib/pgadmin
-
+  #     - ./.data/pgadmin:/var/lib/pgadmin
+  #   networks:
+  #     - deligo_network
   #   ports:
   #     - "5050:80"
   #   networks:
   #     - deligo_network
-
 
 networks:
   deligo_network:
