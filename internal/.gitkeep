@@ -1,0 +1,4 @@
+*.yaml
+.data
+config*
+.env
