@@ -1,29 +1,28 @@
 package model
 
 import (
-	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	"time"
 
+	valueobjects "github.com/maruki00/deligo/internal/iam/domain/valueobject"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	ID                valueobjects.ID       `json:"id" gorm:"type:uuid;primaryKey"`
-	Username          string                `json:"user_name" gorm:"type:varchar(255)"`
-	Email             string                `json:"email" gorm:"type:varchar(255)"`
-	TenantID          valueobjects.ID       `json:"tenant_id" gorm:"type:varchar(255)"`
-	Password          valueobjects.Password `json:"password" gorm:"type:varchar(255)"`
-	PasswordChangedAt *time.Time            `json:"password_changed_at" gorm:"type:varchar(255)"`
-	IsActive          bool                  `json:"is_active" gorm:"default:0"`
-	LastLogin         *time.Time            `json:"last_login" `
-	MFAEnabled        bool                  `json:"mfa_enabled" gorm:"default:0"`
-	MFASecret         string                `json:"mfa_secret"`
-	Profile           *Profile              `json:"profile" gorm:"foreignKey:UserID"`
-	Policies          []*Policy             `json:"policies" gorm:"many2many:user_policies;"`
-	Role              *Role                 `json:"role"`
-	DeletedAt         gorm.DeletedAt        `json:"deleted_at" gorm:"index"`
-	CreatedAt         time.Time             `json:"created_at" gorm:"not null;default:now()"`
-	UpdatedAt         time.Time             `json:"updated_at" gorm:"not null;default:now()"`
+	ID                valueobjects.ID
+	Username          string
+	Email             string
+	TenantID          valueobjects.ID
+	Password          valueobjects.PWD
+	PasswordChangedAt *time.Time
+	IsActive          bool
+	LastLogin         *time.Time
+	MFAEnabled        bool
+	MFASecret         string
+	Profile           any
+	Role              string
+	DeletedAt         gorm.DeletedAt
+	CreatedAt         time.Time
+	UpdatedAt         time.Time
 }
 
 func (_this *User) SetID(ID valueobjects.ID) {
@@ -38,7 +37,7 @@ func (_this *User) SetEmail(Email string) {
 func (_this *User) SetTenantID(TenantID valueobjects.ID) {
 	_this.TenantID = TenantID
 }
-func (_this *User) SetPassword(Password valueobjects.Password) {
+func (_this *User) SetPassword(Password valueobjects.PWD) {
 	_this.Password = Password
 }
 func (_this *User) SetPasswordChangedAt(PasswordChangedAt *time.Time) {
@@ -78,40 +77,9 @@ func (_this *User) GetEmail() string {
 func (_this *User) GetTenantID() valueobjects.ID {
 	return _this.TenantID
 }
-func (_this *User) GetPassword() valueobjects.Password {
+func (_this *User) GetPassword() valueobjects.PWD {
 	return _this.Password
 }
 func (_this *User) GetPasswordChangedAt() *time.Time {
 	return _this.PasswordChangedAt
-}
-func (_this *User) GetIsActive() bool {
-	return _this.IsActive
-}
-func (_this *User) GetLastLogin() *time.Time {
-	return _this.LastLogin
-}
-func (_this *User) GetMFAEnabled() bool {
-	return _this.MFAEnabled
-}
-func (_this *User) GetMFASecret() string {
-	return _this.MFASecret
-}
-func (_this *User) GetDeletedAt() gorm.DeletedAt {
-	return _this.DeletedAt
-}
-func (_this *User) GetCreatedAt() time.Time {
-	return _this.CreatedAt
-}
-func (_this *User) GetUpdatedAt() time.Time {
-	return _this.UpdatedAt
-}
-
-//	func (_this *User) GetProfile() *Profile {
-//		return _this.Profile
-//	}
-func (_this *User) GetGroups() []*Group {
-	return _this.Groups
-}
-func (_this *User) GetPolicies() []*Policy {
-	return _this.Policies
 }
