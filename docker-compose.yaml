@@ -19,7 +19,7 @@ services:
   #   networks: 
   #     - deligo_network
   postgres:
-    image: postgres:18 #postgres:17-alpine
+    image: postgres:17-alpine
     container_name: postgres_deligo
     restart: 'no'
     ports:
@@ -27,8 +27,8 @@ services:
     volumes:
       - ./.data/postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: deligo
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d deligo"]
