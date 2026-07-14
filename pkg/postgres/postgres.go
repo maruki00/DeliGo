@@ -1,6 +1,7 @@
 package pkgPostgres
 
 import (
+	"fmt"
 	"log/slog"
 
 	_ "github.com/lib/pq"
@@ -27,7 +28,7 @@ func NewDB(dsn string) (*PGHandler, error) {
 	}
 	var err error
 	for i := range objDB.MaxTries {
-		slog.Info("trying to connect to Postgres.", i, " times")
+		slog.Info("trying to connect to Postgres.", fmt.Sprintf("%d", i), " times")
 		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 			Logger: logger.Default.LogMode(logger.Info),
 		})
