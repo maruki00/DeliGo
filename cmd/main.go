@@ -1,22 +1,22 @@
-package main
+// package main
 
-import (
-	"fmt"
+// import (
+// 	"fmt"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-)
+// 	"gorm.io/driver/postgres"
+// 	"gorm.io/gorm"
+// )
 
-func main() {
-	db, err := gorm.Open(postgres.Open("host=172.18.0.3 port=5432 user=admin password=admin dbname=github.com/maruki00/deligo sslmode=disable"), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
+// func main() {
+// 	db, err := gorm.Open(postgres.Open("host=172.18.0.3 port=5432 user=admin password=admin dbname=github.com/maruki00/deligo sslmode=disable"), &gorm.Config{})
+// 	if err != nil {
+// 		panic("failed to connect database")
+// 	}
 
-	err = db.AutoMigrate(&models.User{})
-	if err != nil {
-		panic("migration failed: " + err.Error())
-	}
+// 	err = db.AutoMigrate(&model.User{})
+// 	if err != nil {
+// 		panic("migration failed: " + err.Error())
+// 	}
 
-	fmt.Println("Migration successful!")
-}
+// 	fmt.Println("Migration successful!")
+// }
