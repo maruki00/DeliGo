@@ -238,6 +238,7 @@ func (_this *UserServerService) ListByTenant(ctx context.Context, in *user_grpc.
 			Limit: limit,
 		},
 	}
+
 	res, err := _this.queryBus.Dispatch(ctx, query)
 	if err != nil {
 		return nil, err
