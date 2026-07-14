@@ -35,7 +35,7 @@ func (c *Consumer) MakeChannel() (*amqp091.Channel, error) {
 	return ch, nil
 }
 
-func (c *Consumer) StartConsumer(worker func(ctx context.Context, github.com/maruki00/deligo <-chan amqp091.Delivery)) error {
+func (c *Consumer) StartConsumer(worker func(ctx context.Context, delivery <-chan amqp091.Delivery)) error {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -58,7 +58,7 @@ func (c *Consumer) StartConsumer(worker func(ctx context.Context, github.com/mar
 			return err
 		}
 
-		github.com/maruki00/deligo, err := channel.Consume(
+		delivery, err := channel.Consume(
 			queue.Name,
 			"",
 			false,
@@ -72,7 +72,7 @@ func (c *Consumer) StartConsumer(worker func(ctx context.Context, github.com/mar
 		}
 
 		for i := 0; i < int(c.poolSize/len(c.queuesName)); i++ {
-			go worker(ctx, github.com/maruki00/deligo)
+			go worker(ctx, delivery)
 		}
 	}
 	forever := make(chan bool)
