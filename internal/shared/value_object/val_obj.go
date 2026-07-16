@@ -1,4 +1,4 @@
-package sharedvo
+package vo
 
 type ValObj interface {
 	SetValue(valu any)
