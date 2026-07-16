@@ -1,4 +1,4 @@
-package sharedvo
+package vo
 
 import (
 	"fmt"
