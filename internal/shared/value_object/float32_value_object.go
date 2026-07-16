@@ -1,4 +1,6 @@
-package sharedvo
+// package vo
+// this is value object
+package vo
 
 type FloafVAlueObject32 struct {
 	value float32
