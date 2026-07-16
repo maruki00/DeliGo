@@ -1,4 +1,4 @@
-package sharedvo
+package vo
 
 type PasswordValueObject struct {
 	value string
