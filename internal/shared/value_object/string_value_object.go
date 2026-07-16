@@ -1,4 +1,4 @@
-package sharedvo
+package vo
 
 type StringValeObject struct {
 	value string
