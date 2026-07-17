@@ -25,3 +25,10 @@ config.yaml
 
 test.go
 .data
+
+*.yaml
+.data
+config*
+.env
+plan.md
+plan.*
