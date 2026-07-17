@@ -2,28 +2,30 @@ package PkgAuth
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/casbin/casbin/v3"
-	gormadapter "github.com/casbin/gorm-adapter/v3"
-	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
 )
 
 type Authz struct {
-	adapter *gormadapter.Adapter
-	engine  *casbin.Enforcer
+	engine *casbin.Enforcer
 }
 
 func NewEnforcer(
-	db *pkgPostgres.PGHandler,
+	adapter interface{},
 	cfg string,
-) *Authz {
+) (*Authz, error) {
+	engine, err := casbin.NewEnforcer(cfg, adapter)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to create Casbin enforcer: %v", err)
+	}
 	return &Authz{
 		engine: engine,
-	}
+	}, nil
 }
 
 func (authz *Authz) GetEngine() *casbin.Enforcer {
-	return e.engine
+	return authz.engine
 }
 
 func (authz *Authz) AddPolicy(
@@ -31,13 +33,13 @@ func (authz *Authz) AddPolicy(
 	values ...string,
 ) error {
 
-	_, err := e.engine.AddPolicy(values)
+	_, err := authz.engine.AddPolicy(values)
 
 	if err != nil {
 		return err
 	}
 
-	return e.engine.SavePolicy()
+	return authz.engine.SavePolicy()
 }
 
 func (authz *Authz) AddGroupingPolicy(
@@ -45,13 +47,13 @@ func (authz *Authz) AddGroupingPolicy(
 	values ...string,
 ) error {
 
-	_, err := e.engine.AddGroupingPolicy(values)
+	_, err := authz.engine.AddGroupingPolicy(values)
 
 	if err != nil {
 		return err
 	}
 
-	return e.engine.SavePolicy()
+	return authz.engine.SavePolicy()
 }
 
 func (authz *Authz) Check(
@@ -61,7 +63,7 @@ func (authz *Authz) Check(
 	act string,
 ) (bool, error) {
 
-	return e.engine.Enforce(
+	return authz.engine.Enforce(
 		sub,
 		obj,
 		act,
