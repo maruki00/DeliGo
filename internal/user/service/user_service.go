@@ -13,17 +13,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type userService struct {
+type UserService struct {
 	repo      domain.UserRepository
 	publisher *rabbitmq.Publisher
 	cfg       *config.Config
 }
 
 func NewUserService(repo domain.UserRepository, publisher *rabbitmq.Publisher, cfg *config.Config) domain.UserService {
-	return &userService{repo: repo, publisher: publisher, cfg: cfg}
+	return &UserService{repo: repo, publisher: publisher, cfg: cfg}
 }
 
-func (s *userService) Register(ctx context.Context, req domain.RegisterRequest) (*domain.User, error) {
+func (s *UserService) Register(ctx context.Context, req domain.RegisterRequest) (*domain.User, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (s *userService) Register(ctx context.Context, req domain.RegisterRequest) 
 	return user, nil
 }
 
-func (s *userService) Login(ctx context.Context, req domain.LoginRequest) (*domain.LoginResponse, error) {
+func (s *UserService) Login(ctx context.Context, req domain.LoginRequest) (*domain.LoginResponse, error) {
 	user, err := s.repo.GetByEmail(ctx, req.Email)
 	if err != nil {
 		return nil, domain.ErrInvalidCredentials
@@ -74,7 +74,7 @@ func (s *userService) Login(ctx context.Context, req domain.LoginRequest) (*doma
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenStr, err := token.SignedString([]byte(s.cfg.JWTSecret))
+	tokenStr, err := token.SignedString([]byte(s.cfg.Security.JwtSecret))
 	if err != nil {
 		return nil, err
 	}
@@ -82,11 +82,11 @@ func (s *userService) Login(ctx context.Context, req domain.LoginRequest) (*doma
 	return &domain.LoginResponse{Token: tokenStr, User: user}, nil
 }
 
-func (s *userService) GetProfile(ctx context.Context, id uuid.UUID) (*domain.User, error) {
+func (s *UserService) GetUser(ctx context.Context, id uuid.UUID) (*domain.User, error) {
 	return s.repo.GetByID(ctx, id)
 }
 
-func (s *userService) UpdateProfile(ctx context.Context, id uuid.UUID, req domain.UpdateUserRequest) (*domain.User, error) {
+func (s *UserService) UpdateUser(ctx context.Context, id uuid.UUID, req domain.UpdateUserRequest) (*domain.User, error) {
 	user, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -108,12 +108,12 @@ func (s *userService) UpdateProfile(ctx context.Context, id uuid.UUID, req domai
 	return user, nil
 }
 
-func (s *userService) DeleteUser(ctx context.Context, id uuid.UUID) error {
+func (s *UserService) DeleteUser(ctx context.Context, id uuid.UUID) error {
 	return s.repo.Delete(ctx, id)
 }
 
-func (s *userService) ChangeUserStatus(ctx context.Context, id uuid.UUID, req domain.BanUserRequest) (*domain.User, error) {
-	user, err := s.repo.UpdateStatus(ctx, id, req.Status)
+func (s *UserService) ChangeUserStatus(ctx context.Context, id uuid.UUID, req domain.BanUserRequest) (*domain.User, error) {
+	user, err := s.repo.UpdateUserStatus(ctx, id, req.Status)
 	if err != nil {
 		return nil, err
 	}
@@ -129,6 +129,5 @@ func (s *userService) ChangeUserStatus(ctx context.Context, id uuid.UUID, req do
 		}
 		_ = s.publisher.PublishEvent(ctx, "user.banned", event)
 	}
-
 	return user, nil
 }
