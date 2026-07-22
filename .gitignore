@@ -27,8 +27,10 @@ test.go
 .data
 
 *.yaml
-.data
+.data/*
 config*
 .env
 plan.md
 plan.*
+*.yaml
+test.*
