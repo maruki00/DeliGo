@@ -33,6 +33,7 @@ func NewDB(dsn string) (*PGHandler, error) {
 			Logger: logger.Default.LogMode(logger.Info),
 		})
 		if err != nil {
+			slog.Error("failed", "connect to db", err.Error())
 			continue
 		}
 		objDB.DB = db
@@ -46,5 +47,9 @@ func (pg *PGHandler) GetDB() *gorm.DB {
 }
 
 func (pg *PGHandler) Close() {
-
+	db, err := pg.GetDB().DB()
+	if err != nil {
+		return
+	}
+	db.Close()
 }
