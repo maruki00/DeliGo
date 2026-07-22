@@ -19,13 +19,13 @@ func NewUserHandler(service domain.UserService) *UserHandler {
 }
 
 func (h *UserHandler) Register(c *gin.Context) {
-	var req domain.CreateUserRequest
+	var req domain.RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user, err := h.service.RegisterUser(c.Request.Context(), req)
+	user, err := h.service.Register(c.Request.Context(), req)
 	if err != nil {
 		h.handleError(c, err)
 		return
@@ -34,7 +34,23 @@ func (h *UserHandler) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, user)
 }
 
-func (h *UserHandler) GetProfile(c *gin.Context) {
+func (h *UserHandler) Login(c *gin.Context) {
+	var req domain.LoginRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	user, err := h.service.Login(c.Request.Context(), req)
+	if err != nil {
+		h.handleError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}
+
+func (h *UserHandler) GetUser(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid dynamic parameters matching standard UUID format"})
@@ -50,7 +66,7 @@ func (h *UserHandler) GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-func (h *UserHandler) UpdateProfile(c *gin.Context) {
+func (h *UserHandler) UpdateUser(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid dynamic parameters matching standard UUID format"})
@@ -115,8 +131,8 @@ func (h *UserHandler) handleError(c *gin.Context, err error) {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	case errors.Is(err, domain.ErrEmailAlreadyExists), errors.Is(err, domain.ErrPhoneAlreadyExists):
 		c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
-	case errors.Is(err, domain.ErrInvalidInput):
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// case errors.Is(err, domain.ErrInvalidInput):
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	default:
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "An unexpected error occurred internally"})
 	}
