@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"user-profile-service/internal/config"
-	"user-profile-service/internal/domain"
-	"user-profile-service/internal/rabbitmq"
+	"github.com/maruki00/deligo/internal/user/config"
+	"github.com/maruki00/deligo/internal/user/domain"
+	"github.com/maruki00/deligo/internal/user/rabbitmq"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"

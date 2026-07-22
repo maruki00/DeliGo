@@ -3,7 +3,7 @@ package repository
 import (
 	"time"
 
-	"github.com/maruki00/deligo/delivery/models"
+	"github.com/maruki00/deligo/internal/delivery/models"
 
 	"gorm.io/gorm"
 )

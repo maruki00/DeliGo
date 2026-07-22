@@ -3,8 +3,8 @@ package service
 import (
 	"log"
 
-	"github.com/maruki00/deligo/notifier/models"
-	"github.com/maruki00/deligo/notifier/repository"
+	"github.com/maruki00/deligo/internal/notifier/models"
+	"github.com/maruki00/deligo/internal/notifier/repository"
 )
 
 type Service interface {

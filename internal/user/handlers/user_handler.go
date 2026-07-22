@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"user-profile-service/internal/domain"
+	"github.com/maruki00/deligo/internal/user/domain"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"user-profile-service/internal/domain"
+	"github.com/maruki00/deligo/internal/user/domain"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"

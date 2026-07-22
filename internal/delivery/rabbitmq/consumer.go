@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/maruki00/deligo/delivery/service"
+	"github.com/maruki00/deligo/internal/delivery/service"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )

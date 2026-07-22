@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"user-profile-service/internal/config"
-	"user-profile-service/internal/domain"
+	"github.com/maruki00/deligo/internal/user/config"
+	"github.com/maruki00/deligo/internal/user/domain"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"

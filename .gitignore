@@ -22,7 +22,8 @@ go.work
 
 
 config.yaml
-
+.git
+tests/*
 test.go
 .data
 

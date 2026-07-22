@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/maruki00/deligo/order/middleware"
+	"github.com/maruki00/deligo/internal/order/middleware"
 
 	"github.com/gin-gonic/gin"
 )

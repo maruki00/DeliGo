@@ -1,26 +1,27 @@
 # version: "3.8"
 
 services:
-  # rabbitmq:
-  #   image: rabbitmq:4-management-alpine
-  #   container_name: rabbitmq_deligo
-  #   restart: 'no'
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: admin
-  #     RABBITMQ_DEFAULT_PASS: admin
-  #   healthcheck:
-  #     test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-  #     interval: 30s
-  #     timeout: 30s
-  #     retries: 3
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   networks: 
-  #     - deligo_network
-  postgres:
+  global_broker:
+    image: rabbitmq:4-management-alpine
+    container_name: global_broker
+    restart: 'no'
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks: 
+      - deligo_network
+
+  restaurant_db:
     image: postgres:17-alpine
-    container_name: postgres_deligo
+    container_name: restaurant_db
     restart: 'no'
     ports:
       - "5432:5432"
@@ -29,38 +30,29 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: deligo
+      POSTGRES_DB: restaurant
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d deligo"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d restaurant"]
       interval: 30s
       timeout: 30s
       retries: 3
     networks:
       - deligo_network
-  adminer:
-    image: adminer
-    container_name: adminer_deligo
-    restart: always
-    ports:
-      - "8080:8080"
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: 'no'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - ./.data/pgadmin:/var/lib/pgadmin
     networks:
       - deligo_network
-  # pgadmin:
-  #   container_name: pgadmin_deligo
-  #   image: dpage/pgadmin4
-  #   restart: 'no'
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
-  #   volumes:
-  #     - ./.data/pgadmin:/var/lib/pgadmin
-  #   networks:
-  #     - deligo_network
-  #   ports:
-  #     - "5050:80"
-  #   networks:
-  #     - deligo_network
+    ports:
+      - "5050:80"
 
 networks:
   deligo_network:

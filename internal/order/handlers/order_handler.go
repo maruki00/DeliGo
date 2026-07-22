@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/maruki00/deligo/order/requests"
-	"github.com/maruki00/deligo/order/service"
+	"github.com/maruki00/deligo/internal/order/requests"
+	"github.com/maruki00/deligo/internal/order/service"
 
 	"github.com/gin-gonic/gin"
 )

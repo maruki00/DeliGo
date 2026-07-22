@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/maruki00/deligo/notifier/models"
-	"github.com/maruki00/deligo/notifier/service"
+	"github.com/maruki00/deligo/internal/notifier/models"
+	"github.com/maruki00/deligo/internal/notifier/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"

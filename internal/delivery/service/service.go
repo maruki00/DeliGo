@@ -5,8 +5,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/maruki00/deligo/delivery-service/models"
-	"github.com/maruki00/deligo/delivery-service/repository"
+	"github.com/maruki00/deligo/internal/delivery/models"
+	"github.com/maruki00/deligo/internal/delivery/repository"
 )
 
 type DeliveryService interface {

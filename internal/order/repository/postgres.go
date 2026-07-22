@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/maruki00/deligo/order/domain"
+	"github.com/maruki00/deligo/internal/order/domain"
 
 	"gorm.io/gorm"
 )

@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/maruki00/deligo/order/domain"
-	"github.com/maruki00/deligo/order/rabbitmq"
-	"github.com/maruki00/deligo/order/requests"
+	"github.com/maruki00/deligo/internal/order/domain"
+	"github.com/maruki00/deligo/internal/order/rabbitmq"
+	"github.com/maruki00/deligo/internal/order/requests"
 
 	"github.com/google/uuid"
 )

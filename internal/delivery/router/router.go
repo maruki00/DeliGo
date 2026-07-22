@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/maruki00/deligo/delivery/handlers"
-	"github.com/maruki00/deligo/delivery/middleware"
+	"github.com/maruki00/deligo/internal/delivery/handlers"
+	"github.com/maruki00/deligo/internal/delivery/middleware"
 
 	"github.com/gin-gonic/gin"
 )
