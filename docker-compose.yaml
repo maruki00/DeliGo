@@ -18,13 +18,33 @@ services:
       - "15672:15672"
     networks: 
       - deligo_network
+  
+  iam_db:
+    image: postgres:17-alpine
+    container_name: iam_db
+    restart: 'no'
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.data/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: iam
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d iam"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      - deligo_network
 
   restaurant_db:
     image: postgres:17-alpine
     container_name: restaurant_db
     restart: 'no'
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./.data/postgres_data:/var/lib/postgresql/data
     environment:
