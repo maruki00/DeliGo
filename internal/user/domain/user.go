@@ -88,14 +88,14 @@ type UserRepository interface {
 	GetByEmail(ctx context.Context, email string) (*User, error)
 	Update(ctx context.Context, user *User) error
 	Delete(ctx context.Context, id uuid.UUID) error
-	UpdateStatus(ctx context.Context, id uuid.UUID, status string) (*User, error)
+	UpdateUserStatus(ctx context.Context, id uuid.UUID, status string) (*User, error)
 }
 
 type UserService interface {
 	Register(ctx context.Context, req RegisterRequest) (*User, error)
 	Login(ctx context.Context, req LoginRequest) (*LoginResponse, error)
-	GetProfile(ctx context.Context, id uuid.UUID) (*User, error)
-	UpdateProfile(ctx context.Context, id uuid.UUID, req UpdateUserRequest) (*User, error)
+	GetUser(ctx context.Context, id uuid.UUID) (*User, error)
+	UpdateUser(ctx context.Context, id uuid.UUID, req UpdateUserRequest) (*User, error)
 	DeleteUser(ctx context.Context, id uuid.UUID) error
 	ChangeUserStatus(ctx context.Context, id uuid.UUID, req BanUserRequest) (*User, error)
 }
