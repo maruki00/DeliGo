@@ -12,22 +12,22 @@ import (
 	"gorm.io/gorm"
 )
 
-type userRepository struct {
+type UserRepository struct {
 	db *gorm.DB
 }
 
 func NewUserRepository(db *gorm.DB) domain.UserRepository {
-	return &userRepository{db: db}
+	return &UserRepository{db: db}
 }
 
-func (r *userRepository) Create(ctx context.Context, user *domain.User) error {
+func (r *UserRepository) Create(ctx context.Context, user *domain.User) error {
 	if err := r.db.WithContext(ctx).Create(user).Error; err != nil {
 		return r.handleDBError(err)
 	}
 	return nil
 }
 
-func (r *userRepository) GetByID(ctx context.Context, id uuid.UUID) (*domain.User, error) {
+func (r *UserRepository) GetByID(ctx context.Context, id uuid.UUID) (*domain.User, error) {
 	var user domain.User
 	if err := r.db.WithContext(ctx).First(&user, "id = ?", id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -38,7 +38,7 @@ func (r *userRepository) GetByID(ctx context.Context, id uuid.UUID) (*domain.Use
 	return &user, nil
 }
 
-func (r *userRepository) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
+func (r *UserRepository) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
 	var user domain.User
 	if err := r.db.WithContext(ctx).First(&user, "email = ?", email).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -49,14 +49,14 @@ func (r *userRepository) GetByEmail(ctx context.Context, email string) (*domain.
 	return &user, nil
 }
 
-func (r *userRepository) Update(ctx context.Context, user *domain.User) error {
+func (r *UserRepository) Update(ctx context.Context, user *domain.User) error {
 	if err := r.db.WithContext(ctx).Save(user).Error; err != nil {
 		return r.handleDBError(err)
 	}
 	return nil
 }
 
-func (r *userRepository) Delete(ctx context.Context, id uuid.UUID) error {
+func (r *UserRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	res := r.db.WithContext(ctx).Delete(&domain.User{}, "id = ?", id)
 	if res.Error != nil {
 		return res.Error
@@ -67,7 +67,7 @@ func (r *userRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	return nil
 }
 
-func (r *userRepository) UpdateStatus(ctx context.Context, id uuid.UUID, status string) (*domain.User, error) {
+func (r *UserRepository) UpdateUserStatus(ctx context.Context, id uuid.UUID, status string) (*domain.User, error) {
 	var user domain.User
 	err := r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := tx.First(&user, "id = ?", id).Error; err != nil {
@@ -85,7 +85,7 @@ func (r *userRepository) UpdateStatus(ctx context.Context, id uuid.UUID, status 
 	return &user, nil
 }
 
-func (r *userRepository) handleDBError(err error) error {
+func (r *UserRepository) handleDBError(err error) error {
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 		if strings.Contains(pgErr.Message, "email") {
