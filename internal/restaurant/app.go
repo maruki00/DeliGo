@@ -2,12 +2,12 @@ package restaurant
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/maruki00/deligo/cmd/restaurant/config"
+	"github.com/maruki00/deligo/internal/restaurant/config"
+	"github.com/maruki00/deligo/internal/restaurant/handlers"
+	"github.com/maruki00/deligo/internal/restaurant/repositories"
+	"github.com/maruki00/deligo/internal/restaurant/routers"
+	"github.com/maruki00/deligo/internal/restaurant/services"
 	pkgPostgres "github.com/maruki00/deligo/pkg/postgres"
-	"github.com/maruki00/deligo/restaurant/handlers"
-	"github.com/maruki00/deligo/restaurant/repositories"
-	"github.com/maruki00/deligo/restaurant/routers"
-	"github.com/maruki00/deligo/restaurant/services"
 )
 
 type App struct {
@@ -18,7 +18,7 @@ type App struct {
 	HTTPServer *gin.Engine
 }
 
-func Iinit(cfg *config.Cfg) (*App, func(), error) {
+func Iinit(cfg *config.Config) (*App, func(), error) {
 
 	db, err := pkgPostgres.NewDB(cfg.DB.Dsn)
 	if err != nil {
