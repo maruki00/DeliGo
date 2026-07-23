@@ -131,8 +131,8 @@ func (h *UserHandler) handleError(c *gin.Context, err error) {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	case errors.Is(err, domain.ErrEmailAlreadyExists), errors.Is(err, domain.ErrPhoneAlreadyExists):
 		c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
-	// case errors.Is(err, domain.ErrInvalidInput):
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	case errors.Is(err, domain.ErrUserSuspendedBanned):
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	default:
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "An unexpected error occurred internally"})
 	}
