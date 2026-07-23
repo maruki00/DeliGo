@@ -79,6 +79,10 @@ func (s *UserService) Login(ctx context.Context, req domain.LoginRequest) (*doma
 		return nil, err
 	}
 
+	if err := s.repo.CreateToken(ctx, claims.Email, tokenStr); err != nil {
+		return nil, err
+	}
+
 	return &domain.LoginResponse{Token: tokenStr, User: user}, nil
 }
 
