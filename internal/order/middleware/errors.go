@@ -20,3 +20,21 @@ func GlobalErrorHandler() gin.HandlerFunc {
 		}
 	}
 }
+
+func AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		// c.Request.Cookies()
+		// c.Next()
+
+		// if len(c.Errors) > 0 {
+		// 	err := c.Errors.Last()
+		// 	c.JSON(http.StatusBadRequest, gin.H{
+		// 		"success": false,
+		// 		"error":   err.Error(),
+		// 	})
+		// 	c.Abort()
+		// }
+		c.Next()
+	}
+}
