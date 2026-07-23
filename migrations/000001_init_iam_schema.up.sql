@@ -16,6 +16,15 @@ CREATE TABLE users (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Core Auth table
+CREATE TABLE auths (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    token TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Casbin Rules table (Managed via GORM adapter, consumed by API Gateway or internal logic)
 CREATE TABLE casbin_rule (
     id SERIAL PRIMARY KEY,
@@ -28,6 +37,8 @@ CREATE TABLE casbin_rule (
     v5 VARCHAR(100)
 );
 
+CREATE INDEX idx_users ON users (email);
+CREATE INDEX idx_auth ON auth (email, token);
 CREATE INDEX idx_casbin_rule ON casbin_rule (ptype, v0, v1, v2);
 
 -- Automated update trigger for handling updated_at mutation
