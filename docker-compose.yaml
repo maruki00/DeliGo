@@ -45,7 +45,7 @@ services:
         ipv4_address: 172.19.0.10
     
   iam_service:
-    container_name: iam_service-deligo
+    container_name: iam_service
     restart: "always"
     build:
       context: .
@@ -60,7 +60,42 @@ services:
       - iam_db
 
 
-
+####################################################
+#             this Order service                     #
+####################################################
+  order_db:
+    image: postgres:17-alpine
+    container_name: order_db
+    restart: 'always'
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./.data/order/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: order
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d order"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.20
+    
+  order_service:
+    container_name: order_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-order
+    ports:
+      - 8082:8082
+    networks:
+      - deligo_network
+    depends_on:
+      - order_db
 
 
   # restaurant_db:
