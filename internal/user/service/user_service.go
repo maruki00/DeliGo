@@ -14,13 +14,14 @@ import (
 )
 
 type UserService struct {
-	repo      domain.UserRepository
+	userRepo  domain.UserRepository
+	authRepo  domain.AuthRepository
 	publisher *rabbitmq.Publisher
 	cfg       *config.Config
 }
 
-func NewUserService(repo domain.UserRepository, publisher *rabbitmq.Publisher, cfg *config.Config) domain.UserService {
-	return &UserService{repo: repo, publisher: publisher, cfg: cfg}
+func NewUserService(uRepo domain.UserRepository, authRepo domain.AuthRepository, publisher *rabbitmq.Publisher, cfg *config.Config) domain.UserService {
+	return &UserService{userRepo: uRepo, authRepo: authRepo, publisher: publisher, cfg: cfg}
 }
 
 func (s *UserService) Register(ctx context.Context, req domain.RegisterRequest) (*domain.User, error) {
@@ -40,7 +41,7 @@ func (s *UserService) Register(ctx context.Context, req domain.RegisterRequest) 
 		Status:       "active",
 	}
 
-	if err := s.repo.Create(ctx, user); err != nil {
+	if err := s.userRepo.Create(ctx, user); err != nil {
 		return nil, err
 	}
 
@@ -48,7 +49,7 @@ func (s *UserService) Register(ctx context.Context, req domain.RegisterRequest) 
 }
 
 func (s *UserService) Login(ctx context.Context, req domain.LoginRequest) (*domain.LoginResponse, error) {
-	user, err := s.repo.GetByEmail(ctx, req.Email)
+	user, err := s.userRepo.GetByEmail(ctx, req.Email)
 	if err != nil {
 		return nil, domain.ErrInvalidCredentials
 	}
@@ -79,19 +80,23 @@ func (s *UserService) Login(ctx context.Context, req domain.LoginRequest) (*doma
 		return nil, err
 	}
 
-	if err := s.repo.CreateToken(ctx, claims.Email, tokenStr); err != nil {
+	if err := s.authRepo.CreateToken(ctx, claims.Email, tokenStr); err != nil {
 		return nil, err
 	}
 
 	return &domain.LoginResponse{Token: tokenStr, User: user}, nil
 }
 
+func (s *UserService) CheckAuth(ctx context.Context, token string) error {
+	return s.authRepo.Check(ctx, token)
+}
+
 func (s *UserService) GetUser(ctx context.Context, id uuid.UUID) (*domain.User, error) {
-	return s.repo.GetByID(ctx, id)
+	return s.userRepo.GetByID(ctx, id)
 }
 
 func (s *UserService) UpdateUser(ctx context.Context, id uuid.UUID, req domain.UpdateUserRequest) (*domain.User, error) {
-	user, err := s.repo.GetByID(ctx, id)
+	user, err := s.userRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -106,18 +111,18 @@ func (s *UserService) UpdateUser(ctx context.Context, id uuid.UUID, req domain.U
 		user.Phone = req.Phone
 	}
 
-	if err := s.repo.Update(ctx, user); err != nil {
+	if err := s.userRepo.Update(ctx, user); err != nil {
 		return nil, err
 	}
 	return user, nil
 }
 
 func (s *UserService) DeleteUser(ctx context.Context, id uuid.UUID) error {
-	return s.repo.Delete(ctx, id)
+	return s.userRepo.Delete(ctx, id)
 }
 
 func (s *UserService) ChangeUserStatus(ctx context.Context, id uuid.UUID, req domain.BanUserRequest) (*domain.User, error) {
-	user, err := s.repo.UpdateUserStatus(ctx, id, req.Status)
+	user, err := s.userRepo.UpdateUserStatus(ctx, id, req.Status)
 	if err != nil {
 		return nil, err
 	}
