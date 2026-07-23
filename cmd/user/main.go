@@ -21,7 +21,7 @@ import (
 func main() {
 
 	var cfgFile string
-	flag.StringVar(&cfgFile, "config", "../configs/user.yaml", "config path")
+	flag.StringVar(&cfgFile, "config", "config.yaml", "config path")
 	flag.Parse()
 
 	cfg, err := pkgConfigs.LoadCfg[config.Config](cfgFile)
@@ -56,5 +56,4 @@ func main() {
 	defer cancel()
 	_ = server.Shutdown(ctx)
 	log.Println("Operational engine shut down safely without resource leaks.")
-
 }
