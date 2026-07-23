@@ -52,6 +52,10 @@ type LoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type AuthRequest struct {
+	Token string `json:"token" binding:"required"`
+}
+
 type LoginResponse struct {
 	Token string `json:"token"`
 	User  *User  `json:"user"`
@@ -98,9 +102,15 @@ type UserRepository interface {
 	UpdateUserStatus(ctx context.Context, id uuid.UUID, status string) (*User, error)
 }
 
+type AuthRepository interface {
+	CreateToken(ctx context.Context, email, token string) error
+	Check(ctx context.Context, token string) error
+}
+
 type UserService interface {
 	Register(ctx context.Context, req RegisterRequest) (*User, error)
 	Login(ctx context.Context, req LoginRequest) (*LoginResponse, error)
+	CheckAuth(ctx context.Context, token string) error
 	GetUser(ctx context.Context, id uuid.UUID) (*User, error)
 	UpdateUser(ctx context.Context, id uuid.UUID, req UpdateUserRequest) (*User, error)
 	DeleteUser(ctx context.Context, id uuid.UUID) error
