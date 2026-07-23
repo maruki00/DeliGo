@@ -2,12 +2,11 @@
 set -euo pipefail
 
 # System parameters configuration points
-API_URL="http://localhost:8080/api/v1"
-
+API_URL="http://localhost:8081/api/v1"
 echo "=== 1. Creating Users (via Admin Context Authorization) ==="
 
 # Register standard customer
-CUSTOMER_RESP=$(curl -s -X POST "$API_URL/users" \
+CUSTOMER_RESP=$(curl -s -X POST "http://localhost:8081/api/v1/auth/register" \
   -H "Content-Type: application/json" \
   -H "X-User-Role: admin" \
   -d '{
