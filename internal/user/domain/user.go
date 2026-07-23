@@ -18,6 +18,12 @@ var (
 	ErrUnauthorized        = errors.New("unauthorized token access")
 )
 
+type Auth struct {
+	Id    int    `gorm:"type:int;primaryKey" json:"id"`
+	Email string `gorm:"type:varchar(255);unique;not null" json:"email"`
+	Token string `gorm:"type:varchar(255);not null" json:"token"`
+}
+
 type User struct {
 	ID           uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
 	Email        string    `gorm:"type:varchar(255);unique;not null" json:"email"`
@@ -86,6 +92,7 @@ type UserRepository interface {
 	Create(ctx context.Context, user *User) error
 	GetByID(ctx context.Context, id uuid.UUID) (*User, error)
 	GetByEmail(ctx context.Context, email string) (*User, error)
+	CreateToken(ctx context.Context, email, token string) error
 	Update(ctx context.Context, user *User) error
 	Delete(ctx context.Context, id uuid.UUID) error
 	UpdateUserStatus(ctx context.Context, id uuid.UUID, status string) (*User, error)
