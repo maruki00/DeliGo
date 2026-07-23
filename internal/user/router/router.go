@@ -9,6 +9,7 @@ var SetupRouter = func(handler *handlers.UserHandler) *gin.Engine {
 	router := gin.Default()
 	router.POST("/api/v1/auth/register", handler.Register)
 	router.POST("/api/v1/auth/login", handler.Login)
+	router.POST("/api/v1/auth", handler.Auth)
 
 	secureAPI := router.Group("/api/v1")
 	// secureAPI.Use(middleware.SecurityEngine(enforcer, cfg))
