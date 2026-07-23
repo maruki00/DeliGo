@@ -3,6 +3,8 @@ package domain
 import (
 	"context"
 	"time"
+
+	"github.com/maruki00/deligo/internal/order/requests"
 )
 
 type OrderStatus string
@@ -50,4 +52,13 @@ type OrderRepository interface {
 	FindByID(ctx context.Context, id string) (*Order, error)
 	UpdateStatus(ctx context.Context, id string, currentStatus, newStatus OrderStatus) error
 	Update(ctx context.Context, order *Order) error
+}
+
+type OrderService interface {
+	CreateOrder(ctx context.Context, req requests.CreateOrderRequest) (*Order, error)
+	ConfirmOrder(ctx context.Context, id string) error
+	AcceptOrder(ctx context.Context, id string, actor string) error
+	CompleteDelivery(ctx context.Context, id string) error
+	CancelOrder(ctx context.Context, id string) error
+	GetOrder(ctx context.Context, id string) (*Order, error)
 }
