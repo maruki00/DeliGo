@@ -17,9 +17,31 @@ CUSTOMER_RESP=$(curl -s -X POST "http://localhost:8081/api/v1/auth/register" \
     "last_name": "Doe",
     "role": "customer"
   }')
+  
 echo "Customer Creation JSON Response Output:"
 echo "$CUSTOMER_RESP" | grep -o '"id":"[^"]*' | grep -o '[^"]*$' || true
 CUSTOMER_ID=$(echo "$CUSTOMER_RESP" | grep -o '"id":"[^"]*' | grep -o '[^"]*$' || echo "FAILED")
+
+
+
+
+#login
+curl -s -X POST "http://localhost:8081/api/v1/auth/login" \
+  -H "Content-Type: application/json" \
+  -H "X-User-Role: admin" \
+  -d '{
+    "email": "customer@delivery.com",
+    "password": "securepassword123"
+  }')
+#auth
+curl -s -X POST "http://localhost:8081/api/v1/auth" \
+  -H "Content-Type: application/json" \
+  -H "X-User-Role: admin" \
+  -d '{
+    "token": "customer@delivery.com"
+  }')
+
+
 
 # Register standard courier
 COURIER_RESP=$(curl -s -X POST "$API_URL/users" \
@@ -50,3 +72,17 @@ curl -i -X POST "$API_URL/users/$COURIER_ID/ban" \
   -H "Content-Type: application/json" \
   -H "X-User-Role: admin" \
   -d '{"status": "banned"}'
+
+echo -e "\n=== 5. Update user ==="
+curl -i -X PUT "$API_URL/users/$COURIER_ID" \
+  -H "Content-Type: application/json" \
+  -H "X-User-Role: admin" \
+  -d '{
+    "id": "34324123423421342342134",
+    "email": "courier@delivery.com",
+    "password": "fastdelivery456",
+    "phone": "+1555014488",
+    "first_name": "Jane",
+    "last_name": "Speedy",
+    "role": "courier"
+  }'
