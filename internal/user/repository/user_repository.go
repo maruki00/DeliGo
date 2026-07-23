@@ -27,6 +27,19 @@ func (r *UserRepository) Create(ctx context.Context, user *domain.User) error {
 	return nil
 }
 
+func (r *UserRepository) CreateToken(ctx context.Context, email, token string) error {
+	if err := r.db.Model(&domain.Auth{}).WithContext(ctx).Where("email", email).Delete(nil).Error; err != nil {
+		return r.handleDBError(err)
+	}
+	if err := r.db.Model(&domain.Auth{}).WithContext(ctx).Save(&domain.Auth{
+		Token: token,
+		Email: email,
+	}).Error; err != nil {
+		return r.handleDBError(err)
+	}
+	return nil
+}
+
 func (r *UserRepository) GetByID(ctx context.Context, id uuid.UUID) (*domain.User, error) {
 	var user domain.User
 	if err := r.db.WithContext(ctx).First(&user, "id = ?", id).Error; err != nil {
