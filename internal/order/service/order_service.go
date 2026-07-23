@@ -13,11 +13,11 @@ import (
 )
 
 type OrderService struct {
-	repo *domain.OrderRepository
+	repo domain.OrderRepository
 	mq   *rabbitmq.RabbitMQClient
 }
 
-func NewOrderService(repo *domain.OrderRepository, mq *rabbitmq.RabbitMQClient) *OrderService {
+func NewOrderService(repo domain.OrderRepository, mq *rabbitmq.RabbitMQClient) *OrderService {
 	return &OrderService{repo: repo, mq: mq}
 }
 
@@ -48,7 +48,7 @@ func (s *OrderService) CreateOrder(ctx context.Context, req requests.CreateOrder
 		Items:           orderItems,
 	}
 
-	if err := (*s.repo).Create(ctx, order); err != nil {
+	if err := (s.repo).Create(ctx, order); err != nil {
 		return nil, err
 	}
 
@@ -64,7 +64,7 @@ func (s *OrderService) CreateOrder(ctx context.Context, req requests.CreateOrder
 }
 
 func (s *OrderService) ConfirmOrder(ctx context.Context, id string) error {
-	err := (*s.repo).UpdateStatus(ctx, id, domain.StatusPendingPayment, domain.StatusPaid)
+	err := s.repo.UpdateStatus(ctx, id, domain.StatusPendingPayment, domain.StatusPaid)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func (s *OrderService) ConfirmOrder(ctx context.Context, id string) error {
 }
 
 func (s *OrderService) AcceptOrder(ctx context.Context, id string, actor string) error {
-	order, err := (*s.repo).FindByID(ctx, id)
+	order, err := s.repo.FindByID(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -102,7 +102,7 @@ func (s *OrderService) AcceptOrder(ctx context.Context, id string, actor string)
 		return errors.New("invalid lifecycle actor configuration")
 	}
 
-	err = (*s.repo).UpdateStatus(ctx, id, expectedCurrentStatus, targetStatus)
+	err = s.repo.UpdateStatus(ctx, id, expectedCurrentStatus, targetStatus)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (s *OrderService) AcceptOrder(ctx context.Context, id string, actor string)
 }
 
 func (s *OrderService) CompleteDelivery(ctx context.Context, id string) error {
-	err := (*s.repo).UpdateStatus(ctx, id, domain.StatusPickedUp, domain.StatusDelivered)
+	err := s.repo.UpdateStatus(ctx, id, domain.StatusPickedUp, domain.StatusDelivered)
 	if err != nil {
 		return err
 	}
@@ -121,7 +121,7 @@ func (s *OrderService) CompleteDelivery(ctx context.Context, id string) error {
 }
 
 func (s *OrderService) CancelOrder(ctx context.Context, id string) error {
-	order, err := (*s.repo).FindByID(ctx, id)
+	order, err := s.repo.FindByID(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -130,7 +130,7 @@ func (s *OrderService) CancelOrder(ctx context.Context, id string) error {
 		return errors.New("cannot cancel an order once picked up or delivered")
 	}
 
-	err = (*s.repo).UpdateStatus(ctx, id, order.Status, domain.StatusCancelled)
+	err = s.repo.UpdateStatus(ctx, id, order.Status, domain.StatusCancelled)
 	if err != nil {
 		return err
 	}
@@ -140,5 +140,5 @@ func (s *OrderService) CancelOrder(ctx context.Context, id string) error {
 }
 
 func (s *OrderService) GetOrder(ctx context.Context, id string) (*domain.Order, error) {
-	return (*s.repo).FindByID(ctx, id)
+	return s.repo.FindByID(ctx, id)
 }
