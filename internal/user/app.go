@@ -14,7 +14,8 @@ import (
 
 type App struct {
 	DB         *pkgPostgres.PGHandler
-	Repo       domain.UserRepository
+	UserRepo   domain.UserRepository
+	AuthRepo   domain.AuthRepository
 	Svc        domain.UserService
 	Handler    *handlers.UserHandler
 	HTTPServer *gin.Engine
@@ -22,23 +23,20 @@ type App struct {
 
 func Init(cfg *config.Config) (*App, func(), error) {
 
-	// ctx, cancel := context.WithCancel(context.Background())
-	// defer cancel()
 	db, err := pkgPostgres.NewDB(cfg.DB.DSN)
 	if err != nil {
 		return nil, func() {
-			// cancel()
 		}, err
 	}
 	publisher, err := rabbitmq.NewPublisher(cfg.RabbitMQ.RabbitMQURL)
 	if err != nil {
 		return nil, func() {
 			db.Close()
-			// cancel()
 		}, err
 	}
-	repo := repository.NewUserRepository(db.DB)
-	svc := service.NewUserService(repo, publisher, cfg)
+	uRepo := repository.NewUserRepository(db.DB)
+	authRepo := repository.NewAuthRepository(db.DB)
+	svc := service.NewUserService(uRepo, authRepo, publisher, cfg)
 	hdler := handlers.NewUserHandler(svc)
 
 	// adapter, err := gormadapter.NewAdapterByDB(db.GetDB())
@@ -67,7 +65,8 @@ func Init(cfg *config.Config) (*App, func(), error) {
 
 	return &App{
 			DB:         db,
-			Repo:       repo,
+			UserRepo:   uRepo,
+			AuthRepo:   authRepo,
 			Svc:        svc,
 			Handler:    hdler,
 			HTTPServer: router.SetupRouter(hdler),
