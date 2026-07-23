@@ -16,9 +16,13 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    networks: 
-      - deligo_network
-  
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.11
+
+####################################################
+#             this AIM service                     #
+####################################################
   iam_db:
     image: postgres:17-alpine
     container_name: iam_db
@@ -37,46 +41,69 @@ services:
       timeout: 30s
       retries: 3
     networks:
-      - deligo_network
-
-  restaurant_db:
-    image: postgres:17-alpine
-    container_name: restaurant_db
-    restart: 'no'
+      deligo_network:
+        ipv4_address: 172.19.0.10
+    
+  iam_service:
+    container_name: iam_service-deligo
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-iam
     ports:
-      - "5433:5432"
-    volumes:
-      - ./.data/postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: restaurant
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d restaurant"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+      - 8081:8081
+    # volumes:
+    #     - ./data/iam:/app
     networks:
       - deligo_network
+    depends_on:
+      - iam_db
 
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    restart: 'no'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - ./.data/pgadmin:/var/lib/pgadmin
-    networks:
-      - deligo_network
-    ports:
-      - "5050:80"
+
+
+
+
+  # restaurant_db:
+  #   image: postgres:17-alpine
+  #   container_name: restaurant_db
+  #   restart: 'no'
+  #   ports:
+  #     - "5433:5432"
+  #   volumes:
+  #     - ./.data/postgres_data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_USER: admin
+  #     POSTGRES_PASSWORD: admin
+  #     POSTGRES_DB: restaurant
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U admin -d restaurant"]
+  #     interval: 30s
+  #     timeout: 30s
+  #     retries: 3
+  #   networks:
+  #     - deligo_network
+
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   restart: 'no'
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
+  #   volumes:
+  #     - ./.data/pgadmin:/var/lib/pgadmin
+  #   networks:
+  #     - deligo_network
+  #   ports:
+  #     - "5050:80"
 
 networks:
   deligo_network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
 
 volumes:
   data:
