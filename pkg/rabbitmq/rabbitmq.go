@@ -2,7 +2,6 @@ package pkgRabbitmq
 
 import (
 	"errors"
-	"fmt"
 	"log/slog"
 	"time"
 
@@ -17,27 +16,19 @@ const (
 )
 
 func NewRabbitMQ(dsn RabbitMQDSN) (*amqp091.Connection, error) {
-	var cnx *amqp091.Connection
 	var tries int = 0
 	for tries < _MAXTRIES {
 		slog.Info("trying to connect to RabbitMQ.")
-		fmt.Println("dsn : ", string(dsn))
 		conn, err := amqp091.Dial(string(dsn))
-		if err != nil {
-			slog.Error("could not reach the rabbitmq server " + err.Error())
-			tries++
-			time.Sleep(_SLEEP * time.Second)
-			continue
+		if err == nil {
+			slog.Info("connected to rabbitmq")
+			return conn, nil
 		}
-		cnx = conn
-		break
-	}
-	if cnx == nil {
-		slog.Error("could not connect the rabbitmq server")
-		return nil, errors.New("could not connect to rabbitmq server")
-	}
+		slog.Error("could not reach the rabbitmq server " + err.Error())
+		tries++
+		time.Sleep(_SLEEP * time.Second)
 
-	slog.Info("connected to rabbitmq")
-	return cnx, nil
+	}
+	return nil, errors.New("could not connect to rabbitmq server")
 
 }
