@@ -40,7 +40,6 @@ func Init(cfg *config.Config) (*App, func(), error) {
 	repo := repository.NewUserRepository(db.DB)
 	svc := service.NewUserService(repo, publisher, cfg)
 	hdler := handlers.NewUserHandler(svc)
-	server := gin.Default()
 
 	// adapter, err := gormadapter.NewAdapterByDB(db.GetDB())
 	// if err != nil {
