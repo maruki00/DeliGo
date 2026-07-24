@@ -21,7 +21,7 @@ func main() {
 	var mgrPath string
 
 	flag.StringVar(&cfgPath, "config", "config.yaml", "config path")
-	flag.StringVar(&mgrPath, "config", "", "migrations path")
+	flag.StringVar(&mgrPath, "migration", "", "migrations path")
 	flag.Parse()
 
 	if mgrPath != "" {
