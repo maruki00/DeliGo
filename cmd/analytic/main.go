@@ -1,63 +1,64 @@
 package main
 
+import (
+	"context"
+	"flag"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
+	"github.com/maruki00/deligo/internal/analytic"
+	"github.com/maruki00/deligo/internal/analytic/config"
+	pkgConfigs "github.com/maruki00/deligo/pkg/config"
+)
 
 func main() {
-	log.Println("Starting Feedback & Analytics Service deployment runtime initialization...")
 
-	cfg := config.LoadConfig()
+	var cfgPath string
+	var mgrPath string
 
-	// 1. Core Data Store Architecture Setups
-	db := database.InitDB(cfg)
-	log.Println("Executing automatic structural migrations updates rules checks...")
-	if err := db.AutoMigrate(&domain.Feedback{}, &domain.Analytic{}); err != nil {
-		log.Fatalf("Database structural layout binding migrations failures detected: %v", err)
+	flag.StringVar(&cfgPath, "config", "config.yaml", "config path")
+	flag.StringVar(&mgrPath, "migration", "", "migrations path")
+	flag.Parse()
+
+	if mgrPath != "" {
+		// migtation goes here
 	}
 
-	// 2. Messaging Pipeline Topology Wiring
-	rabbitConn, rabbitChannel := messaging.InitRabbitMQ(cfg)
-	defer rabbitConn.Close()
-	defer rabbitChannel.Close()
+	cfg, err := pkgConfigs.LoadCfg[config.Config](cfgPath)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// 3. Repository Dependency Injections Graph Mapping
-	feedbackRepo := repository.NewFeedbackRepository(db)
-	analyticRepo := repository.NewAnalyticRepository(db)
+	app, clean, err := analytic.Init(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer clean()
 
-	publisher := messaging.NewEventPublisher(rabbitChannel, cfg)
-
-	// 4. Start Background Message Pipeline Engine Lifecycle Listening Context
-	consumer := messaging.NewEventConsumer(rabbitChannel, cfg, analyticRepo)
-	consumer.StartConsuming()
-
-	// 5. Service & Handler Core System Layers Wiring
-	feedbackSvc := service.NewFeedbackService(feedbackRepo, analyticRepo, publisher)
-	feedbackHandler := handler.NewFeedbackHandler(feedbackSvc)
-
-	engine := router.SetupRouter(feedbackHandler)
-
-	// 6. Graceful Server Lifecycle Management Shutdown Setups
-	srv := &http.Server{
-		Addr:    ":" + cfg.ServerPort,
-		Handler: engine,
+	addr := fmt.Sprintf("%s:%s", cfg.HTTPSerer.Host, cfg.HTTPSerer.Port)
+	srv := http.Server{
+		Addr:    addr,
+		Handler: app.HTTPServer,
 	}
 
 	go func() {
-		log.Printf("Application engine network listening up over port :%s", cfg.ServerPort)
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Critical runtime HTTP failure error hook caught: %s\n", err)
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatal(err)
 		}
 	}()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	log.Println("Shutdown signal intercepted. Terminating operational endpoints down cleanly...")
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("Server forced to shutdown incorrectly: %v", err)
+		log.Fatal(err)
 	}
-
-	log.Println("Service closed out smoothly.")
+	log.Println("Server shutdown gracefully")
 }
