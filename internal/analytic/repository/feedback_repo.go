@@ -6,18 +6,14 @@ import (
 	"gorm.io/gorm"
 )
 
-type FeedbackRepository interface {
-	Save(feedback *domain.Feedback) error
-}
-
-type feedbackRepository struct {
+type FeedbackRepository struct {
 	db *gorm.DB
 }
 
-func NewFeedbackRepository(db *gorm.DB) FeedbackRepository {
-	return &feedbackRepository{db: db}
+func NewFeedbackRepository(db *gorm.DB) *FeedbackRepository {
+	return &FeedbackRepository{db: db}
 }
 
-func (r *feedbackRepository) Save(feedback *domain.Feedback) error {
+func (r *FeedbackRepository) Save(feedback *domain.Feedback) error {
 	return r.db.Create(feedback).Error
 }
