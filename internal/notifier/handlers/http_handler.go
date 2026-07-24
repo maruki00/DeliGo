@@ -4,17 +4,16 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/maruki00/deligo/internal/notifier/models"
-	"github.com/maruki00/deligo/internal/notifier/service"
+	"github.com/maruki00/deligo/internal/notifier/domain"
 
 	"github.com/gin-gonic/gin"
 )
 
 type HTTPHandler struct {
-	svc service.Service
+	svc domain.NotifierService
 }
 
-func NewHTTPHandler(svc service.Service) *HTTPHandler {
+func NewHTTPHandler(svc domain.NotifierService) *HTTPHandler {
 	return &HTTPHandler{svc: svc}
 }
 
@@ -74,7 +73,7 @@ func (h *HTTPHandler) UploadFile(c *gin.Context) {
 		return
 	}
 
-	fileModel := models.File{
+	fileModel := domain.File{
 		ID:       fileReq.ID,
 		OwnerID:  fileReq.OwnerID,
 		FileURL:  fileReq.FileURL,
