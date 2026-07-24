@@ -5,33 +5,26 @@ import (
 	"time"
 
 	"github.com/maruki00/deligo/internal/analytic/domain"
-	"github.com/maruki00/deligo/internal/analytic/messaging"
-	"github.com/maruki00/deligo/internal/analytic/repository"
 	"github.com/maruki00/deligo/internal/analytic/requests"
 
 	"github.com/google/uuid"
 )
 
-type FeedbackService interface {
-	SubmitFeedback(req *requests.CreateFeedbackRequest) (*domain.Feedback, error)
-	GetAnalyticsByProductID(productID string) (*domain.Analytic, error)
+type FeedbackService struct {
+	feedbackRepo domain.FeedbackRepository
+	analyticRepo domain.AnalyticRepository
+	publisher    domain.EventPublisher
 }
 
-type feedbackService struct {
-	feedbackRepo repository.FeedbackRepository
-	analyticRepo repository.AnalyticRepository
-	publisher    messaging.EventPublisher
-}
-
-func NewFeedbackService(fRepo repository.FeedbackRepository, aRepo repository.AnalyticRepository, pub messaging.EventPublisher) FeedbackService {
-	return &feedbackService{
+func NewFeedbackService(fRepo domain.FeedbackRepository, aRepo domain.AnalyticRepository, pub domain.EventPublisher) *FeedbackService {
+	return &FeedbackService{
 		feedbackRepo: fRepo,
 		analyticRepo: aRepo,
 		publisher:    pub,
 	}
 }
 
-func (s *feedbackService) SubmitFeedback(req *requests.CreateFeedbackRequest) (*domain.Feedback, error) {
+func (s *FeedbackService) SubmitFeedback(req *requests.CreateFeedbackRequest) (*domain.Feedback, error) {
 	fb := &domain.Feedback{
 		ID:            uuid.New().String(),
 		OrderID:       req.OrderID,
@@ -59,6 +52,6 @@ func (s *feedbackService) SubmitFeedback(req *requests.CreateFeedbackRequest) (*
 	return fb, nil
 }
 
-func (s *feedbackService) GetAnalyticsByProductID(productID string) (*domain.Analytic, error) {
+func (s *FeedbackService) GetAnalyticsByProductID(productID string) (*domain.Analytic, error) {
 	return s.analyticRepo.GetByProductID(productID)
 }
