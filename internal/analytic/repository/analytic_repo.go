@@ -8,20 +8,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type AnalyticRepository interface {
-	UpdateMetrics(productID string) error
-	GetByProductID(productID string) (*domain.Analytic, error)
-}
-
-type analyticRepository struct {
+type AnalyticRepository struct {
 	db *gorm.DB
 }
 
-func NewAnalyticRepository(db *gorm.DB) AnalyticRepository {
-	return &analyticRepository{db: db}
+func NewAnalyticRepository(db *gorm.DB) *AnalyticRepository {
+	return &AnalyticRepository{db: db}
 }
 
-func (r *analyticRepository) GetByProductID(productID string) (*domain.Analytic, error) {
+func (r *AnalyticRepository) GetByProductID(productID string) (*domain.Analytic, error) {
 	var analytic domain.Analytic
 	err := r.db.Where("product_id = ?", productID).First(&analytic).Error
 	if err != nil {
@@ -30,7 +25,7 @@ func (r *analyticRepository) GetByProductID(productID string) (*domain.Analytic,
 	return &analytic, nil
 }
 
-func (r *analyticRepository) UpdateMetrics(productID string) error {
+func (r *AnalyticRepository) UpdateMetrics(productID string) error {
 	return r.db.Transaction(func(tx *gorm.DB) error {
 		var summary struct {
 			TotalReviews int
