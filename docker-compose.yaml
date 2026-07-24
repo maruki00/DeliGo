@@ -135,6 +135,82 @@ services:
       - restaurant_db
 
 
+####################################################
+#              Courier service                     #
+####################################################
+  analytics_db:
+    image: postgres:17-alpine
+    container_name: analytics_db
+    restart: 'always'
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./.data/analytics/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: analytics
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d analytics"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.40
+            
+  analytics_service:
+    container_name: analytics_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-analytics
+    ports:
+      - 8084:8084
+    networks:
+      - deligo_network
+    depends_on:
+      - analytics_db
+
+
+####################################################
+#              Courier service                     #
+####################################################
+  analytics_db:
+    image: postgres:17-alpine
+    container_name: analytics_db
+    restart: 'always'
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./.data/analytics/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: analytics
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d analytics"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.50
+            
+  analytics_service:
+    container_name: analytics_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-analytics
+    ports:
+      - 8084:8084
+    networks:
+      - deligo_network
+    depends_on:
+      - analytics_db
+
+
 networks:
   deligo_network:
     driver: bridge
