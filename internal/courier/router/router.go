@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter(h *handlers.DeliveryHandler) *gin.Engine {
+func SetupRouter(h *handlers.CourierHandler) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery())
 	r.Use(middleware.RequestLogger())
@@ -21,8 +21,8 @@ func SetupRouter(h *handlers.DeliveryHandler) *gin.Engine {
 		{
 			orders.POST("/accept", h.AcceptOrder)
 			orders.POST("/arrive", h.ArriveAtRestaurant)
-			orders.POST("/pickup", h.StartDelivery)
-			orders.POST("/complete", h.CompleteDelivery)
+			orders.POST("/pickup", h.StartCourier)
+			orders.POST("/complete", h.CompleteCourier)
 		}
 	}
 	return r
