@@ -6,18 +6,17 @@ import (
 	"time"
 
 	"github.com/maruki00/deligo/internal/courier/domain"
-	"github.com/maruki00/deligo/internal/courier/repository"
 )
 
-type DeliveryService struct {
-	repo repository.DeliveryRepository
+type CourierService struct {
+	repo domain.CourierRepository
 }
 
-func NewDeliveryService(repo repository.DeliveryRepository) *DeliveryService {
-	return &DeliveryService{repo: repo}
+func NewCourierService(repo domain.CourierRepository) *CourierService {
+	return &CourierService{repo: repo}
 }
 
-func (s *DeliveryService) RegisterCourier(id string, vehicle string, lat, lon float64, active bool) error {
+func (s *CourierService) RegisterCourier(id string, vehicle string, lat, lon float64, active bool) error {
 	c := &domain.Courier{
 		ID:               id,
 		VehicleType:      vehicle,
@@ -28,7 +27,7 @@ func (s *DeliveryService) RegisterCourier(id string, vehicle string, lat, lon fl
 	return s.repo.CreateCourier(c)
 }
 
-func (s *DeliveryService) HandleOrderConfirmed(orderID string, restaurantLat, restaurantLon float64) error {
+func (s *CourierService) HandleOrderConfirmed(orderID string, restaurantLat, restaurantLon float64) error {
 	assignment := &domain.OrderCourier{
 		OrderID: orderID,
 		Status:  "searching",
@@ -69,7 +68,7 @@ func (s *DeliveryService) HandleOrderConfirmed(orderID string, restaurantLat, re
 	return nil
 }
 
-func (s *DeliveryService) AcceptOrder(orderID string, courierID string) error {
+func (s *CourierService) AcceptOrder(orderID string, courierID string) error {
 	assignment, err := s.repo.GetOrderCourierByOrder(orderID)
 	if err != nil {
 		return err
@@ -85,7 +84,7 @@ func (s *DeliveryService) AcceptOrder(orderID string, courierID string) error {
 	return s.repo.UpdateOrderCourier(assignment)
 }
 
-func (s *DeliveryService) ArriveAtRestaurant(orderID string, courierID string) error {
+func (s *CourierService) ArriveAtRestaurant(orderID string, courierID string) error {
 	assignment, err := s.repo.GetOrderCourierByOrder(orderID)
 	if err != nil {
 		return err
@@ -101,7 +100,7 @@ func (s *DeliveryService) ArriveAtRestaurant(orderID string, courierID string) e
 	return s.repo.UpdateOrderCourier(assignment)
 }
 
-func (s *DeliveryService) StartDelivery(orderID string, courierID string) error {
+func (s *CourierService) StartCourier(orderID string, courierID string) error {
 	assignment, err := s.repo.GetOrderCourierByOrder(orderID)
 	if err != nil {
 		return err
@@ -119,7 +118,7 @@ func (s *DeliveryService) StartDelivery(orderID string, courierID string) error 
 	return s.repo.UpdateOrderCourier(assignment)
 }
 
-func (s *DeliveryService) CompleteDelivery(orderID string, courierID string) error {
+func (s *CourierService) CompleteCourier(orderID string, courierID string) error {
 	assignment, err := s.repo.GetOrderCourierByOrder(orderID)
 	if err != nil {
 		return err
@@ -137,7 +136,7 @@ func (s *DeliveryService) CompleteDelivery(orderID string, courierID string) err
 	return s.repo.UpdateOrderCourier(assignment)
 }
 
-func (s *DeliveryService) TrackLocation(courierID string, orderID string, lat, lon float64) error {
+func (s *CourierService) TrackLocation(courierID string, orderID string, lat, lon float64) error {
 	if err := s.repo.UpdateCourierLocation(courierID, lat, lon); err != nil {
 		return err
 	}
