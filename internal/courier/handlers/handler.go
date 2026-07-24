@@ -3,21 +3,21 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/maruki00/deligo/internal/courier/domain"
 	"github.com/maruki00/deligo/internal/courier/requests"
-	"github.com/maruki00/deligo/internal/courier/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-type DeliveryHandler struct {
-	svc service.DeliveryService
+type CourierHandler struct {
+	svc domain.CourierService
 }
 
-func NewDeliveryHandler(svc service.DeliveryService) *DeliveryHandler {
-	return &DeliveryHandler{svc: svc}
+func NewCourierHandler(svc domain.CourierService) *CourierHandler {
+	return &CourierHandler{svc: svc}
 }
 
-func (h *DeliveryHandler) RegisterCourier(c *gin.Context) {
+func (h *CourierHandler) RegisterCourier(c *gin.Context) {
 	var req requests.CourierSetupRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -31,7 +31,7 @@ func (h *DeliveryHandler) RegisterCourier(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "courier registered successfully"})
 }
 
-func (h *DeliveryHandler) AcceptOrder(c *gin.Context) {
+func (h *CourierHandler) AcceptOrder(c *gin.Context) {
 	orderID := c.Param("order_id")
 	var req requests.OrderStatusChangeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -46,7 +46,7 @@ func (h *DeliveryHandler) AcceptOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "order accepted by courier"})
 }
 
-func (h *DeliveryHandler) ArriveAtRestaurant(c *gin.Context) {
+func (h *CourierHandler) ArriveAtRestaurant(c *gin.Context) {
 	orderID := c.Param("order_id")
 	var req requests.OrderStatusChangeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -61,7 +61,7 @@ func (h *DeliveryHandler) ArriveAtRestaurant(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "courier arrived at restaurant"})
 }
 
-func (h *DeliveryHandler) StartDelivery(c *gin.Context) {
+func (h *CourierHandler) StartCourier(c *gin.Context) {
 	orderID := c.Param("order_id")
 	var req requests.OrderStatusChangeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -69,14 +69,14 @@ func (h *DeliveryHandler) StartDelivery(c *gin.Context) {
 		return
 	}
 
-	if err := h.svc.StartDelivery(orderID, req.CourierID); err != nil {
+	if err := h.svc.StartCourier(orderID, req.CourierID); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"status": "delivery transit started"})
 }
 
-func (h *DeliveryHandler) CompleteDelivery(c *gin.Context) {
+func (h *CourierHandler) CompleteCourier(c *gin.Context) {
 	orderID := c.Param("order_id")
 	var req requests.OrderStatusChangeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -84,14 +84,14 @@ func (h *DeliveryHandler) CompleteDelivery(c *gin.Context) {
 		return
 	}
 
-	if err := h.svc.CompleteDelivery(orderID, req.CourierID); err != nil {
+	if err := h.svc.CompleteCourier(orderID, req.CourierID); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"status": "delivery completed successfully"})
 }
 
-func (h *DeliveryHandler) PingLocation(c *gin.Context) {
+func (h *CourierHandler) PingLocation(c *gin.Context) {
 	var req requests.LocationPingRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
