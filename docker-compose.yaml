@@ -211,6 +211,43 @@ services:
       - analytics_db     
 
 
+####################################################
+#              Notifier service                    #
+####################################################
+  notofier_db:
+    image: postgres:17-alpine
+    container_name: notofier_db
+    restart: 'always'
+    ports:
+      - "5437:5432"
+    volumes:
+      - ./.data/notifier/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: notifier
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d notifier"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.60
+            
+  analytics_service:
+    container_name: notifier_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-notifier
+    ports:
+      - 8086:8086
+    networks:
+      - deligo_network
+    depends_on:
+      - notifier_db     
+
 networks:
   deligo_network:
     driver: bridge
