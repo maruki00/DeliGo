@@ -8,21 +8,21 @@ import (
 	"gorm.io/gorm"
 )
 
-type DeliveryRepository struct {
+type CourierRepository struct {
 	db *gorm.DB
 }
 
-func NewDeliveryRepository(db *gorm.DB) *DeliveryRepository {
-	return &DeliveryRepository{db: db}
+func NewCourierRepository(db *gorm.DB) *CourierRepository {
+	return &CourierRepository{db: db}
 }
 
-func (r *DeliveryRepository) GetActiveCouriers() ([]domain.Courier, error) {
+func (r *CourierRepository) GetActiveCouriers() ([]domain.Courier, error) {
 	var couriers []domain.Courier
 	err := r.db.Where("is_active = ?", true).Find(&couriers).Error
 	return couriers, err
 }
 
-func (r *DeliveryRepository) GetCourierBusyStatus(courierID string) (bool, error) {
+func (r *CourierRepository) GetCourierBusyStatus(courierID string) (bool, error) {
 	var count int64
 	activeStatuses := []string{"accepted", "at_restaurant", "picked_up"}
 	err := r.db.Model(&domain.OrderCourier{}).
@@ -31,15 +31,15 @@ func (r *DeliveryRepository) GetCourierBusyStatus(courierID string) (bool, error
 	return count > 0, err
 }
 
-func (r *DeliveryRepository) CreateOrderCourier(assignment *domain.OrderCourier) error {
+func (r *CourierRepository) CreateOrderCourier(assignment *domain.OrderCourier) error {
 	return r.db.Create(assignment).Error
 }
 
-func (r *DeliveryRepository) UpdateOrderCourier(assignment *domain.OrderCourier) error {
+func (r *CourierRepository) UpdateOrderCourier(assignment *domain.OrderCourier) error {
 	return r.db.Save(assignment).Error
 }
 
-func (r *DeliveryRepository) GetOrderCourierByOrder(orderID string) (*domain.OrderCourier, error) {
+func (r *CourierRepository) GetOrderCourierByOrder(orderID string) (*domain.OrderCourier, error) {
 	var assignment domain.OrderCourier
 	err := r.db.Where("order_id = ?", orderID).First(&assignment).Error
 	if err != nil {
@@ -48,7 +48,7 @@ func (r *DeliveryRepository) GetOrderCourierByOrder(orderID string) (*domain.Ord
 	return &assignment, nil
 }
 
-func (r *DeliveryRepository) UpdateCourierLocation(courierID string, lat, lon float64) error {
+func (r *CourierRepository) UpdateCourierLocation(courierID string, lat, lon float64) error {
 	return r.db.Model(&domain.Courier{}).
 		Where("id = ?", courierID).
 		Updates(map[string]interface{}{
@@ -58,10 +58,10 @@ func (r *DeliveryRepository) UpdateCourierLocation(courierID string, lat, lon fl
 		}).Error
 }
 
-func (r *DeliveryRepository) SaveTrackingLog(log *domain.OrderTracking) error {
+func (r *CourierRepository) SaveTrackingLog(log *domain.OrderTracking) error {
 	return r.db.Create(log).Error
 }
 
-func (r *DeliveryRepository) CreateCourier(courier *domain.Courier) error {
+func (r *CourierRepository) CreateCourier(courier *domain.Courier) error {
 	return r.db.Create(courier).Error
 }
