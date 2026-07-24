@@ -4,17 +4,17 @@ import (
 	"time"
 )
 
-type DeliveryService interface {
+type CourierService interface {
 	HandleOrderConfirmed(orderID string, restaurantLat, restaurantLon float64) error
 	AcceptOrder(orderID string, courierID string) error
 	ArriveAtRestaurant(orderID string, courierID string) error
-	StartDelivery(orderID string, courierID string) error
-	CompleteDelivery(orderID string, courierID string) error
+	StartCourier(orderID string, courierID string) error
+	CompleteCourier(orderID string, courierID string) error
 	TrackLocation(courierID string, orderID string, lat, lon float64) error
 	RegisterCourier(id string, vehicle string, lat, lon float64, active bool) error
 }
 
-type DeliveryRepository interface {
+type CourierRepository interface {
 	GetActiveCouriers() ([]Courier, error)
 	GetCourierBusyStatus(courierID string) (bool, error)
 	CreateOrderCourier(assignment *OrderCourier) error
