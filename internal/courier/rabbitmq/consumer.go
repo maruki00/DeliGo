@@ -18,11 +18,11 @@ type OrderConfirmedEvent struct {
 type RabbitMQConsumer struct {
 	conn    *amqp.Connection
 	channel *amqp.Channel
-	svc     domain.DeliveryService
+	svc     domain.CourierService
 	url     string
 }
 
-func NewRabbitMQConsumer(url string, svc domain.DeliveryService) *RabbitMQConsumer {
+func NewRabbitMQConsumer(url string, svc domain.CourierService) *RabbitMQConsumer {
 	return &RabbitMQConsumer{
 		url: url,
 		svc: svc,
@@ -66,23 +66,23 @@ func (c *RabbitMQConsumer) Start() {
 		log.Fatalf("Failed to register consumer: %v", err)
 	}
 
-	go func() {
-		for d := range msgs {
-			log.Printf("Received message: %s", d.Body)
-			var event OrderConfirmedEvent
-			if err := json.Unmarshal(d.Body, &event); err != nil {
-				log.Printf("Error unmarshaling event payload: %v", err)
-				continue
-			}
-
-			err := c.svc.HandleOrderConfirmed(event.OrderID, event.RestaurantLatitude, event.RestaurantLongitude)
-			if err != nil {
-				log.Printf("Error processing dispatch logic: %v", err)
-			} else {
-				log.Printf("Order %s successfully processed through courier dispatch pipeline", event.OrderID)
-			}
+	//go func() {
+	for d := range msgs {
+		log.Printf("Received message: %s", d.Body)
+		var event OrderConfirmedEvent
+		if err := json.Unmarshal(d.Body, &event); err != nil {
+			log.Printf("Error unmarshaling event payload: %v", err)
+			continue
 		}
-	}()
+
+		err := c.svc.HandleOrderConfirmed(event.OrderID, event.RestaurantLatitude, event.RestaurantLongitude)
+		if err != nil {
+			log.Printf("Error processing dispatch logic: %v", err)
+		} else {
+			log.Printf("Order %s successfully processed through courier dispatch pipeline", event.OrderID)
+		}
+	}
+	//}()
 
 	log.Printf(" [*] Listening to 'order.confirmed' event streaming channel...")
 }
