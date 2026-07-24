@@ -3,29 +3,19 @@ package service
 import (
 	"log"
 
-	"github.com/maruki00/deligo/internal/notifier/models"
-	"github.com/maruki00/deligo/internal/notifier/repository"
+	"github.com/maruki00/deligo/internal/notifier/domain"
 )
 
-type Service interface {
-	ProcessInboundNotification(userID, title, body string) error
-	GetUnreadNotifications(userID string) ([]models.Notification, error)
-	MarkNotificationAsRead(id uint, userID string) error
-	SaveChatMessage(m *models.ChatMessage) error
-	GetChatHistory(orderID string) ([]models.ChatMessage, error)
-	UploadFileMetadata(f *models.File) error
+type NotifierService struct {
+	repo domain.NotifierRepository
 }
 
-type service struct {
-	repo repository.Repository
+func NewNotifierService(repo domain.NotifierRepository) *NotifierService {
+	return &NotifierService{repo: repo}
 }
 
-func NewService(repo repository.Repository) Service {
-	return &service{repo: repo}
-}
-
-func (s *service) ProcessInboundNotification(userID, title, body string) error {
-	n := &models.Notification{
+func (s *NotifierService) ProcessInboundNotification(userID, title, body string) error {
+	n := &domain.Notification{
 		UserID: userID,
 		Title:  title,
 		Body:   body,
@@ -41,22 +31,22 @@ func (s *service) ProcessInboundNotification(userID, title, body string) error {
 	return nil
 }
 
-func (s *service) GetUnreadNotifications(userID string) ([]models.Notification, error) {
+func (s *NotifierService) GetUnreadNotifications(userID string) ([]domain.Notification, error) {
 	return s.repo.GetUnreadNotifications(userID)
 }
 
-func (s *service) MarkNotificationAsRead(id uint, userID string) error {
+func (s *NotifierService) MarkNotificationAsRead(id uint, userID string) error {
 	return s.repo.MarkNotificationAsRead(id, userID)
 }
 
-func (s *service) SaveChatMessage(m *models.ChatMessage) error {
+func (s *NotifierService) SaveChatMessage(m *domain.ChatMessage) error {
 	return s.repo.CreateChatMessage(m)
 }
 
-func (s *service) GetChatHistory(orderID string) ([]models.ChatMessage, error) {
+func (s *NotifierService) GetChatHistory(orderID string) ([]domain.ChatMessage, error) {
 	return s.repo.GetChatHistory(orderID)
 }
 
-func (s *service) UploadFileMetadata(f *models.File) error {
+func (s *NotifierService) UploadFileMetadata(f *domain.File) error {
 	return s.repo.CreateFile(f)
 }
