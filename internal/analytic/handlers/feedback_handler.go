@@ -4,18 +4,18 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/maruki00/deligo/internal/analytic/domain"
 	"github.com/maruki00/deligo/internal/analytic/requests"
-	"github.com/maruki00/deligo/internal/analytic/service"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type FeedbackHandler struct {
-	svc service.FeedbackService
+	svc domain.FeedbackService
 }
 
-func NewFeedbackHandler(svc service.FeedbackService) *FeedbackHandler {
+func NewFeedbackHandler(svc domain.FeedbackService) *FeedbackHandler {
 	return &FeedbackHandler{svc: svc}
 }
 
