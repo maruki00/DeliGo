@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/maruki00/deligo/internal/notifier/domain"
 	"github.com/maruki00/deligo/internal/notifier/models"
-	"github.com/maruki00/deligo/internal/notifier/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -19,7 +19,6 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
 		return true
-		// Production usage requires configuration controls
 	},
 }
 
@@ -32,10 +31,10 @@ type WSMessage struct {
 type Hub struct {
 	connections map[string]*websocket.Conn
 	mu          sync.RWMutex
-	svc         service.Service
+	svc         domain.NotifierService
 }
 
-func NewHub(svc service.Service) *Hub {
+func NewHub(svc domain.NotifierService) *Hub {
 	return &Hub{
 		connections: make(map[string]*websocket.Conn),
 		svc:         svc,
