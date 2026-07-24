@@ -138,20 +138,20 @@ services:
 ####################################################
 #              Courier service                     #
 ####################################################
-  analytics_db:
+  courier_db:
     image: postgres:17-alpine
-    container_name: analytics_db
+    container_name: courier_db
     restart: 'always'
     ports:
       - "5435:5432"
     volumes:
-      - ./.data/analytics/postgres_data:/var/lib/postgresql/data
+      - ./.data/courier/postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: analytics
+      POSTGRES_DB: courier
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d analytics"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d courier"]
       interval: 30s
       timeout: 30s
       retries: 3
@@ -159,29 +159,29 @@ services:
       deligo_network:
         ipv4_address: 172.19.0.40
             
-  analytics_service:
-    container_name: analytics_service
+  courier_service:
+    container_name: courier_service
     restart: "always"
     build:
       context: .
-      dockerfile: ./deployments/Dockerfile-analytics
+      dockerfile: ./deployments/Dockerfile-courier
     ports:
       - 8084:8084
     networks:
       - deligo_network
     depends_on:
-      - analytics_db
+      - courier_db
 
 
 ####################################################
-#              Courier service                     #
+#              Analytics service                     #
 ####################################################
   analytics_db:
     image: postgres:17-alpine
     container_name: analytics_db
     restart: 'always'
     ports:
-      - "5435:5432"
+      - "5436:5432"
     volumes:
       - ./.data/analytics/postgres_data:/var/lib/postgresql/data
     environment:
@@ -202,13 +202,13 @@ services:
     restart: "always"
     build:
       context: .
-      dockerfile: ./deployments/Dockerfile-analytics
+      dockerfile: ./deployments/Dockerfile-analytic
     ports:
-      - 8084:8084
+      - 8085:8085
     networks:
       - deligo_network
     depends_on:
-      - analytics_db
+      - analytics_db     
 
 
 networks:
