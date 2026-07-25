@@ -16,6 +16,7 @@ import (
 	pkgConfigs "github.com/maruki00/deligo/pkg/config"
 )
 
+
 func main() {
 
 	var cfgPath string
