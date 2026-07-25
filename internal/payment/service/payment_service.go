@@ -3,18 +3,16 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"math"
 
-	"github.com/maruki00/deligo/internal/payment/models"
+	"github.com/maruki00/deligo/internal/payment/domain"
+	"github.com/maruki00/deligo/internal/payment/rabbitmq"
 	"github.com/maruki00/deligo/internal/payment/requests"
 
-	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/charge"
-	"github.com/stripe/stripe-go/v72/refund"
 )
 
 type PaymentSucceededEvent struct {
@@ -25,35 +23,26 @@ type PaymentSucceededEvent struct {
 	Currency   string  `json:"currency"`
 }
 
-type PaymentService interface {
-	ProcessCharge(ctx context.Context, req *requests.ChargeRequest) (*models.Payment, error)
-	ProcessRefund(ctx context.Context, req *requests.RefundRequest) (*models.Payment, error)
-	HandleWebhook(ctx context.Context, payload []byte, sigHeader string, webhookSecret string) error
+type PaymentService struct {
+	repo       domain.PaymentRepository
+	amqpClient *rabbitmq.AMQPCliet
 }
 
-type paymentService struct {
-	repo       repo.PaymentRepository
-	ch         *amqp.Channel
-	exchange   string
-	routingKey string
-}
-
-func NewPaymentService(repo repo.PaymentRepository, ch *amqp.Channel, exchange string, routingKey string) PaymentService {
-	return &paymentService{
+func NewPaymentService(repo domain.PaymentRepository, amqp *rabbitmq.AMQPCliet) *PaymentService {
+	return &PaymentService{
 		repo:       repo,
-		ch:         ch,
-		exchange:   exchange,
-		routingKey: routingKey,
+		amqpClient: amqp,
 	}
 }
 
-func (s *paymentService) ProcessCharge(ctx context.Context, req *requests.ChargeRequest) (*models.Payment, error) {
-	p := &models.Payment{
+func (s *PaymentService) ProcessCharge(ctx context.Context, req *requests.ChargeRequest) (*domain.Payment, error) {
+
+	p := &domain.Payment{
 		OrderID:    req.OrderID,
 		CustomerID: req.CustomerID,
 		Amount:     req.Amount,
 		Currency:   req.Currency,
-		Status:     models.StatusInitiated,
+		Status:     domain.StatusInitiated,
 	}
 
 	if err := s.repo.Create(p); err != nil {
@@ -66,26 +55,26 @@ func (s *paymentService) ProcessCharge(ctx context.Context, req *requests.Charge
 		Amount:   stripe.Int64(stripeAmount),
 		Currency: stripe.String(req.Currency),
 		Source:   &stripe.SourceParams{Token: stripe.String(req.Token)},
-		Metadata: map[string]string{
-			"payment_id":  p.ID,
-			"order_id":    p.OrderID,
-			"customer_id": p.CustomerID,
-		},
+		// MetaData: map[string]string{
+		// 	"payment_id":  p.ID,
+		// 	"order_id":    p.OrderID,
+		// 	"customer_id": p.CustomerID,
+		// },
 	}
 
 	stripeCharge, err := charge.New(chargeParams)
 	if err != nil {
 		log.Printf("Stripe transaction failed for payment %s: %v", p.ID, err)
-		_ = s.repo.UpdateStatus(p.ID, models.StatusFailed, nil)
-		p.Status = models.StatusFailed
+		_ = s.repo.UpdateStatus(p.ID, domain.StatusFailed, nil)
+		p.Status = domain.StatusFailed
 		return p, fmt.Errorf("stripe processing failure: %w", err)
 	}
 
-	err = s.repo.UpdateStatus(p.ID, models.StatusSucceeded, &stripeCharge.ID)
+	err = s.repo.UpdateStatus(p.ID, domain.StatusSucceeded, &stripeCharge.ID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to finalize transaction record: %w", err)
 	}
-	p.Status = models.StatusSucceeded
+	p.Status = domain.StatusSucceeded
 	p.StripeChargeID = &stripeCharge.ID
 
 	s.publishSucceededEvent(p)
@@ -93,35 +82,12 @@ func (s *paymentService) ProcessCharge(ctx context.Context, req *requests.Charge
 	return p, nil
 }
 
-func (s *paymentService) ProcessRefund(ctx context.Context, req *requests.RefundRequest) (*models.Payment, error) {
-	p, err := s.repo.FindByOrderID(req.OrderID)
-	if err != nil {
-		return nil, fmt.Errorf("transaction log not found for order: %w", err)
-	}
+func (s *PaymentService) ProcessRefund(ctx context.Context, req *requests.RefundRequest) (*domain.Payment, error) {
 
-	if p.Status != models.StatusSucceeded || p.StripeChargeID == nil {
-		return nil, errors.New("cannot refund transaction unless status is succeeded")
-	}
-
-	refundParams := &stripe.RefundParams{
-		Charge: stripe.String(*p.StripeChargeID),
-	}
-
-	_, err = refund.New(refundParams)
-	if err != nil {
-		return nil, fmt.Errorf("stripe refund rejected: %w", err)
-	}
-
-	err = s.repo.UpdateStatus(p.ID, models.StatusRefunded, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to mark status as refunded locally: %w", err)
-	}
-	p.Status = models.StatusRefunded
-
-	return p, nil
+	return nil, nil
 }
 
-func (s *paymentService) HandleWebhook(ctx context.Context, payload []byte, sigHeader string, webhookSecret string) error {
+func (s *PaymentService) HandleWebhook(ctx context.Context, payload []byte, sigHeader string, webhookSecret string) error {
 	var event stripe.Event
 	err := json.Unmarshal(payload, &event)
 	if err != nil {
@@ -140,9 +106,9 @@ func (s *paymentService) HandleWebhook(ctx context.Context, payload []byte, sigH
 			return nil
 		}
 		p, err := s.repo.FindByID(paymentID)
-		if err == nil && p.Status == models.StatusInitiated {
-			_ = s.repo.UpdateStatus(p.ID, models.StatusSucceeded, &c.ID)
-			p.Status = models.StatusSucceeded
+		if err == nil && p.Status == domain.StatusInitiated {
+			_ = s.repo.UpdateStatus(p.ID, domain.StatusSucceeded, &c.ID)
+			p.Status = domain.StatusSucceeded
 			p.StripeChargeID = &c.ID
 			s.publishSucceededEvent(p)
 		}
@@ -156,13 +122,12 @@ func (s *paymentService) HandleWebhook(ctx context.Context, payload []byte, sigH
 		if !ok {
 			return nil
 		}
-		_ = s.repo.UpdateStatus(paymentID, models.StatusRefunded, nil)
+		_ = s.repo.UpdateStatus(paymentID, domain.StatusRefunded, nil)
 	}
-
 	return nil
 }
 
-func (s *paymentService) publishSucceededEvent(p *models.Payment) {
+func (s *PaymentService) publishSucceededEvent(p *domain.Payment) {
 	evt := PaymentSucceededEvent{
 		PaymentID:  p.ID,
 		OrderID:    p.OrderID,
@@ -177,17 +142,7 @@ func (s *paymentService) publishSucceededEvent(p *models.Payment) {
 		return
 	}
 
-	err = s.ch.PublishWithContext(
-		context.Background(),
-		s.exchange,
-		s.routingKey,
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "application/json",
-			Body:        body,
-		},
-	)
+	err = s.amqpClient.Publish(context.TODO(), body)
 	if err != nil {
 		log.Printf("Failed to dispatch payment.succeeded message to RabbitMQ: %v", err)
 	} else {
