@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/maruki00/deligo/internal/notifier/domain"
-	"github.com/maruki00/deligo/internal/notifier/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -68,7 +67,7 @@ func (h *Hub) RouteMessage(senderID string, payload []byte) {
 		return
 	}
 
-	chatModel := models.ChatMessage{
+	chatModel := domain.ChatMessage{
 		OrderID:     msg.OrderID,
 		SenderID:    senderID,
 		RecipientID: msg.RecipientID,
