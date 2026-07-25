@@ -3,14 +3,13 @@ package migrations
 import (
 	"log"
 
-	"github.com/maruki00/deligo/internal/payment/models"
-
+	"github.com/maruki00/deligo/internal/payment/domain"
 	"gorm.io/gorm"
 )
 
 func AutoMigrate(db *gorm.DB) {
 	log.Println("Running database migrations...")
-	err := db.AutoMigrate(&models.Payment{})
+	err := db.AutoMigrate(&domain.Payment{})
 	if err != nil {
 		log.Fatalf("Database migration failed: %v", err)
 	}
