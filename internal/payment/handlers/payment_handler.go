@@ -4,18 +4,18 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/maruki00/deligo/internal/payment/domain"
 	"github.com/maruki00/deligo/internal/payment/requests"
-	"github.com/maruki00/deligo/internal/payment/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 type PaymentHandler struct {
-	svc           service.PaymentService
+	svc           domain.PaymentService
 	webhookSecret string
 }
 
-func NewPaymentHandler(svc service.PaymentService, webhookSecret string) *PaymentHandler {
+func NewPaymentHandler(svc domain.PaymentService, webhookSecret string) *PaymentHandler {
 	return &PaymentHandler{
 		svc:           svc,
 		webhookSecret: webhookSecret,
