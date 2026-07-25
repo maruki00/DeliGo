@@ -214,9 +214,9 @@ services:
 ####################################################
 #              Notifier service                    #
 ####################################################
-  notofier_db:
+  notifier_db:
     image: postgres:17-alpine
-    container_name: notofier_db
+    container_name: notifier_db
     restart: 'always'
     ports:
       - "5437:5432"
@@ -235,7 +235,7 @@ services:
       deligo_network:
         ipv4_address: 172.19.0.60
             
-  analytics_service:
+  notifier_service:
     container_name: notifier_service
     restart: "always"
     build:
@@ -247,6 +247,46 @@ services:
       - deligo_network
     depends_on:
       - notifier_db     
+
+
+####################################################
+#              payment service                    #
+####################################################
+  payment_db:
+    image: postgres:17-alpine
+    container_name: payment_db
+    restart: 'always'
+    ports:
+      - "5438:5432"
+    volumes:
+      - ./.data/payment/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: payment
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d payment"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.70
+            
+  payment_service:
+    container_name: payment_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-payment
+    ports:
+      - 8087:8087
+    networks:
+      - deligo_network
+    depends_on:
+      - payment_db     
+
+
 
 networks:
   deligo_network:
