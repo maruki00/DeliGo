@@ -10,14 +10,12 @@
 	|-> Delete Permission For User
 	|-> Give Permission
 
-
 // Users Service 
 	|-> Add User
 	|-> Edit User
 	|-> Delete User
 	|-> Update User
 	|-> Ban User
-
 
 // Costumer Service 
 	|-> Create Order
@@ -26,7 +24,7 @@
 	|-> Track Order
 	|-> Report For Something wrong
 	|-> Chat  
-	|-> Rate github.com/maruki00/deligo Service
+	|-> Rate delivery
 	|-> Rate Product 
 
 //Restorant Service
@@ -39,25 +37,22 @@
 //Courier Service
 	|-> Accept Order
 	|-> Cancel Order
-	|-> Start github.com/maruki00/deligo
-	|-> Complete github.com/maruki00/deligo
+	|-> Start delivery
+	|-> Complete delivery
 
-//github.com/maruki00/deligo Integration
+//delivery Integration
 	|-> Integrator
-
-
 
 //Domains
 	|-> Auth
 	|-> Costumer
-	|-> github.com/maruki00/deligo
+	|-> delivery
 	|-> Order
 	|-> Payment
 	|-> Notifications
 	|-> Rate
 	|-> Users
 	|-> Product
-
 
 //Datebase Tables
 	|-> analytics        
@@ -73,16 +68,10 @@
 	|-> users            
 	|-> users_orders
 
-
 //Technologies
 	|-> Go lang
 	|-> RabbitMq
 	|-> mysql
 	|-> Stripe For Payement
 
-
-
-
-
-
-Auth,Costumer,github.com/maruki00/deligo,Order,Payment,Notifications,Rate,Users,Product
+Auth,Costumer,delivery,Order,Payment,Notifications,Rate,Users,Product

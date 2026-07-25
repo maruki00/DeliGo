@@ -5,22 +5,20 @@ import (
 	"net/http"
 	"time"
 
-	shared_entities "github.com/maruki00/deligo/internal/shared/entity"
-
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 var SecretKey = "e0a380a6-bf9f-418c-af79-088aecc2102a"
 
-func GenerateToken(user shared_entities.UserEntity) (string, error) {
+func GenerateToken(id, role, username string) (string, error) {
 
 	claims := jwt.MapClaims{
-		"id": user.GetID(),
+		"id": id,
 		// "t_id": user.TenantId,
-		//"role":   user.Role,
-		"f_name": user.GetFullname(),
-		"exp":    time.Now().Add(time.Hour * 86024).Unix(),
+		"role":     role,
+		"username": username,
+		"exp":      time.Now().Add(time.Hour * 86024).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(SecretKey))

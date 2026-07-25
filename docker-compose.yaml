@@ -1,70 +1,299 @@
 # version: "3.8"
 
 services:
-  # rabbitmq:
-  #   image: rabbitmq:4-management-alpine
-  #   container_name: rabbitmq_deligo
-  #   restart: 'no'
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: admin
-  #     RABBITMQ_DEFAULT_PASS: admin
-  #   healthcheck:
-  #     test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-  #     interval: 30s
-  #     timeout: 30s
-  #     retries: 3
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   networks: 
-  #     - deligo_network
-  postgres:
-    image: postgres:17-alpine
-    container_name: postgres_deligo
+  global_broker:
+    image: rabbitmq:4-management-alpine
+    container_name: global_broker
     restart: 'no'
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.11
+
+
+####################################################
+#              AIM service                         #
+####################################################
+  iam_db:
+    image: postgres:17-alpine
+    container_name: iam_db
+    restart: 'always'
     ports:
       - "5432:5432"
     volumes:
-      - ./.data/postgres_data:/var/lib/postgresql/data
+      - ./.data/iam/postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: deligo
+      POSTGRES_DB: iam
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d deligo"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d iam"]
       interval: 30s
       timeout: 30s
       retries: 3
     networks:
-      - deligo_network
-  adminer:
-    image: adminer
-    container_name: adminer_deligo
-    restart: always
+      deligo_network:
+        ipv4_address: 172.19.0.10
+    
+  iam_service:
+    container_name: iam_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-iam
     ports:
-      - "8080:8080"
+      - 8081:8081
     networks:
       - deligo_network
-  # pgadmin:
-  #   container_name: pgadmin_deligo
-  #   image: dpage/pgadmin4
-  #   restart: 'no'
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
-  #   volumes:
-  #     - ./.data/pgadmin:/var/lib/pgadmin
-  #   networks:
-  #     - deligo_network
-  #   ports:
-  #     - "5050:80"
-  #   networks:
-  #     - deligo_network
+    depends_on:
+      - iam_db
+
+
+####################################################
+#              Order service                       #
+####################################################
+  order_db:
+    image: postgres:17-alpine
+    container_name: order_db
+    restart: 'always'
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./.data/order/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: order
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d order"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.20
+    
+  order_service:
+    container_name: order_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-order
+    ports:
+      - 8082:8082
+    networks:
+      - deligo_network
+    depends_on:
+      - order_db
+
+
+####################################################
+#              Restaurant service                  #
+####################################################
+  restaurant_db:
+    image: postgres:17-alpine
+    container_name: restaurant_db
+    restart: 'always'
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./.data/restaurant/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: restaurant
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d restaurant"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.30
+            
+  restaurant_service:
+    container_name: restaurant_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-restaurant
+    ports:
+      - 8083:8083
+    networks:
+      - deligo_network
+    depends_on:
+      - restaurant_db
+
+
+####################################################
+#              Courier service                     #
+####################################################
+  courier_db:
+    image: postgres:17-alpine
+    container_name: courier_db
+    restart: 'always'
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./.data/courier/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: courier
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d courier"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.40
+            
+  courier_service:
+    container_name: courier_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-courier
+    ports:
+      - 8084:8084
+    networks:
+      - deligo_network
+    depends_on:
+      - courier_db
+
+
+####################################################
+#              Analytics service                     #
+####################################################
+  analytics_db:
+    image: postgres:17-alpine
+    container_name: analytics_db
+    restart: 'always'
+    ports:
+      - "5436:5432"
+    volumes:
+      - ./.data/analytics/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: analytics
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d analytics"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.50
+            
+  analytics_service:
+    container_name: analytics_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-analytic
+    ports:
+      - 8085:8085
+    networks:
+      - deligo_network
+    depends_on:
+      - analytics_db     
+
+
+####################################################
+#              Notifier service                    #
+####################################################
+  notifier_db:
+    image: postgres:17-alpine
+    container_name: notifier_db
+    restart: 'always'
+    ports:
+      - "5437:5432"
+    volumes:
+      - ./.data/notifier/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: notifier
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d notifier"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.60
+            
+  notifier_service:
+    container_name: notifier_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-notifier
+    ports:
+      - 8086:8086
+    networks:
+      - deligo_network
+    depends_on:
+      - notifier_db     
+
+
+####################################################
+#              payment service                    #
+####################################################
+  payment_db:
+    image: postgres:17-alpine
+    container_name: payment_db
+    restart: 'always'
+    ports:
+      - "5438:5432"
+    volumes:
+      - ./.data/payment/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: payment
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d payment"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      deligo_network:
+        ipv4_address: 172.19.0.70
+            
+  payment_service:
+    container_name: payment_service
+    restart: "always"
+    build:
+      context: .
+      dockerfile: ./deployments/Dockerfile-payment
+    ports:
+      - 8087:8087
+    networks:
+      - deligo_network
+    depends_on:
+      - payment_db     
+
+
 
 networks:
   deligo_network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
 
 volumes:
   data:
